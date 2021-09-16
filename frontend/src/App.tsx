@@ -18,6 +18,7 @@ import Inbox from './components/inbox/Inbox';
 import NewMail from './components/new_mail/NewMail';
 import SentMails from './components/sent_mails/SentMails';
 import Trash from './components/trash/Trash';
+import SearchBar from './components/searchbar/SearchBar';
 // TODO:
 // 1: fetch the inbox mails when we click on inbox
 // 2: create buttons (a component) for sidebar
@@ -30,11 +31,11 @@ import Trash from './components/trash/Trash';
       // but it'll pop up a new window on the page. --With useState--
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 
-const MainDiv = styled.div`
+const ContentDiv = styled.div`
   width: 100%;
-  height: 100vh;
-  padding: 10px 10px 0 0;
+  padding: 10px 0px 0 0;
   display: flex;
+  /* flex-wrap: wrap; */
   gap: 5px;
   
   a {
@@ -43,14 +44,10 @@ const MainDiv = styled.div`
 `;
 
 const SideBar = styled.ul`
-  /* background-color: aqua; */
   min-width: 200px;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: 30px;
-  border-right: 1px solid #1890ff;
 `;
 
 const ModButton = styled(Button)`
@@ -66,7 +63,8 @@ export default function App() {
 
   return (
     <Router>
-      <MainDiv>
+      <SearchBar />
+      <ContentDiv>
         <SideBar>
           <li>
             <ModButton type="primary" icon={<FormOutlined />} onClick={() => setIsNewMail(!isNewMail)}>New Mail</ModButton>
@@ -100,7 +98,7 @@ export default function App() {
           </Route>
         </Switch>
         { isNewMail && <NewMail />}
-      </MainDiv>
+      </ContentDiv>
     </Router>
   );
 }

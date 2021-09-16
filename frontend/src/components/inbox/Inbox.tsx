@@ -3,7 +3,8 @@ import styled from '@emotion/styled'
 
 const Mails = styled.div`
   background-color: #6e94b5;
-  flex-basis: 70%;
+  min-width: 70%;
+  height: 100vh;
   text-align: center;
 `;
 
