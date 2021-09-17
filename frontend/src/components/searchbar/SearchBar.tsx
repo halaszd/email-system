@@ -6,7 +6,6 @@ const { Search } = Input;
 const SearchDiv = styled.div`
   width: 100%;
   height: 50px;
-  background-color: aliceblue;
   display: flex;
   justify-content: center;
 `;
