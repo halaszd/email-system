@@ -1,8 +1,9 @@
 import React from 'react'
+import { useState } from 'react';
 import styled from '@emotion/styled'
 import 'antd/dist/antd.css';
 import { Input, Button } from 'antd';
-import { CloseOutlined } from '@ant-design/icons';
+import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
@@ -15,6 +16,14 @@ const NewMailContainer = styled.div`
   height: 400px;
   /* height: 100%; */
   /* border-radius: 15px 15px 15px 15px; */
+
+  &.minimized {
+    height: 40px;
+
+    form {
+      display: none;
+    }
+  }
 
   header {
     height: 40px;
@@ -29,13 +38,11 @@ const NewMailContainer = styled.div`
       font-weight: bold;
     }
 
-    .close {
+    .header-icons {
+      justify-self: flex-end;
       padding-right: 10px;
     }
 
-    .close:hover {
-      cursor: pointer;
-    }
   }
 
   form {
@@ -50,6 +57,7 @@ const NewMailContainer = styled.div`
 
     .button {
       width: 100px;
+      font-weight: bold;
     }
   }
     background-color: white;
@@ -61,11 +69,23 @@ type Props = {
 };
 
 const NewMail = ({isNewMail, setIsNewMail}: Props) => {
+  const [isMinimized, setIsMinimized] = useState(false)
+
+  function minimize() {
+    const form = document.querySelector(".new-mail-container")!;
+    form.classList.toggle("minimized");
+  }
+
 	return (
-		<NewMailContainer>
+		<NewMailContainer className="new-mail-container">
       <header>
         <span>New Message</span>
-        <CloseOutlined className="close" onClick={() => setIsNewMail(!isNewMail)}/>
+        <div className="header-icons">
+          {!isMinimized 
+            ? <MinusOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/> 
+            : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
+          <CloseOutlined  onClick={() => setIsNewMail(!isNewMail)}/>
+        </div>
         </header>
       <form onSubmit={() => ("something")}>
         <Input className=".input" placeholder="To" />

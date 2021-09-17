@@ -25,7 +25,7 @@ import SearchBar from './components/searchbar/SearchBar';
 // 4: searchbar functionality
 // 4: style the page a bit
 // 5: style new mail
-// 5: exit button on new mail
+// 5: minimize button on new mail 
 // 5: info-collecting function in new mail
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 
