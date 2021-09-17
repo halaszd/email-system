@@ -24,10 +24,9 @@ import SearchBar from './components/searchbar/SearchBar';
 // 3: if we click on a mail it should show us the whole mail
 // 4: searchbar functionality
 // 4: style the page a bit
-// 5: style new mail
-// 5: minimize button on new mail 
 // 5: info-collecting function in new mail
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
+// x: read, unread
 
 const MainDiv = styled.div`
   width: 100%;
@@ -43,7 +42,6 @@ const ContentDiv = styled.div`
   height: 100%;
   display: flex;
   gap: 5px;
-  justify-content: space-between;
   
   a {
     color: white;

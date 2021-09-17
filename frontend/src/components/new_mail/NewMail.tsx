@@ -1,12 +1,8 @@
 import React from 'react'
 import { useState } from 'react';
 import styled from '@emotion/styled'
-import 'antd/dist/antd.css';
 import { Input, Button } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
-
-const { TextArea } = Input;
-
 
 const NewMailContainer = styled.div`
   position: absolute;
@@ -14,8 +10,7 @@ const NewMailContainer = styled.div`
   right: 30px;
   min-width: 500px;
   height: 400px;
-  /* height: 100%; */
-  /* border-radius: 15px 15px 15px 15px; */
+  border-radius: 5px 5px 0 0;
 
   &.minimized {
     height: 40px;
@@ -30,8 +25,9 @@ const NewMailContainer = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: black;
+    background-color: #202124;
     color: white;
+    border-radius: 5px 5px 0 0;
 
     span {
       padding-left: 10px;
@@ -42,7 +38,6 @@ const NewMailContainer = styled.div`
       justify-self: flex-end;
       padding-right: 10px;
     }
-
   }
 
   form {
@@ -51,7 +46,7 @@ const NewMailContainer = styled.div`
     display: flex;
     flex-direction: column;
 
-    TextArea {
+    .message {
       height: 100%;
     }
 
@@ -68,12 +63,27 @@ type Props = {
   setIsNewMail: Function;
 };
 
+interface FormElements extends HTMLFormControlsCollection {
+  formInput: HTMLInputElement
+}
+
+interface FormElement extends HTMLFormElement {
+ readonly elements: FormElements
+}
+
 const NewMail = ({isNewMail, setIsNewMail}: Props) => {
   const [isMinimized, setIsMinimized] = useState(false)
 
   function minimize() {
     const form = document.querySelector(".new-mail-container")!;
     form.classList.toggle("minimized");
+  }
+
+  function handleSubmit(e: React.FormEvent<FormElement>) {
+    e.preventDefault()
+    for(const elem of e.currentTarget.querySelectorAll(".input")) {
+      console.log(elem)
+    };
   }
 
 	return (
@@ -87,11 +97,11 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
           <CloseOutlined  onClick={() => setIsNewMail(!isNewMail)}/>
         </div>
         </header>
-      <form onSubmit={() => ("something")}>
-        <Input className=".input" placeholder="To" />
-        <Input className=".input" placeholder="Subject" />
-        <TextArea className=".input" placeholder="Message" />
-        <Button className="button" type="primary">Send</Button>
+      <form onSubmit={handleSubmit}>
+        <Input className="input" placeholder="To" />
+        <Input className="input" placeholder="Subject" />
+        <Input className="input message" placeholder="Message" />
+        <Button className="button" type="primary" htmlType="submit">Send</Button>
       </form>
 		</NewMailContainer>
 	)
