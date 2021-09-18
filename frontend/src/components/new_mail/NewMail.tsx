@@ -4,6 +4,8 @@ import styled from '@emotion/styled'
 import { Input, Button } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 
+const { TextArea } = Input;
+
 const NewMailContainer = styled.div`
   position: absolute;
   bottom: 0;
@@ -63,13 +65,20 @@ type Props = {
   setIsNewMail: Function;
 };
 
+interface DataToSend {
+  to: string;
+  subject: string;
+  message: string;
+  id?: string;
+}
+
 interface FormElements extends HTMLFormControlsCollection {
   formInput: HTMLInputElement
-}
+};
 
 interface FormElement extends HTMLFormElement {
  readonly elements: FormElements
-}
+};
 
 const NewMail = ({isNewMail, setIsNewMail}: Props) => {
   const [isMinimized, setIsMinimized] = useState(false)
@@ -80,11 +89,18 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
   }
 
   function handleSubmit(e: React.FormEvent<FormElement>) {
-    e.preventDefault()
-    for(const elem of e.currentTarget.querySelectorAll(".input")) {
-      console.log(elem)
-    };
-  }
+    e.preventDefault();
+
+    const inputs =  e.currentTarget.querySelectorAll(".input");
+    let values: DataToSend = { to: "", subject: "", message: "", id: "" };
+
+    for(const elem of inputs) {
+      const modElem = (elem as HTMLInputElement);
+      const key = modElem.name as keyof DataToSend;
+      values[key] = modElem.value;
+    }
+    console.log(values)
+}
 
 	return (
 		<NewMailContainer className="new-mail-container">
@@ -98,9 +114,9 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
         </div>
         </header>
       <form onSubmit={handleSubmit}>
-        <Input className="input" placeholder="To" />
-        <Input className="input" placeholder="Subject" />
-        <Input className="input message" placeholder="Message" />
+        <Input className="input" name="to" placeholder="To" />
+        <Input className="input" name="subject" placeholder="Subject" />
+        <TextArea className="input message" name="message" placeholder="Message" />
         <Button className="button" type="primary" htmlType="submit">Send</Button>
       </form>
 		</NewMailContainer>
