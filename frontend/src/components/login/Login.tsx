@@ -1,5 +1,19 @@
 import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
+import styled from '@emotion/styled'
+
+const ModForm = styled(Form)`
+  width: 300px;
+  .login-form-forgot {
+    float: right;
+  };
+  .ant-col-rtl .login-form-forgot {
+    float: left;
+  };
+  .login-form-button {
+    width: 100%;
+  };
+`;
 
 const NormalLoginForm = () => {
   const onFinish = (values: any) => {
@@ -7,7 +21,7 @@ const NormalLoginForm = () => {
   };
 
   return (
-    <Form
+    <ModForm
       name="normal_login"
       className="login-form"
       initialValues={{ remember: true }}
@@ -45,7 +59,7 @@ const NormalLoginForm = () => {
         </Button>
         Or <a href="">register now!</a>
       </Form.Item>
-    </Form>
+    </ModForm>
   );
 };
 

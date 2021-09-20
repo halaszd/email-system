@@ -42,6 +42,7 @@ const RegistrationForm = () => {
       name="register"
       onFinish={onFinish}
       scrollToFirstError
+      className="registration"
     >
       <Form.Item
         name="email"
