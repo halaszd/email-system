@@ -14,20 +14,20 @@ import {
 
 import { useState } from 'react';
 
-import Inbox from './components/inbox/Inbox';
+import Mails from './components/mails/Mails';
 import NewMail from './components/new_mail/NewMail';
-import SentMails from './components/sent_mails/SentMails';
-import Trash from './components/trash/Trash';
 import SearchBar from './components/searchbar/SearchBar';
+import Register from './components/register/Register';
+import Login from './components/login/Login';
+
 // TODO:
-// 1: fetch the inbox mails when we click on inbox
 // 3: if we click on a mail it should show us the whole mail
 // 4: searchbar functionality
-// 4: searchbar lined with mails
 // 4: style the page a bit
 // 5: post new mail to server, receive answer with updated sent mails
-// 6: register page
-// 6: login page
+// 6: register page and login page
+// 6: register and login buttons are on the top right corner, when we click them we are redirected to the proper page
+// 7: in Mails.tsx make type and render for trash as well
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 // x: read, unread
 
@@ -48,6 +48,7 @@ const SideBar = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-top: 80px; // danger!
 `;
 
 const ModButton = styled(Button)`
@@ -63,6 +64,18 @@ export default function App() {
 
   return (
     <Router>
+      <ul>
+        <li>
+          <Link to="register">
+            Register
+          </Link>
+        </li>
+        <li>
+          <Link to="login">
+            Login
+          </Link>
+        </li>
+      </ul>
         <ContentDiv>
           <SideBar>
             <li>
@@ -88,18 +101,30 @@ export default function App() {
             <SearchBar />
             <Switch>
               <Route exact path="/">
-                <Inbox />
+                <Mails boxType="inbox" />
               </Route>
               <Route path="/sent">
-                <SentMails />
+                <Mails boxType="sent" />
               </Route>
               <Route path="/trash">
-                <Trash />
+                <Mails boxType= "trash" />
               </Route>
             </Switch>
           </div>
           { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail}/>}
         </ContentDiv>
+        
+        {/* Login and Registration */}
+        <Switch>
+          <Route exact path="/register">
+            <Register />
+          </Route>
+        </Switch>
+        <Switch>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+        </Switch>
     </Router>
   );
 }

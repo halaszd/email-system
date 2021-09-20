@@ -2,11 +2,12 @@ import React from 'react'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd';
 
-const MailContainer = styled.div`
+const MailContainer = styled.form`
   display: flex;
   gap: 10px;
   background-color: #f4f7f7;
   border-top: 1px solid #eceff1;
+  padding: 10px 10px 5px 20px;
 
   .message-infos {
     display: flex;
@@ -25,7 +26,7 @@ const MailContainer = styled.div`
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
-type Props = {
+type InboxProps = {
 	from: string;
 	subject: string;
 	message: string;
@@ -34,17 +35,32 @@ type Props = {
 	setIsOpenedMail: Function;
 }
 
+type SentMailsProps = {
+	to: string;
+	subject: string;
+	message: string;
+	id: number;
+	isOpenedMail: boolean;
+	setIsOpenedMail: Function;
+}
+
+type Props = InboxProps | SentMailsProps
+
 // -------------------- The component itself -------------------- 
-const Mail = ({from, subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
+// const Mail = ({subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
+const Mail: React.FC<Props> = props => {
 	return (
 		<MailContainer>
       <div>
 		    <Checkbox></Checkbox>
       </div>
       <div className= "message-infos">
-        <span className="from-subject">From: {from}</span>	
-        <span className="from-subject">Subject: {subject}</span>	
-        <span className="message">Message: {message}</span>
+        {'from' in props 
+          ? <span className="from-subject">From: {props.from}</span>	
+          : <span className="from-subject">To: {props.to}</span>	
+        }
+        <span className="from-subject">Subject: {props.subject}</span>	
+        <span className="message">Message: {props.message}</span>
       </div>
 		</MailContainer>
 	)

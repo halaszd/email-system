@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { FC } from 'react'
 import styled from '@emotion/styled'
 
 import { useState, useEffect } from 'react';
@@ -7,7 +7,7 @@ import Mail from '../mail/Mail';
 import OpenedMail from '../opened_mail/OpenedMail';
 
 // -------------------- Style -------------------- 
-const Mails = styled.div`
+const MailsContainer = styled.div`
   width: calc(100vw - 220px);
   display: flex;
   flex-direction: column;
@@ -19,6 +19,10 @@ const Mails = styled.div`
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
+type Props = {
+  boxType: "inbox" | "sent" | "trash";
+}
+
 interface FetchedMail {
   from: string;
   to: string;
@@ -28,7 +32,7 @@ interface FetchedMail {
 }
 
 // -------------------- The component itself -------------------- 
-const Inbox = () => {
+const Mails: React.FC<Props> = props => {
   const [mails, setMails] = useState<FetchedMail[]>();
   const [isOpenedMail, setIsOpenedMail] = useState(false);
 
@@ -42,17 +46,18 @@ const Inbox = () => {
     setMails(respJSON["mails"]);
   }
 
-  
 	return (
-		<Mails>
+		<MailsContainer>
 			<h1>Inbox</h1>
       {mails && mails.map((mail, index) => {
         return (
-        <Mail from={mail.from} subject={mail.subject} message={mail.message} id={mail.id} isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}/>
+          props.boxType === 'inbox'
+            ? <Mail from={mail.from} subject={mail.subject} message={mail.message} id={mail.id} isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}/>
+            :<Mail to={mail.to} subject={mail.subject} message={mail.message} id={mail.id} isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}/>
         )
       })}
-		</Mails>
+		</MailsContainer>
 	)
 }
 
-export default Inbox
+export default Mails
