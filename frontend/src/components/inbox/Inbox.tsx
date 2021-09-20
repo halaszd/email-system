@@ -8,12 +8,10 @@ import OpenedMail from '../opened_mail/OpenedMail';
 
 // -------------------- Style -------------------- 
 const Mails = styled.div`
-  /* background-color: #6e94b5; */
-  width: 100%;
+  width: calc(100vw - 220px);
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  overflow: hidden;
+  white-space: nowrap;
   
   h1 {
     text-align: center;

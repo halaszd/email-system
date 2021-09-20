@@ -4,14 +4,13 @@ import { Input } from 'antd';
 const { Search } = Input;
 
 const SearchDiv = styled.div`
-  width: 100%;
+  width: 60vw;
   height: 50px;
   display: flex;
-  justify-content: center;
 `;
 
 const ModSearch = styled(Search)`
-  width:500px;
+  width: 100%;
 `;
 
 const SearchBar = () => {

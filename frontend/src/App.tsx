@@ -23,6 +23,7 @@ import SearchBar from './components/searchbar/SearchBar';
 // 1: fetch the inbox mails when we click on inbox
 // 3: if we click on a mail it should show us the whole mail
 // 4: searchbar functionality
+// 4: searchbar lined with mails
 // 4: style the page a bit
 // 5: post new mail to server, receive answer with updated sent mails
 // 6: register page
@@ -30,20 +31,12 @@ import SearchBar from './components/searchbar/SearchBar';
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 // x: read, unread
 
-const MainDiv = styled.div`
+const ContentDiv = styled.div`
   width: 100%;
   height: 100vh;
   display: flex;
-  flex-direction: column;
   padding: 10px 0px 0 0;
   background-color:#ffffff;
-`;
-
-const ContentDiv = styled.div`
-  width: 100%;
-  height: 100%;
-  display: flex;
-  gap: 5px;
   
   a {
     color: white;
@@ -70,8 +63,6 @@ export default function App() {
 
   return (
     <Router>
-      <MainDiv>
-        <SearchBar />
         <ContentDiv>
           <SideBar>
             <li>
@@ -93,21 +84,22 @@ export default function App() {
               </Link>
             </li>
           </SideBar>
-
-          <Switch>
-            <Route exact path="/">
-              <Inbox />
-            </Route>
-            <Route path="/sent">
-              <SentMails />
-            </Route>
-            <Route path="/trash">
-              <Trash />
-            </Route>
-          </Switch>
+          <div>
+            <SearchBar />
+            <Switch>
+              <Route exact path="/">
+                <Inbox />
+              </Route>
+              <Route path="/sent">
+                <SentMails />
+              </Route>
+              <Route path="/trash">
+                <Trash />
+              </Route>
+            </Switch>
+          </div>
           { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail}/>}
         </ContentDiv>
-      </MainDiv>
     </Router>
   );
 }

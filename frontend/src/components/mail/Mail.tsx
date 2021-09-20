@@ -6,19 +6,22 @@ const MailContainer = styled.div`
   display: flex;
   gap: 10px;
   background-color: #f4f7f7;
+  border-top: 1px solid #eceff1;
 
   .message-infos {
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow-x: hidden;
 
     .from-subject, .message {
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
+       overflow-x: hidden;
+       text-overflow: ellipsis;
+    }
+
+    .message {
+      color: #5f6368;
     }
   }
-  
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
