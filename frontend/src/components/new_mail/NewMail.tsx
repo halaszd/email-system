@@ -1,19 +1,20 @@
 import React from 'react'
 import { useState } from 'react';
 import styled from '@emotion/styled'
-import { Input, Button } from 'antd';
+import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 
 // -------------------- Style -------------------- 
 const NewMailContainer = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0;
   right: 30px;
   min-width: 500px;
   height: 400px;
   border-radius: 5px 5px 0 0;
+  display: flex;
 
   &.minimized {
     height: 40px;
@@ -22,42 +23,57 @@ const NewMailContainer = styled.div`
       display: none;
     }
   }
+  .content-container {
+    header {
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #202124;
+      color: white;
+      border-radius: 5px 5px 0 0;
 
-  header {
-    height: 40px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #202124;
-    color: white;
-    border-radius: 5px 5px 0 0;
+      span {
+        padding-left: 10px;
+        font-weight: bold;
+      }
 
-    span {
-      padding-left: 10px;
-      font-weight: bold;
+      .header-icons {
+        justify-self: flex-end;
+        padding-right: 10px;
+      }
     }
 
-    .header-icons {
-      justify-self: flex-end;
-      padding-right: 10px;
-    }
-  }
-
-  form {
+    position: relative;
     width: 100%;
-    height: calc(100% - 40px);
     display: flex;
     flex-direction: column;
 
-    .message {
-      height: 100%;
+    form {
+      height: calc(100% - 40px);
+      display: flex;
+      flex-direction: column;
+
+      .message {
+        height: 100%;
+      }
+
+      .button {
+        width: 100px;
+        font-weight: bold;
+      }
     }
 
-    .button {
-      width: 100px;
-      font-weight: bold;
+    .spinner {
+      position: absolute;
+      z-index: 10;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
     }
+
   }
+
     background-color: white;
 `;
 
@@ -85,7 +101,8 @@ interface FormElement extends HTMLFormElement {
 
 // -------------------- The component itself -------------------- 
 const NewMail = ({isNewMail, setIsNewMail}: Props) => {
-  const [isMinimized, setIsMinimized] = useState(false)
+  const [isMinimized, setIsMinimized] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
 
   function minimize() {
     const form = document.querySelector(".new-mail-container")!;
@@ -103,26 +120,34 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
       const key = modElem.name as keyof DataToSend;
       values[key] = modElem.value;
     }
+
+    // setTimout
+    setIsloading(true);
+    setTimeout(() => {setIsloading(false); setIsNewMail(!isNewMail)}, 2000);
     console.log(values)
+    ;
 }
 
 	return (
 		<NewMailContainer className="new-mail-container">
-      <header>
-        <span>New Message</span>
-        <div className="header-icons">
-          {!isMinimized 
-            ? <MinusOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/> 
-            : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
-          <CloseOutlined  onClick={() => setIsNewMail(!isNewMail)}/>
-        </div>
+      <div className="content-container">
+        <header>
+          <span>New Message</span>
+          <div className="header-icons">
+            { !isMinimized 
+              ? <MinusOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/> 
+              : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
+            <CloseOutlined  onClick={() => setIsNewMail(!isNewMail)}/>
+          </div>
         </header>
-      <form onSubmit={handleSubmit}>
-        <Input className="input" name="to" placeholder="To" />
-        <Input className="input" name="subject" placeholder="Subject" />
-        <TextArea className="input message" name="message" placeholder="Message" />
-        <Button className="button" type="primary" htmlType="submit">Send</Button>
-      </form>
+        { isLoading && <Spin className="spinner" tip="Sending" /> }
+        <form onSubmit={handleSubmit}>
+          <Input className="input" name="to" placeholder="To" />
+          <Input className="input" name="subject" placeholder="Subject" />
+          <TextArea className="input message" name="message" placeholder="Message" />
+          <Button className="button" type="primary" htmlType="submit">Send</Button>
+        </form>
+      </div>
 		</NewMailContainer>
 	)
 }
