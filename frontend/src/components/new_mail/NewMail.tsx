@@ -6,6 +6,7 @@ import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/i
 
 const { TextArea } = Input;
 
+// -------------------- Style -------------------- 
 const NewMailContainer = styled.div`
   position: absolute;
   bottom: 0;
@@ -60,16 +61,18 @@ const NewMailContainer = styled.div`
     background-color: white;
 `;
 
+// -------------------- Declaring types and interfaces -------------------- 
 type Props = {
   isNewMail: boolean;
   setIsNewMail: Function;
 };
 
 interface DataToSend {
+  // from
   to: string;
   subject: string;
   message: string;
-  id?: string;
+  id?: string; // to be generated
 }
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -80,6 +83,7 @@ interface FormElement extends HTMLFormElement {
  readonly elements: FormElements
 };
 
+// -------------------- The component itself -------------------- 
 const NewMail = ({isNewMail, setIsNewMail}: Props) => {
   const [isMinimized, setIsMinimized] = useState(false)
 

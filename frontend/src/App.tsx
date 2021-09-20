@@ -24,7 +24,9 @@ import SearchBar from './components/searchbar/SearchBar';
 // 3: if we click on a mail it should show us the whole mail
 // 4: searchbar functionality
 // 4: style the page a bit
-// 5: info-collecting function in new mail
+// 5: post new mail to server, receive answer with updated sent mails
+// 6: register page
+// 6: login page
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 // x: read, unread
 
@@ -103,19 +105,9 @@ export default function App() {
               <Trash />
             </Route>
           </Switch>
-           {/* const [isNewMail, setIsNewMail] = useState(false) */}
-
           { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail}/>}
         </ContentDiv>
       </MainDiv>
     </Router>
   );
 }
-
-  // const testFetch = async () => {
-  //   const response = await fetch('http://localhost:3000/api/mails');
-  //   const respJSON = await response.json();
-  //   console.log(respJSON)
-  // }
-
-  // testFetch();
