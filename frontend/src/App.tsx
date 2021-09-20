@@ -36,7 +36,7 @@ const MainDiv = styled.div`
   display: flex;
   flex-direction: column;
   padding: 10px 0px 0 0;
-  background-color: aliceblue;
+  background-color:#ffffff;
 `;
 
 const ContentDiv = styled.div`

@@ -4,7 +4,21 @@ import { Checkbox } from 'antd';
 
 const MailContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  background-color: #f4f7f7;
+
+  .message-infos {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+
+    .from-subject, .message {
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+  
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
@@ -24,10 +38,10 @@ const Mail = ({from, subject, message, id, isOpenedMail, setIsOpenedMail}: Props
       <div>
 		    <Checkbox></Checkbox>
       </div>
-      <div>
-        <span className="from-subject">{from}</span>	
-        <span className="from-subject">{subject}</span>	
-        <span className="message">{message}</span>
+      <div className= "message-infos">
+        <span className="from-subject">From: {from}</span>	
+        <span className="from-subject">Subject: {subject}</span>	
+        <span className="message">Message: {message}</span>
       </div>
 		</MailContainer>
 	)

@@ -8,9 +8,16 @@ import OpenedMail from '../opened_mail/OpenedMail';
 
 // -------------------- Style -------------------- 
 const Mails = styled.div`
-  background-color: #6e94b5;
+  /* background-color: #6e94b5; */
   width: 100%;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  overflow: hidden;
+  
+  h1 {
+    text-align: center;
+  }
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
