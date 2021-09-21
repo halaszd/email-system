@@ -21,22 +21,24 @@ import Registration from './components/registration/Registration';
 import Login from './components/login/Login';
 
 // TODO:
+// Frontend side
 // 2: should use useContext 
 // 2: interfaces in separated files
-// 3: On a single mail page: reply button works 
 // 3: On a single mail page: delete button 
-// 3: email deletion should work also (delete every) button
 // 4: searchbar functionality
-// 5: post new mail to server, receive answer with updated sent mails
 // 5: mandatory fields in New Mail component
-// 5: generating random id for mails in New Mail component
-// 6: register page and login page sends data to server and receives the answer
 // 6: register and login buttons are on the top right corner
 // 7: in Mails.tsx render for trash as well
+// x: read, unread
 
+// Later on server side
+// x: register page and login page sends data to server and receives the answer
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 // x: spinner should spin for as long as it takes to post and receive sth from server
 // x: read, unread
+// x: email deletion on server side
+// x: post new mail to server, receive answer with updated sent mails
+// x: reply
 
 const ContentDiv = styled.div`
   width: 100%;

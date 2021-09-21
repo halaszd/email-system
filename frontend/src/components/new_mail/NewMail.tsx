@@ -3,6 +3,7 @@ import { useState } from 'react';
 import styled from '@emotion/styled'
 import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
+import { is } from '@babel/types';
 
 const { TextArea } = Input;
 
@@ -88,11 +89,14 @@ type Props = {
 };
 
 interface DataToSend {
-  // from
+  // date
+  from: string;
+  fromEmailAddress: string;
   to: string;
+  toEmailAddress: string;
   subject: string;
   message: string;
-  id?: string; // to be generated
+  id: number | string;
 }
 
 interface FormElements extends HTMLFormControlsCollection {
@@ -117,7 +121,16 @@ const NewMail = ({isNewMail, setIsNewMail, sendTo, setSendTo}: Props) => {
     e.preventDefault();
 
     const inputs =  e.currentTarget.querySelectorAll(".input");
-    let values: DataToSend = { to: "", subject: "", message: "", id: "" };
+    const mailID = new Date().valueOf() + Math.random();
+    let values: DataToSend = {
+      from: "",
+      fromEmailAddress: "",
+      to: "", // most possibly it's (the name) not needed 
+      toEmailAddress: "",
+      subject: "", 
+      message: "", 
+      id: mailID};
+    console.log(mailID)
 
     for(const elem of inputs) {
       const modElem = (elem as HTMLInputElement);
