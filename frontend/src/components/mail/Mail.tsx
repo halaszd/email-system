@@ -1,7 +1,9 @@
 import React from 'react'
+import { useEffect } from 'react';
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd';
 import FetchedMail from '../interfaces/FetchedMail';
+import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 // -------------------- Style -------------------- 
 const MailContainer = styled.div`
@@ -42,16 +44,33 @@ interface Props extends FetchedMail {
   typeOf: "inbox" | "sent" | "trash";
 	setIsOpenedMail: Function;
   setOpenedMailID: Function;
+  checkedMailIDs: number[];
+  setCheckedMailIDs: Function;
 }
 
 // -------------------- The component itself -------------------- 
-// const Mail = ({subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
 const Mail: React.FC<Props> = props => {
+
+  // useEffect(() => {
+  //   console.log(props.checkedMailIDs)
+  // }, [props.checkedMailIDs])
+
+  function handleCheckMail(e:CheckboxChangeEvent) {
+    if(e.target.checked) {
+      props.setCheckedMailIDs([...props.checkedMailIDs, props.id]);
+    } else {
+      const newCheckedMailIDs = [...props.checkedMailIDs];
+      const index = newCheckedMailIDs.indexOf(props.id);
+      newCheckedMailIDs.splice(index, 1);
+      props.setCheckedMailIDs(newCheckedMailIDs);
+    }
+  }
+
 	return (
 		<MailContainer>
       <form>
         <div>
-          <Checkbox></Checkbox>
+          <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
         </div>
         <div className= "message-infos" onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>
           {console.log(props.typeOf)}

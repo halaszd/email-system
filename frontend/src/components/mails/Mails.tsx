@@ -1,4 +1,6 @@
 import styled from '@emotion/styled'
+import {DeleteOutlined} from '@ant-design/icons'
+
 import FetchedMail from '../interfaces/FetchedMail';
 
 import { useState, useEffect } from 'react';
@@ -15,6 +17,22 @@ const MailsContainer = styled.div`
   
   h1 {
     text-align: center;
+  }
+
+  .delete-all {
+    color: grey;
+    align-self: flex-start;
+    font-size: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+
+    &:hover{
+      cursor: pointer;
+    }
+
+    &.ready-to-delete {
+      color: '#08c';
+    }
   }
 `;
 
@@ -46,8 +64,9 @@ const Mails: React.FC<Props> = props => {
     message: "", 
     id: 0
   });
+  const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
-    props.setTypeOfMail(props.typeOf);
+  props.setTypeOfMail(props.typeOf);
 
   useEffect(() => {
     console.log("Inside")
@@ -66,7 +85,7 @@ const Mails: React.FC<Props> = props => {
     }
   }, [props.isOpenedMail])
 
-  const fetchMails = async () => {
+  async function fetchMails() {
     const response = await fetch(`http://localhost:3001/api/mails/${props.typeOf}`);
     const respJSON = await response.json();
     setMails(respJSON["mails"]);
@@ -78,15 +97,19 @@ const Mails: React.FC<Props> = props => {
       ?
       <MailsContainer>
         <h1>Inbox</h1>
+        <DeleteOutlined className="delete-all" />
+        <form onSubmit={() => console.log(1)}>
         {mails && mails.map((mail, index) => {
           return (
             <>
               <Mail 
               typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
-              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
+              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
+              checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
             </>
         )})}
+        </form>
       </MailsContainer>
 
       : <OpenedMail openedMail={openedMail} setIsNewMail={props.setIsNewMail} setSendTo={props.setSendTo} />
