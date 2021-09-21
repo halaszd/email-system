@@ -83,6 +83,8 @@ const NewMailContainer = styled.div`
 type Props = {
   isNewMail: boolean;
   setIsNewMail: Function;
+  sendTo: string;
+  setSendTo: Function;
 };
 
 interface DataToSend {
@@ -102,7 +104,7 @@ interface FormElement extends HTMLFormElement {
 };
 
 // -------------------- The component itself -------------------- 
-const NewMail = ({isNewMail, setIsNewMail}: Props) => {
+const NewMail = ({isNewMail, setIsNewMail, sendTo, setSendTo}: Props) => {
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
@@ -125,7 +127,7 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
 
     // setTimout
     setIsloading(true);
-    setTimeout(() => {setIsloading(false); setIsNewMail(!isNewMail)}, 2000);
+    setTimeout(() => {setIsloading(false); setIsNewMail(!isNewMail); setSendTo("")}, 2000);
     console.log(values)
     ;
 }
@@ -139,12 +141,12 @@ const NewMail = ({isNewMail, setIsNewMail}: Props) => {
             { !isMinimized 
               ? <MinusOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/> 
               : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
-            <CloseOutlined  onClick={() => setIsNewMail(!isNewMail)}/>
+            <CloseOutlined  onClick={() => {setIsNewMail(!isNewMail); setSendTo("")}}/>
           </div>
         </header>
         { isLoading && <Spin className="spinner" tip="Sending" /> }
         <form onSubmit={handleSubmit}>
-          <Input className="input" name="to" placeholder="To" />
+          <Input className="input" name="to" placeholder="To" value={sendTo}/>
           <Input className="input" name="subject" placeholder="Subject" />
           <TextArea className="input message" name="message" placeholder="Message" />
           <Button className="button" type="primary" htmlType="submit">Send</Button>

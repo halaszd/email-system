@@ -1,7 +1,9 @@
 import React from 'react'
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd';
+import FetchedMail from '../interfaces/FetchedMail';
 
+// -------------------- Style -------------------- 
 const MailContainer = styled.form`
   display: flex;
   gap: 10px;
@@ -26,15 +28,8 @@ const MailContainer = styled.form`
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
-type Props = {
-  typeOfMail: "inbox" | "sent" | "trash" | "";
-	from: string;
-  fromEmailAddress: string;
-	to: string;
-  toEmailAddress: string;
-	subject: string;
-	message: string;
-	id: number;
+interface Props extends FetchedMail {
+  typeOf: "inbox" | "sent" | "trash";
 	setIsOpenedMail: Function;
   setOpenedMailID: Function;
 }
@@ -48,8 +43,8 @@ const Mail: React.FC<Props> = props => {
 		    <Checkbox></Checkbox>
       </div>
       <div className= "message-infos">
-        {console.log(props.typeOfMail)}
-        { props.typeOfMail === 'inbox' || props.typeOfMail === 'trash'
+        {console.log(props.typeOf)}
+        { props.typeOf === 'inbox' || props.typeOf === 'trash'
           ? <span className="from-subject">From: {props.from}</span>	
           : <span className="from-subject">To: {props.to}</span>	
         }

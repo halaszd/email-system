@@ -1,7 +1,11 @@
 import React from 'react'
+import { useState } from 'react';
 import styled from '@emotion/styled'
+
 import { Button } from 'antd'
 import { RollbackOutlined } from '@ant-design/icons';
+
+import NewMail from '../new_mail/NewMail';
 
 import FetchedMail from '../interfaces/FetchedMail.js'
 
@@ -31,23 +35,34 @@ const MailContextContainer = styled.div`
       font-weight: bold;
     }
 
-     .email-address {
+    .email-address {
       font-size:  medium;
       white-space: nowrap;
       font-size: .75rem;
       letter-spacing: .3px;
       color: #5f6368;
-     }
+    }
    }
+
+  .message {
+    color: #222;
+  }
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
 type Props  = {
   openedMail: FetchedMail;
+  setIsNewMail: Function;
+  setSendTo: Function;
 }
 
 // -------------------- The component itself -------------------- 
 const OpenedMail: React.FC<Props> = props => {
+  function handleClick() {
+    props.setIsNewMail(true);
+    props.setSendTo(props.openedMail.fromEmailAddress)
+  }
+
 	return (
 		<MailContextContainer>
       <h1>Subject: {props.openedMail?.subject}</h1>
@@ -55,7 +70,8 @@ const OpenedMail: React.FC<Props> = props => {
       <div>
         <span className="message">{props.openedMail?.message}</span>
       </div>
-      <Button className="reply-button" icon={<RollbackOutlined />}>Reply</Button>
+      {/* <Button onClick={() => props.setIsNewMail(true)} className="reply-button" icon={<RollbackOutlined />}>Reply</Button> */}
+      <Button onClick={handleClick} className="reply-button" icon={<RollbackOutlined />}>Reply</Button>
 		</MailContextContainer>
 	)
 }

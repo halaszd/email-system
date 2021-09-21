@@ -21,17 +21,19 @@ import Registration from './components/registration/Registration';
 import Login from './components/login/Login';
 
 // TODO:
-// 2: useContext használata
-// 2: interface-eket külön fájlba rakni, importálni
-// 3: if we click on a mail it should show us the whole mail
+// 2: should use useContext 
+// 2: interfaces in separated files
+// 3: On a single mail page: reply button works 
+// 3: On a single mail page: delete button 
+// 3: email deletion should work also (delete every) button
 // 4: searchbar functionality
-// 4: style the page a bit
 // 5: post new mail to server, receive answer with updated sent mails
 // 5: mandatory fields in New Mail component
 // 5: generating random id for mails in New Mail component
 // 6: register page and login page sends data to server and receives the answer
 // 6: register and login buttons are on the top right corner
 // 7: in Mails.tsx render for trash as well
+
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
 // x: spinner should spin for as long as it takes to post and receive sth from server
 // x: read, unread
@@ -71,11 +73,14 @@ const ModButton = styled(Button)`
     width: 155px;
   }
 `
+type TypeOfMail = "inbox" | "sent" | "tras" | null;
 
 export default function App() {
   const [isNewMail, setIsNewMail] = useState(false);
+  const [sendTo, setSendTo] = useState<string>("");
   const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
   const [isOpenedMail, setIsOpenedMail] = useState(false);
+  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>(null);
 
   return (
     <Router>
@@ -121,17 +126,23 @@ export default function App() {
                 <SearchBar />
                 <Switch>
                   <Route exact path="/">
-                    <Mails typeOf="inbox" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   </Route>
                   <Route path="/sent">
-                    <Mails typeOf="sent" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} 
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   </Route>
                   <Route path="/trash">
-                    <Mails typeOf="trash" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   </Route>
                 </Switch>
               </div>
-              { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail}/>}
+              { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
             </>
           :
           <div className="login-registration">
