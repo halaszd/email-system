@@ -1,5 +1,5 @@
 import styled from '@emotion/styled'
-import {DeleteOutlined} from '@ant-design/icons'
+import {DeleteFilled} from '@ant-design/icons'
 
 import FetchedMail from '../interfaces/FetchedMail';
 
@@ -8,24 +8,17 @@ import { useState, useEffect } from 'react';
 import Mail from '../mail/Mail';
 import OpenedMail from '../opened_mail/OpenedMail';
 
-// -------------------- Style -------------------- 
-const MailsContainer = styled.div`
-  width: calc(100vw - 220px);
-  height: 100%;
+// -------------------- Style --------------------
+const Header = styled.div`
   display: flex;
-  flex-direction: column;
-  overflow: scroll;
-  
-  h1 {
-    text-align: center;
-  }
+  align-items: center;
 
   .delete-all {
+    position: relative;
     color: grey;
-    align-self: flex-start;
     font-size: 20px;
-    padding-bottom: 20px;
-    padding-left: 20px;
+    left: 18px;
+    /* padding-left: 20px; */
 
     &:hover{
       cursor: pointer;
@@ -35,6 +28,19 @@ const MailsContainer = styled.div`
       color: '#08c';
     }
   }
+
+  h1 {
+    margin-bottom: 0px;
+    margin: auto;
+  }
+`;
+
+const MailsContainer = styled.div`
+  width: calc(100vw - 220px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
@@ -129,9 +135,12 @@ const Mails: React.FC<Props> = props => {
     <>
     { !props.isOpenedMail 
       ?
-      <MailsContainer>
+      <>
+      <Header>
+        <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
         <h1>Inbox</h1>
-        <DeleteOutlined className="delete-all" onClick={deleteCheckedMails}/>
+      </Header>
+      <MailsContainer>
         {mails && mails.map((mail, index) => {
           return (
             <>
@@ -143,6 +152,7 @@ const Mails: React.FC<Props> = props => {
             </>
         )})}
       </MailsContainer>
+      </>
 
       : <OpenedMail openedMail={openedMail} setIsNewMail={props.setIsNewMail} setSendTo={props.setSendTo} />
     } 
