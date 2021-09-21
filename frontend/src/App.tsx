@@ -59,7 +59,7 @@ const SideBar = styled.ul`
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-top: 80px; // danger!
+  padding-top: 150px; // danger!
 `;
 
 const SubSideBar = styled(SideBar)`

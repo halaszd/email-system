@@ -28,6 +28,7 @@ const MailContainer = styled.div`
       overflow-x: hidden;
 
       .from-subject, .message {
+        white-space: nowrap;
         overflow-x: hidden;
         text-overflow: ellipsis;
       }
@@ -51,18 +52,15 @@ interface Props extends FetchedMail {
 // -------------------- The component itself -------------------- 
 const Mail: React.FC<Props> = props => {
 
-  // useEffect(() => {
-  //   console.log(props.checkedMailIDs)
-  // }, [props.checkedMailIDs])
-
   function handleCheckMail(e:CheckboxChangeEvent) {
+    // Collecting the checked mailsi
     if(e.target.checked) {
       props.setCheckedMailIDs([...props.checkedMailIDs, props.id]);
     } else {
-      const newCheckedMailIDs = [...props.checkedMailIDs];
-      const index = newCheckedMailIDs.indexOf(props.id);
-      newCheckedMailIDs.splice(index, 1);
-      props.setCheckedMailIDs(newCheckedMailIDs);
+        const newCheckedMailIDs = [...props.checkedMailIDs];
+        const index = newCheckedMailIDs.indexOf(props.id);
+        newCheckedMailIDs.splice(index, 1);
+        props.setCheckedMailIDs(newCheckedMailIDs);
     }
   }
 

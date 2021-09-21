@@ -11,9 +11,10 @@ import OpenedMail from '../opened_mail/OpenedMail';
 // -------------------- Style -------------------- 
 const MailsContainer = styled.div`
   width: calc(100vw - 220px);
+  height: 100%;
   display: flex;
   flex-direction: column;
-  white-space: nowrap;
+  overflow: scroll;
   
   h1 {
     text-align: center;
@@ -55,6 +56,7 @@ type FetchedMails = FetchedMail[] | null;
 const Mails: React.FC<Props> = props => {
   const [mails, setMails] = useState<FetchedMails>(null);
   const [openedMailID, setOpenedMailID] = useState<openedMailId>(null);
+
   const [openedMail, setOpenedMail] = useState<FetchedMail> ({
     from: "",
     fromEmailAddress: "",
@@ -64,18 +66,19 @@ const Mails: React.FC<Props> = props => {
     message: "", 
     id: 0
   });
+  // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
   props.setTypeOfMail(props.typeOf);
 
   useEffect(() => {
-    console.log("Inside")
     setMails(null);
     fetchMails();
   }, [props.typeOfMail] )
 
   useEffect(() => {
     if(mails !== null && props.isOpenedMail) {
+      // Picks the clicked email to open
       for(const mail of mails) {
         if(openedMailID === mail.id) {
           console.log(mail)
@@ -91,25 +94,54 @@ const Mails: React.FC<Props> = props => {
     setMails(respJSON["mails"]);
   }
 
+  function deleteCheckedMails() {
+    // Deleting the checked mails and collecting them in another array
+    const deletedMails: FetchedMail[] = [];
+    const newMails: FetchedMail[] = [];
+
+    if(mails === null) {
+      return;
+    }
+
+    for(const mail of mails) {
+      let isFoundMail = false;
+
+      for(const id of checkedMailIDs) {
+        if(mail.id === id) {
+          // cCollecting deleted mails for further purpuses
+          deletedMails.push(mail)
+          isFoundMail = true;
+          break;
+        }
+      }
+
+      if(!isFoundMail) {
+        newMails.push(mail)
+      }
+    }
+    // Gives back only the not deleted emails
+    setMails(newMails)
+    // To clear the IDs of formerly checked emails
+    setCheckedMailIDs([]);
+  }
+
 	return (
     <>
     { !props.isOpenedMail 
       ?
       <MailsContainer>
         <h1>Inbox</h1>
-        <DeleteOutlined className="delete-all" />
-        <form onSubmit={() => console.log(1)}>
+        <DeleteOutlined className="delete-all" onClick={deleteCheckedMails}/>
         {mails && mails.map((mail, index) => {
           return (
             <>
               <Mail 
-              typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
+              key={`${index}_${mail.id}`} typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
               id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
               checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
             </>
         )})}
-        </form>
       </MailsContainer>
 
       : <OpenedMail openedMail={openedMail} setIsNewMail={props.setIsNewMail} setSendTo={props.setSendTo} />
