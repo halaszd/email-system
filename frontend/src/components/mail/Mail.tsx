@@ -26,25 +26,18 @@ const MailContainer = styled.form`
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
-type InboxProps = {
+type Props = {
+  typeOfMail: "inbox" | "sent" | "trash" | "";
 	from: string;
-	subject: string;
-	message: string;
-	id: number;
-	setIsOpenedMail: Function;
-  setOpenedMailID: Function;
-}
-
-type SentMailsProps = {
+  fromEmailAddress: string;
 	to: string;
+  toEmailAddress: string;
 	subject: string;
 	message: string;
 	id: number;
 	setIsOpenedMail: Function;
   setOpenedMailID: Function;
 }
-
-type Props = InboxProps | SentMailsProps
 
 // -------------------- The component itself -------------------- 
 // const Mail = ({subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
@@ -55,7 +48,8 @@ const Mail: React.FC<Props> = props => {
 		    <Checkbox></Checkbox>
       </div>
       <div className= "message-infos">
-        {'from' in props 
+        {console.log(props.typeOfMail)}
+        { props.typeOfMail === 'inbox' || props.typeOfMail === 'trash'
           ? <span className="from-subject">From: {props.from}</span>	
           : <span className="from-subject">To: {props.to}</span>	
         }

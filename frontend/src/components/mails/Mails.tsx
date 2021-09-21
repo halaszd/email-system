@@ -20,7 +20,7 @@ const MailsContainer = styled.div`
 
 // -------------------- Declaring types and interfaces -------------------- 
 type Props = {
-  boxType: "inbox" | "sent" | "trash";
+  typeOf: "inbox" | "sent" | "trash";
   isOpenedMail: boolean;
   setIsOpenedMail: Function;
 }
@@ -31,12 +31,21 @@ type openedMailId = number | null;
 const Mails: React.FC<Props> = props => {
   const [mails, setMails] = useState<FetchedMail[]>([]);
   const [openedMailID, setOpenedMailID] = useState<openedMailId>(null);
-  const [openedMail, setOpenedMail] = useState<FetchedMail> ({from: "", to: "", subject: "", message: "", id:0});
-  // const [openedMail, setOpenedMail] = useState<object> ();
+  const [openedMail, setOpenedMail] = useState<FetchedMail> ({
+    // It will depend on typeOfMail that from which endpoint we will send the request
+    typeOfMail: "", // it is probably unnecessary
+    from: "",
+    fromEmailAddress: "",
+    to: "", 
+    toEmailAddress: "",
+    subject: "", 
+    message: "", 
+    id: 0
+  });
 
   useEffect(() => {
     fetchMails();
-  }, [])
+  },[props.typeOf] )
 
   useEffect(() => {
     if(props.isOpenedMail) {
@@ -50,9 +59,10 @@ const Mails: React.FC<Props> = props => {
   }, [props.isOpenedMail])
 
   const fetchMails = async () => {
-    const response = await fetch('http://localhost:3001/api/mails');
+    const response = await fetch(`http://localhost:3001/api/mails/${props.typeOf}`);
     const respJSON = await response.json();
     setMails(respJSON["mails"]);
+    console.log(Mails)
   }
 
 	return (
@@ -63,11 +73,11 @@ const Mails: React.FC<Props> = props => {
         <h1>Inbox</h1>
         {mails && mails.map((mail, index) => {
           return (
-            props.boxType === 'inbox'
-              ? <Mail from={mail.from} subject={mail.subject} message={mail.message} id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} />
-              :<Mail to={mail.to} subject={mail.subject} message={mail.message} id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} />
-          )
-        })}
+              <Mail 
+              typeOfMail={mail.typeOfMail} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
+              to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
+              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} />
+        )})}
       </MailsContainer>
 
       : <OpenedMail openedMail={openedMail}/>

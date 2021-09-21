@@ -39,10 +39,6 @@ const MailContextContainer = styled.div`
       color: #5f6368;
      }
    }
-
-   .message {
-    color: #222;
-   }
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
@@ -55,7 +51,7 @@ const OpenedMail: React.FC<Props> = props => {
 	return (
 		<MailContextContainer>
       <h1>Subject: {props.openedMail?.subject}</h1>
-      <h2>From: <span className="from">{props.openedMail?.from}</span><span className="email-address">{`<${"email-address"}>`}</span></h2>
+      <h2>From: <span className="from">{props.openedMail?.from}</span><span className="email-address">{`<${props.openedMail?.fromEmailAddress}>`}</span></h2>
       <div>
         <span className="message">{props.openedMail?.message}</span>
       </div>

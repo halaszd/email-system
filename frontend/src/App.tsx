@@ -121,13 +121,13 @@ export default function App() {
                 <SearchBar />
                 <Switch>
                   <Route exact path="/">
-                    <Mails boxType="inbox" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="inbox" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
                   </Route>
                   <Route path="/sent">
-                    <Mails boxType="sent" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="sent" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
                   </Route>
                   <Route path="/trash">
-                    <Mails boxType= "trash" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
+                    <Mails typeOf="trash" isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} />
                   </Route>
                 </Switch>
               </div>
