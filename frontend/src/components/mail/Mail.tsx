@@ -31,8 +31,8 @@ type InboxProps = {
 	subject: string;
 	message: string;
 	id: number;
-	isOpenedMail: boolean;
 	setIsOpenedMail: Function;
+  setOpenedMailID: Function;
 }
 
 type SentMailsProps = {
@@ -40,8 +40,8 @@ type SentMailsProps = {
 	subject: string;
 	message: string;
 	id: number;
-	isOpenedMail: boolean;
 	setIsOpenedMail: Function;
+  setOpenedMailID: Function;
 }
 
 type Props = InboxProps | SentMailsProps
@@ -50,7 +50,7 @@ type Props = InboxProps | SentMailsProps
 // const Mail = ({subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
 const Mail: React.FC<Props> = props => {
 	return (
-		<MailContainer>
+		<MailContainer onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>
       <div>
 		    <Checkbox></Checkbox>
       </div>

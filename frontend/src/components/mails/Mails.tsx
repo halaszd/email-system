@@ -1,5 +1,5 @@
-import React, { FC } from 'react'
 import styled from '@emotion/styled'
+import FetchedMail from '../interfaces/FetchedMail';
 
 import { useState, useEffect } from 'react';
 
@@ -21,24 +21,33 @@ const MailsContainer = styled.div`
 // -------------------- Declaring types and interfaces -------------------- 
 type Props = {
   boxType: "inbox" | "sent" | "trash";
+  isOpenedMail: boolean;
+  setIsOpenedMail: Function;
 }
 
-interface FetchedMail {
-  from: string;
-  to: string;
-  subject: string;
-  message: string;
-  id: number;
-}
+type openedMailId = number | null;
 
 // -------------------- The component itself -------------------- 
 const Mails: React.FC<Props> = props => {
-  const [mails, setMails] = useState<FetchedMail[]>();
-  const [isOpenedMail, setIsOpenedMail] = useState(false);
+  const [mails, setMails] = useState<FetchedMail[]>([]);
+  const [openedMailID, setOpenedMailID] = useState<openedMailId>(null);
+  const [openedMail, setOpenedMail] = useState<FetchedMail> ({from: "", to: "", subject: "", message: "", id:0});
+  // const [openedMail, setOpenedMail] = useState<object> ();
 
   useEffect(() => {
     fetchMails();
   }, [])
+
+  useEffect(() => {
+    if(props.isOpenedMail) {
+      for(const mail of mails) {
+        if(openedMailID === mail.id) {
+          console.log(mail)
+          setOpenedMail(mail)
+        }
+      }
+    }
+  }, [props.isOpenedMail])
 
   const fetchMails = async () => {
     const response = await fetch('http://localhost:3001/api/mails');
@@ -47,16 +56,23 @@ const Mails: React.FC<Props> = props => {
   }
 
 	return (
-		<MailsContainer>
-			<h1>Inbox</h1>
-      {mails && mails.map((mail, index) => {
-        return (
-          props.boxType === 'inbox'
-            ? <Mail from={mail.from} subject={mail.subject} message={mail.message} id={mail.id} isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}/>
-            :<Mail to={mail.to} subject={mail.subject} message={mail.message} id={mail.id} isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}/>
-        )
-      })}
-		</MailsContainer>
+    <>
+    { !props.isOpenedMail 
+      ?
+      <MailsContainer>
+        <h1>Inbox</h1>
+        {mails && mails.map((mail, index) => {
+          return (
+            props.boxType === 'inbox'
+              ? <Mail from={mail.from} subject={mail.subject} message={mail.message} id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} />
+              :<Mail to={mail.to} subject={mail.subject} message={mail.message} id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} />
+          )
+        })}
+      </MailsContainer>
+
+      : <OpenedMail openedMail={openedMail}/>
+    }
+    </>
 	)
 }
 

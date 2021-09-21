@@ -14,7 +14,9 @@ const NewMailContainer = styled.div`
   min-width: 500px;
   height: 400px;
   border-radius: 5px 5px 0 0;
+  border: 1px solid #d9d9d9;
   display: flex;
+  z-index: 10;
 
   &.minimized {
     height: 40px;
@@ -23,6 +25,7 @@ const NewMailContainer = styled.div`
       display: none;
     }
   }
+
   .content-container {
     header {
       height: 40px;
@@ -71,7 +74,6 @@ const NewMailContainer = styled.div`
       top: 50%;
       transform: translate(-50%, -50%);
     }
-
   }
 
     background-color: white;
