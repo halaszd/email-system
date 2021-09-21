@@ -85,7 +85,7 @@ const Mails: React.FC<Props> = props => {
               typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
               id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
-              </>
+            </>
         )})}
       </MailsContainer>
 

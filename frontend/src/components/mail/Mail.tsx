@@ -4,25 +4,35 @@ import { Checkbox } from 'antd';
 import FetchedMail from '../interfaces/FetchedMail';
 
 // -------------------- Style -------------------- 
-const MailContainer = styled.form`
-  display: flex;
-  gap: 10px;
-  background-color: #f4f7f7;
-  border-top: 1px solid #eceff1;
-  padding: 10px 10px 5px 20px;
-
-  .message-infos {
+const MailContainer = styled.div`
+  &:hover {
+    box-shadow: 1px 1px 3px #5f6368;
+    z-index: 10;
+  }
+  form {
     display: flex;
-    flex-direction: column;
-    overflow-x: hidden;
-
-    .from-subject, .message {
-       overflow-x: hidden;
-       text-overflow: ellipsis;
+    gap: 10px;
+    background-color: #f4f7f7;
+    border-top: 1px solid #eceff1;
+    padding: 10px 10px 5px 20px;
+    
+    &:hover {
+      cursor: pointer;
     }
 
-    .message {
-      color: #5f6368;
+    .message-infos {
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+
+      .from-subject, .message {
+        overflow-x: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .message {
+        color: #5f6368;
+      }
     }
   }
 `;
@@ -38,19 +48,21 @@ interface Props extends FetchedMail {
 // const Mail = ({subject, message, id, isOpenedMail, setIsOpenedMail}: Props) => {
 const Mail: React.FC<Props> = props => {
 	return (
-		<MailContainer onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>
-      <div>
-		    <Checkbox></Checkbox>
-      </div>
-      <div className= "message-infos">
-        {console.log(props.typeOf)}
-        { props.typeOf === 'inbox' || props.typeOf === 'trash'
-          ? <span className="from-subject">From: {props.from}</span>	
-          : <span className="from-subject">To: {props.to}</span>	
-        }
-        <span className="from-subject">Subject: {props.subject}</span>	
-        <span className="message">Message: {props.message}</span>
-      </div>
+		<MailContainer>
+      <form>
+        <div>
+          <Checkbox></Checkbox>
+        </div>
+        <div className= "message-infos" onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>
+          {console.log(props.typeOf)}
+          { props.typeOf === 'inbox' || props.typeOf === 'trash'
+            ? <span className="from-subject">From: {props.from}</span>	
+            : <span className="from-subject">To: {props.to}</span>	
+          }
+          <span className="from-subject">Subject: {props.subject}</span>	
+          <span className="message">Message: {props.message}</span>
+        </div>
+      </form>
 		</MailContainer>
 	)
 }
