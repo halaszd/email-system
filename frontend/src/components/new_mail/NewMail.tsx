@@ -159,8 +159,8 @@ const NewMail = ({isNewMail, setIsNewMail, sendTo, setSendTo}: Props) => {
         </header>
         { isLoading && <Spin className="spinner" tip="Sending" /> }
         <form onSubmit={handleSubmit}>
-          <Input className="input" name="to" placeholder="To" value={sendTo}/>
-          <Input className="input" name="subject" placeholder="Subject" />
+          <Input className="input" name="to" placeholder="To" defaultValue={sendTo} required/>
+          <Input className="input" name="subject" placeholder="Subject" required/>
           <TextArea className="input message" name="message" placeholder="Message" />
           <Button className="button" type="primary" htmlType="submit">Send</Button>
         </form>

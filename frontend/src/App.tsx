@@ -24,9 +24,9 @@ import Login from './components/login/Login';
 // Frontend side
 // 2: should use useContext 
 // 2: interfaces in separated files
+
 // 3: On a single mail page: delete button 
 // 4: searchbar functionality
-// 5: mandatory fields in New Mail component
 // 6: register and login buttons are on the top right corner
 // 7: in Mails.tsx render for trash as well
 // x: read, unread
