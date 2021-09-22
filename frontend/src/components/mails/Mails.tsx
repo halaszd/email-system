@@ -46,7 +46,6 @@ const Header = styled.div`
       }
     }
 
-
     .delete-all {
       color: grey;
       font-size: 20px;
@@ -60,6 +59,7 @@ const Header = styled.div`
   }
 
   h1 {
+    font-weight: 600;
     margin-bottom: 0px;
     margin: auto;
   }
@@ -170,7 +170,8 @@ const Mails: React.FC<Props> = props => {
         <div className="trash-icon-container">
           <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
         </div>
-        <h1>Inbox</h1>
+        {/* Making the first letter uppercase of props.typeOf */}
+        <h1>{`${props.typeOf.charAt(0).toUpperCase()}${props.typeOf.slice(1)}`}</h1>
       </Header>
       <MailsContainer>
         {mails && mails.map((mail, index) => {
