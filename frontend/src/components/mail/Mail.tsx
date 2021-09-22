@@ -22,6 +22,35 @@ const MailContainer = styled.div`
       cursor: pointer;
     }
 
+    .checkbox-container {
+      min-width: 35px;
+      height: 35px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+
+      &:hover{
+        cursor: pointer;
+        background-color: #eceff1;
+        border-radius: 20px;
+
+        &::after {
+          content: "Select";
+          color: white;
+          font-size: 10px;
+          font-weight: bold;
+          letter-spacing: 0.08rem;
+          position: absolute;
+          top: 41px;
+          padding: 3px;
+          background-color: grey;
+          border-radius: 3px;
+        }
+      }
+    }
+  }
+
     .message-infos {
       display: flex;
       flex-direction: column;
@@ -67,7 +96,7 @@ const Mail: React.FC<Props> = props => {
 	return (
 		<MailContainer>
       <form>
-        <div>
+        <div className="checkbox-container">
           <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
         </div>
         <div className= "message-infos" onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>

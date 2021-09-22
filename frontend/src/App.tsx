@@ -25,7 +25,6 @@ import Login from './components/login/Login';
 // 2: should use useContext 
 // 2: interfaces in separated files
 
-// 1: change box name in different box types
 // 3: On a single mail page: delete button 
 // 4: searchbar functionality
 // 6: register and login buttons are on the top right corner

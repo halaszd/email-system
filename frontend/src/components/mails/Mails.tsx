@@ -49,12 +49,11 @@ const Header = styled.div`
     .delete-all {
       color: grey;
       font-size: 20px;
-      /* padding-left: 20px; */
       transition: 0.3s;
 
-      &.ready-to-delete {
+      /* &.ready-to-delete {
         color: '#08c';
-      }
+      } */
     }
   }
 
