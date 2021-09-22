@@ -2,6 +2,8 @@ import styled from '@emotion/styled'
 import {DeleteFilled} from '@ant-design/icons'
 
 import { useState, useEffect } from 'react';
+import useSetOpenedMails from '../customHooks/useSetOpenedMail'
+  
 
 import FetchedMail from '../interfaces/FetchedMail';
 
@@ -94,15 +96,11 @@ type openedMailId = number | null;
 const Mails: React.FC<Props> = props => {
   const [openedMailID, setOpenedMailID] = useState<openedMailId>(null);
 
-  const [openedMail, setOpenedMail] = useState<FetchedMail> ({
-    from: "",
-    fromEmailAddress: "",
-    to: "", 
-    toEmailAddress: "",
-    subject: "", 
-    message: "", 
-    id: 0
-  });
+  const openedMail = useSetOpenedMails(
+    props.mails,
+    props.isOpenedMail,
+    openedMailID
+  );
   // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
@@ -112,18 +110,6 @@ const Mails: React.FC<Props> = props => {
     props.setMails(null);
     fetchMails();
   }, [props.typeOfMail] )
-
-  useEffect(() => {
-    if(props.mails !== null && props.isOpenedMail) {
-      // Picks the clicked email to open
-      for(const mail of props.mails) {
-        if(openedMailID === mail.id) {
-          console.log(mail)
-          setOpenedMail(mail)
-        }
-      }
-    }
-  }, [props.isOpenedMail])
 
   async function fetchMails() {
     const response = await fetch(`http://localhost:3001/api/mails/${props.typeOf}`);
