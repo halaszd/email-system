@@ -1,5 +1,5 @@
 import React from 'react'
-import { useEffect } from 'react';
+// import { useEffect } from 'react';
 import styled from '@emotion/styled'
 import { Checkbox } from 'antd';
 import FetchedMail from '../interfaces/FetchedMail';
@@ -11,7 +11,8 @@ const MailContainer = styled.div`
     box-shadow: 1px 1px 3px #5f6368;
     z-index: 10;
   }
-  form {
+
+  .content-container {
     display: flex;
     gap: 10px;
     background-color: #f4f7f7;
@@ -66,7 +67,6 @@ const MailContainer = styled.div`
         color: #5f6368;
       }
     }
-  }
 `;
 
 // -------------------- Declaring types and interfaces -------------------- 
@@ -95,7 +95,7 @@ const Mail: React.FC<Props> = props => {
 
 	return (
 		<MailContainer>
-      <form>
+      <div className="content-container">
         <div className="checkbox-container">
           <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
         </div>
@@ -108,7 +108,7 @@ const Mail: React.FC<Props> = props => {
           <span className="from-subject">Subject: {props.subject}</span>	
           <span className="message">Message: {props.message}</span>
         </div>
-      </form>
+      </div>
 		</MailContainer>
 	)
 }

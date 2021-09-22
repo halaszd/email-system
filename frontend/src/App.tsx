@@ -14,6 +14,8 @@ import {
 
 import { useState } from 'react';
 
+import FetchedMail from './components/interfaces/FetchedMail';
+
 import Mails from './components/mails/Mails';
 import NewMail from './components/new_mail/NewMail';
 import SearchBar from './components/searchbar/SearchBar';
@@ -40,6 +42,7 @@ import Login from './components/login/Login';
 // x: post new mail to server, receive answer with updated sent mails
 // x: reply
 
+// -------------------- Style --------------------
 const ContentDiv = styled.div`
   width: 100%;
   height: 100vh;
@@ -75,12 +78,21 @@ const ModButton = styled(Button)`
     width: 155px;
   }
 `
+// -------------------- Declaring types and interfaces -------------------- 
+type FetchedMails = FetchedMail[] | null;
+
 type TypeOfMail = "inbox" | "sent" | "tras" | null;
 
+// -------------------- The component itself -------------------- 
 export default function App() {
+  // To store fetched mails
+  const [mails, setMails] = useState<FetchedMails>(null);
+  // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
+  // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
   const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
+  // To show only one mail which was clicked
   const [isOpenedMail, setIsOpenedMail] = useState(false);
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>(null);
 
@@ -125,22 +137,22 @@ export default function App() {
                 </SubSideBar>
               </SideBar>
               <div>
-                <SearchBar />
+                <SearchBar mails={mails}/>
                 <Switch>
                   <Route exact path="/">
                     <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
                      isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
                   </Route>
                   <Route path="/sent">
                     <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
                      isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} 
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
                   </Route>
                   <Route path="/trash">
                     <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
                      isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
                   </Route>
                 </Switch>
               </div>
