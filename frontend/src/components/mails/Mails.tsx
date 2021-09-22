@@ -12,20 +12,50 @@ import OpenedMail from '../opened_mail/OpenedMail';
 const Header = styled.div`
   display: flex;
   align-items: center;
+  padding-bottom: 30px;
 
-  .delete-all {
+  .trash-icon-container {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
-    color: grey;
-    font-size: 20px;
-    left: 18px;
-    /* padding-left: 20px; */
+    left: 8px;
 
     &:hover{
       cursor: pointer;
+      background-color: #eceff1;
+      border-radius: 20px;
+
+      &::after {
+        content: "Delete";
+        color: white;
+        font-size: 10px;
+        font-weight: bold;
+        letter-spacing: 0.08rem;
+        position: absolute;
+        top: 41px;
+        padding: 3px;
+        background-color: grey;
+        border-radius: 3px;
+      }
+
+      .delete-all {
+        color: black;
+      }
     }
 
-    &.ready-to-delete {
-      color: '#08c';
+
+    .delete-all {
+      color: grey;
+      font-size: 20px;
+      /* padding-left: 20px; */
+      transition: 0.3s;
+
+      &.ready-to-delete {
+        color: '#08c';
+      }
     }
   }
 
@@ -137,7 +167,9 @@ const Mails: React.FC<Props> = props => {
       ?
       <>
       <Header>
-        <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
+        <div className="trash-icon-container">
+          <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
+        </div>
         <h1>Inbox</h1>
       </Header>
       <MailsContainer>
