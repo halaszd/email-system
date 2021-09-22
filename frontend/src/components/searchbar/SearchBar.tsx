@@ -32,16 +32,19 @@ const ModSearch = styled(Search)`
 
 type Props = {
 	mails: FetchedMail[] | null;
+  setMails: Function;
   setIsOpenedMail: Function;
   setOpenedMailID: Function;
 }
 
 const SearchBar: React.FC<Props> = props => {
 	const [resultMails, setResultMails] = useState<FetchedMail[] | null>(null)
+  const [showResultMails, setShowResultMails] = useState(false);
 	const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
 
 	useEffect(() => {
-    setResultMails(null)
+    setResultMails(null);
+    setShowResultMails(true);
 		function handleChange() {
       if(!currentInput || !props.mails) {
         return;
@@ -70,22 +73,24 @@ const SearchBar: React.FC<Props> = props => {
           setResultMails(currentResultMails);
         } 
       }
-			console.log(currentInput ? currentInput.target : null)
 		}
 
 		handleChange();
 
 	}, [currentInput])
 
-	function onSearch (word: string) {
-		console.log(word)
+	function onSearch () {
+    setShowResultMails(false);
+    props.setMails(resultMails);
+    props.setOpenedMailID(null);
+    props.setIsOpenedMail(false);
 	}
 
 	return (
 		<SearchDiv>
 			<div className="search-container">
-				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
-				{resultMails && 
+				<ModSearch placeholder="input search text" allowClear onSearch={() => onSearch()} onChange={(e) => setCurrentInput(e)}/>
+				{ showResultMails && resultMails &&
         <Results resultMails={resultMails} setIsOpenedMail={props.setIsOpenedMail} 
         setOpenedMailID={props.setOpenedMailID} setResultMails={setResultMails}/>}
 			</div>

@@ -45,7 +45,6 @@ type Props = {
 }
 
 const Results: React.FC<Props> = props => {
-  props.setIsOpenedMail("do nothing");
 
   function handleClick(id: number) {
     props.setIsOpenedMail(true); 

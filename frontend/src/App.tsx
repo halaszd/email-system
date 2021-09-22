@@ -12,7 +12,7 @@ import {
   Link
 } from "react-router-dom";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 
 import FetchedMail from './components/interfaces/FetchedMail';
@@ -29,8 +29,12 @@ import Login from './components/login/Login';
 // 2: should use useContext 
 // 2: interfaces in separated files
 
-// 3: On a single mail page: delete button 
-// 4: searchbar functionality
+// 1: missing: when search is made when a mail is opened we need to hit enter twice to list result mails in mail box
+// 1: missing: clicking on mail boxes doesnt give us back the original mail list after listing search results
+// 3: On a single mail page: delete button
+// 3: pagination
+// 4: searchbar functionality when one pushes enter
+// 4: show only few results in onChange search. Other mails: scrolling?
 // 6: register and login buttons are on the top right corner
 // 7: in Mails.tsx render for trash as well
 // x: read, unread
@@ -96,7 +100,7 @@ export default function App() {
   const [sendTo, setSendTo] = useState<string>("");
   const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
   // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
-  const [isOpenedMail, setIsOpenedMail] = useState<boolean | string>(false);
+  const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
 
   // Custom hook for getting the parameters of clicked (opened mail)
@@ -147,7 +151,7 @@ export default function App() {
                 </SubSideBar>
               </SideBar>
               <div>
-                <SearchBar mails={mails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
+                <SearchBar mails={mails} setMails={setMails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
                 <Switch>
                   {isOpenedMail === false
                     ?

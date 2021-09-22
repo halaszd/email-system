@@ -87,8 +87,6 @@ type Props = {
 
 // -------------------- The component itself -------------------- 
 const Mails: React.FC<Props> = props => {
-
-
   // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
@@ -96,7 +94,7 @@ const Mails: React.FC<Props> = props => {
 
   useEffect(() => {
     props.setMails(null);
-    fetchMails();
+    fetchMails()
   }, [props.typeOfMail] )
 
   async function fetchMails() {

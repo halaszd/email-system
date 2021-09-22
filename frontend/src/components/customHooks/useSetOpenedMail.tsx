@@ -4,7 +4,7 @@ import FetchedMail from '../interfaces/FetchedMail';
  
 export default function useSetIsOpenedMail(
 	mails: FetchedMail[] | null, 
-	isOpenedMail: boolean | string,
+	isOpenedMail: boolean,
 	openedMailID: number | null) {
 
 	const [openedMail, setOpenedMail] = useState<FetchedMail> ({
@@ -28,7 +28,7 @@ export default function useSetIsOpenedMail(
 			}
 		}
 		}
-	}, [isOpenedMail])
+	}, [isOpenedMail, openedMailID])
 
 	return openedMail;
 }
