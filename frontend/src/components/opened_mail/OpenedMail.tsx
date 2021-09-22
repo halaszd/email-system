@@ -58,6 +58,7 @@ type Props  = {
 
 // -------------------- The component itself -------------------- 
 const OpenedMail: React.FC<Props> = props => {
+  
   function handleClick() {
     props.setIsNewMail(true);
     props.setSendTo(props.openedMail.fromEmailAddress)

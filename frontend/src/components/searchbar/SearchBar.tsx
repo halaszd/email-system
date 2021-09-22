@@ -32,6 +32,8 @@ const ModSearch = styled(Search)`
 
 type Props = {
 	mails: FetchedMail[] | null;
+  setIsOpenedMail: Function;
+  setOpenedMailID: Function;
 }
 
 const SearchBar: React.FC<Props> = props => {
@@ -72,7 +74,7 @@ const SearchBar: React.FC<Props> = props => {
 		}
 
 		handleChange();
-    
+
 	}, [currentInput])
 
 	function onSearch (word: string) {
@@ -83,7 +85,9 @@ const SearchBar: React.FC<Props> = props => {
 		<SearchDiv>
 			<div className="search-container">
 				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
-				{resultMails && <Results resultMails={resultMails}/>}
+				{resultMails && 
+        <Results resultMails={resultMails} setIsOpenedMail={props.setIsOpenedMail} 
+        setOpenedMailID={props.setOpenedMailID} setResultMails={setResultMails}/>}
 			</div>
 		</SearchDiv>
 	)

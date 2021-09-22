@@ -4,7 +4,7 @@ import FetchedMail from '../interfaces/FetchedMail';
  
 export default function useSetIsOpenedMail(
 	mails: FetchedMail[] | null, 
-	isOpenedMail: boolean,
+	isOpenedMail: boolean | string,
 	openedMailID: number | null) {
 
 	const [openedMail, setOpenedMail] = useState<FetchedMail> ({
@@ -20,6 +20,7 @@ export default function useSetIsOpenedMail(
 	useEffect(() => {
 		if(mails !== null && isOpenedMail) {
 		// Picks the clicked email to open
+		console.log("incuctomhook")
 		for(const mail of mails) {
 			if(openedMailID === mail.id) {
 			console.log(mail)

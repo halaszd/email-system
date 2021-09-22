@@ -1,10 +1,12 @@
-import { Result } from 'antd';
 import React from 'react';
 import styled from '@emotion/styled'
+
+import { useEffect } from 'react';
+
 import FetchedMail from '../interfaces/FetchedMail';
 
 // -------------------- Style -------------------- 
-const MailContainer = styled.div`
+const ResultsContainer = styled.div`
   &:hover {
     background-color: #e7f0f0;
     z-index: 10;
@@ -34,21 +36,31 @@ const MailContainer = styled.div`
       }
     }
 `;
+
 type Props = {
 	resultMails: FetchedMail[];
+  setIsOpenedMail: Function;
+  setOpenedMailID: Function;
+  setResultMails: Function;
 }
 
 const Results: React.FC<Props> = props => {
+  props.setIsOpenedMail("do nothing");
+
+  function handleClick(id: number) {
+    props.setIsOpenedMail(true); 
+    props.setOpenedMailID(id); 
+    console.log(id)
+    props.setResultMails(null);
+  }
 	return (
 		<div>
 			{props.resultMails && props.resultMails.map((mail, index) => {
         return(
-          <MailContainer key={`${mail.id}_${index}`}>
+          <ResultsContainer key={`${mail.id}_${index}`}>
             <div className="content-container">
-              <div className="checkbox-container">
-              </div>
-              {/* <div className= "message-infos" onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}> */}
-              <div className= "message-infos" >
+              <div className= "message-infos" 
+              onClick={() => handleClick(mail.id)}>
                 {/* { props.typeOf === 'inbox' || props.typeOf === 'trash' */}
                   {/* ? <span className="from-subject">From: {props.from}</span>	
                   : <span className="from-subject">To: {props.to}</span>	
@@ -57,7 +69,7 @@ const Results: React.FC<Props> = props => {
                 <span className="from-subject">Subject: {mail.subject}</span>	
               </div>
             </div>
-        </MailContainer>
+        </ResultsContainer>
         )
       })}
 		</div>

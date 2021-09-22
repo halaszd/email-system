@@ -13,11 +13,13 @@ import {
 } from "react-router-dom";
 
 import { useState } from 'react';
+import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 
 import FetchedMail from './components/interfaces/FetchedMail';
 
 import Mails from './components/mails/Mails';
 import NewMail from './components/new_mail/NewMail';
+import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
 import Registration from './components/registration/Registration';
 import Login from './components/login/Login';
@@ -87,14 +89,22 @@ type TypeOfMail = "inbox" | "sent" | "tras" | null;
 export default function App() {
   // To store fetched mails
   const [mails, setMails] = useState<FetchedMails>(null);
+  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>(null);
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
   const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
-  // To show only one mail which was clicked
-  const [isOpenedMail, setIsOpenedMail] = useState(false);
-  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>(null);
+  // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
+  const [isOpenedMail, setIsOpenedMail] = useState<boolean | string>(false);
+  const [openedMailID, setOpenedMailID] = useState<number | null>(null);
+
+  // Custom hook for getting the parameters of clicked (opened mail)
+  const openedMail = useSetOpenedMail(
+    mails,
+    isOpenedMail,
+    openedMailID
+  );
 
   return (
     <Router>
@@ -137,23 +147,27 @@ export default function App() {
                 </SubSideBar>
               </SideBar>
               <div>
-                <SearchBar mails={mails}/>
+                <SearchBar mails={mails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
                 <Switch>
-                  <Route exact path="/">
-                    <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
-                  </Route>
-                  <Route path="/sent">
-                    <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail} 
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
-                  </Route>
-                  <Route path="/trash">
-                    <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                     isOpenedMail={isOpenedMail} setIsOpenedMail={setIsOpenedMail}
-                     setIsNewMail={setIsNewMail} setSendTo={setSendTo} mails={mails} setMails={setMails} />
-                  </Route>
+                  {isOpenedMail === false
+                    ?
+                    <>
+                    <Route exact path="/">
+                      <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                    </Route>
+                    <Route exact path="/sent">
+                      <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                    </Route>
+                    <Route exact path="/trash">
+                      <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                    </Route>
+                    </>
+                    :
+                    <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+                  }
                 </Switch>
               </div>
               { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}

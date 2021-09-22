@@ -2,13 +2,11 @@ import styled from '@emotion/styled'
 import {DeleteFilled} from '@ant-design/icons'
 
 import { useState, useEffect } from 'react';
-import useSetOpenedMails from '../customHooks/useSetOpenedMail'
   
 
 import FetchedMail from '../interfaces/FetchedMail';
 
 import Mail from '../mail/Mail';
-import OpenedMail from '../opened_mail/OpenedMail';
 
 // -------------------- Style --------------------
 const Header = styled.div`
@@ -83,24 +81,14 @@ type Props = {
   typeOf: "inbox" | "sent" | "trash";
   typeOfMail: string | null;
   setTypeOfMail: Function;
-  isOpenedMail: boolean;
   setIsOpenedMail: Function;
-  setIsNewMail: Function;
-  setSendTo: Function;
+  setOpenedMailID: Function;
 }
-
-type openedMailId = number | null;
-
 
 // -------------------- The component itself -------------------- 
 const Mails: React.FC<Props> = props => {
-  const [openedMailID, setOpenedMailID] = useState<openedMailId>(null);
 
-  const openedMail = useSetOpenedMails(
-    props.mails,
-    props.isOpenedMail,
-    openedMailID
-  );
+
   // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
@@ -150,9 +138,6 @@ const Mails: React.FC<Props> = props => {
 
 	return (
     <>
-    { !props.isOpenedMail 
-      ?
-      <>
       <Header>
         <div className="trash-icon-container">
           <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
@@ -167,15 +152,11 @@ const Mails: React.FC<Props> = props => {
               <Mail 
               key={`${index}_${mail.id}`} typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
-              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
+              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={props.setOpenedMailID} 
               checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
             </>
         )})}
       </MailsContainer>
-      </>
-
-      : <OpenedMail openedMail={openedMail} setIsNewMail={props.setIsNewMail} setSendTo={props.setSendTo} />
-    } 
     </>
 	)
 }
