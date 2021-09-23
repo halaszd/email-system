@@ -1,6 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
-import { Input } from 'antd';
+import { SearchDiv, ModSearch } from './Styled';
 
 import { useState, useEffect } from 'react';
 
@@ -8,27 +7,6 @@ import FetchedMail from '../interfaces/FetchedMail';
 
 import Results from '../results/Results';
 
-const { Search } = Input;
-
-const SearchDiv = styled.div`
-  width: 60vw;
-  height: 50px;
-
-	.search-container {
-    position: absolute;
-    width: 55vw;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-    z-index: 20;
-    box-shadow: 1px 1px 3px #5f6368;
-    border-radius: 5px;
-  }
-`;
-
-const ModSearch = styled(Search)`
-  width: 100%;
-`;
 
 type Props = {
 	mails: FetchedMail[] | null;
