@@ -45,6 +45,7 @@ const SearchBar: React.FC<Props> = props => {
 	useEffect(() => {
     setResultMails(null);
     setShowResultMails(true);
+
 		function handleChange() {
       if(!currentInput || !props.mails) {
         return;
@@ -79,7 +80,10 @@ const SearchBar: React.FC<Props> = props => {
 
 	}, [currentInput])
 
-	function onSearch () {
+	function onSearch (word: string) {
+    if(word === "") {
+      return;
+    }
     setShowResultMails(false);
     props.setMails(resultMails);
     props.setOpenedMailID(null);
@@ -89,7 +93,7 @@ const SearchBar: React.FC<Props> = props => {
 	return (
 		<SearchDiv>
 			<div className="search-container">
-				<ModSearch placeholder="input search text" allowClear onSearch={() => onSearch()} onChange={(e) => setCurrentInput(e)}/>
+				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
 				{ showResultMails && resultMails &&
         <Results resultMails={resultMails} setIsOpenedMail={props.setIsOpenedMail} 
         setOpenedMailID={props.setOpenedMailID} setResultMails={setResultMails}/>}
