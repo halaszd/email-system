@@ -1,8 +1,9 @@
+import React, { useContext } from 'react';
 import {Header, MailsContainer } from './Styled';
 import {DeleteFilled} from '@ant-design/icons'
 
 import { useState, useEffect } from 'react';
-  
+import { MailContext } from '../useContexts/MailContext';
 
 import FetchedMail from '../interfaces/FetchedMail';
 
@@ -23,6 +24,10 @@ type Props = {
 
 // -------------------- The component itself -------------------- 
 const Mails: React.FC<Props> = props => {
+  // TEST ZONE
+  const propsb = useContext(MailContext);
+  console.log("CONTEXT: ", propsb)
+
   // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 

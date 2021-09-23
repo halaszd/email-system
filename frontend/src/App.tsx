@@ -12,6 +12,8 @@ import {
 } from "react-router-dom";
 
 import { useState } from 'react';
+import { MailContext } from './components/useContexts/MailContext';
+
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 
 import FetchedMail from './components/interfaces/FetchedMail';
@@ -53,6 +55,8 @@ type FetchedMails = FetchedMail[] | null;
 
 type TypeOfMail = "inbox" | "sent" | "tras" | null;
 
+
+
 // -------------------- The component itself -------------------- 
 export default function App() {
   // To store fetched mails
@@ -66,6 +70,16 @@ export default function App() {
   // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
   const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
+
+  // Setting MailContext's value
+  const mailContextValue = {
+    mails: mails,
+    setMails: setMails,
+    typeOfMail: typeOfMail,
+    setTypeOfMail: setTypeOfMail,
+    setIsOpenedMail: setIsOpenedMail,
+    setOpenedMailID: setOpenedMailID
+  }
 
   // Custom hook for getting the parameters of clicked (opened mail)
   const openedMail = useSetOpenedMail(
@@ -115,28 +129,30 @@ export default function App() {
                 </SubSideBar>
               </SideBar>
               <div>
+
+                {/* From here there should be useContext used*/}
                 <SearchBar mails={mails} setMails={setMails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
-                <Switch>
                   {isOpenedMail === false
                     ?
-                    <>
-                    <Route exact path="/">
-                      <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
-                    </Route>
-                    <Route exact path="/sent">
-                      <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
-                    </Route>
-                    <Route exact path="/trash">
-                      <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                      setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
-                    </Route>
-                    </>
+                    <MailContext.Provider value={mailContextValue}>
+                      <Switch>
+                          <Route exact path="/">
+                            <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                          </Route>
+                          <Route exact path="/sent">
+                            <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                          </Route>
+                          <Route exact path="/trash">
+                            <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
+                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                          </Route>
+                      </Switch>
+                    </ MailContext.Provider>
                     :
                     <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   }
-                </Switch>
               </div>
               { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
             </>
