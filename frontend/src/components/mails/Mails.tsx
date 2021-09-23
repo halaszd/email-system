@@ -2,16 +2,28 @@ import React, { useContext } from 'react';
 import {Header, MailsContainer } from './Styled';
 import {DeleteFilled} from '@ant-design/icons'
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { MailContext } from '../useContexts/MailContext';
 
 import FetchedMail from '../interfaces/FetchedMail';
 
-import Mail from '../mail/Mail';
+import Mail from '../mail/Mail';  
 
-// -------------------- The component itself -------------------- 
-const Mails = () => {
-  const { mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
+type Props = {
+  mails: FetchedMail[] | null;
+  setMails: Function;
+}
+
+// -------------------- The component -------------------- 
+const Mails = (
+  { 
+    mails,
+    setMails
+  }: Props
+  ) => {
+    
+  const { typeOfMail } = useContext(MailContext);
+  
    // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
@@ -59,10 +71,7 @@ const Mails = () => {
           return (
             <>
               <Mail 
-              key={`${index}_${mail.id}`} typeOf={typeOfMail} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
-              to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
-              id={mail.id} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
-              checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
+              key={`${index}_${mail.id}`} mail={mail} checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
             </>
         )})}
       </MailsContainer>

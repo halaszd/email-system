@@ -29,7 +29,6 @@ import Login from './components/login/Login';
 // TODO:
 // Frontend side
 // 2: should use useContext 
-// 2: interfaces in separated files
 
 // 1: missing: when search is made when a mail is opened we need to hit enter twice to list result mails in mail box
 // 1: missing: clicking on mail boxes doesnt give us back the original mail list after listing search results
@@ -101,21 +100,18 @@ export default function App() {
                 <SubSideBar onClick={() => setIsOpenedMail(false)}>
                   <li>
                     <Link to="/">
-                      {/* <ModButton type="primary" icon={<SearchOutlined />} onClick={() => setTypeOfMail("inbox")}>Inbox</ModButton> */}
                       <ModButton type="primary" icon={<SearchOutlined />} 
                       onClick={() => {setTypeOfMail("inbox"); fetchMails("inbox", setMails)}}>Inbox</ModButton>
                     </Link>
                   </li>
                   <li>
                     <Link to="/sent">
-                      {/* <ModButton type="primary" icon={<SendOutlined />} onClick={() => setTypeOfMail("sent")}>Sent</ModButton> */}
                       <ModButton type="primary" icon={<SendOutlined />} 
                       onClick={() => {setTypeOfMail("sent"); fetchMails("sent", setMails)}}>Sent</ModButton>
                     </Link>
                   </li>
                   <li>
                     <Link to="/trash">
-                      {/* <ModButton type="primary" icon={<DeleteOutlined />} onClick={() => setTypeOfMail("trash")}>Trash</ModButton> */}
                       <ModButton type="primary" icon={<DeleteOutlined />} 
                       onClick={() => {setTypeOfMail("trash"); fetchMails("trash", setMails)}}>Trash</ModButton>
                     </Link>
@@ -128,16 +124,16 @@ export default function App() {
                 <SearchBar mails={mails} setMails={setMails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
                   {isOpenedMail === false
                     ?
-                    <MailContext.Provider value={{mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID}}>
+                    <MailContext.Provider value={{ typeOfMail, setIsOpenedMail, setOpenedMailID }}>
                       <Switch>
                           <Route exact path="/">
-                            <Mails />
+                            <Mails mails={mails} setMails={setMails} />
                           </Route>
                           <Route exact path="/sent">
-                            <Mails />
+                            <Mails mails={mails} setMails={setMails} />
                           </Route>
                           <Route exact path="/trash">
-                            <Mails  />
+                            <Mails mails={mails} setMails={setMails} />
                           </Route>
                       </Switch>
                     </ MailContext.Provider>

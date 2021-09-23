@@ -1,30 +1,45 @@
-import React from 'react'
+import React, { useContext } from 'react';
+import FetchedMail from '../interfaces/FetchedMail';
+import { MailContext } from '../useContexts/MailContext';
 import { MailContainer } from './Styled';
 import { Checkbox } from 'antd';
-import FetchedMail from '../interfaces/FetchedMail';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 // -------------------- Declaring types and interfaces -------------------- 
-interface Props extends FetchedMail {
-  typeOf: "inbox" | "sent" | "trash" | ""; 
-	setIsOpenedMail: Function;
-  setOpenedMailID: Function;
+type Props = {
+  mail: FetchedMail
   checkedMailIDs: number[];
   setCheckedMailIDs: Function;
 }
 
-// -------------------- The component itself -------------------- 
-const Mail: React.FC<Props> = props => {
+// -------------------- The component -------------------- 
+const Mail = (
+  {
+    mail: 
+    { 
+      from, 
+      fromEmailAddress, 
+      to, 
+      toEmailAddress, 
+      subject, 
+      message, 
+      id
+    }, 
+    checkedMailIDs, 
+    setCheckedMailIDs 
+  }: Props
+  ) => {
+
+  const { typeOfMail, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
 
   function handleCheckMail(e:CheckboxChangeEvent) {
-    // Collecting the checked mailsi
     if(e.target.checked) {
-      props.setCheckedMailIDs([...props.checkedMailIDs, props.id]);
+      setCheckedMailIDs([...checkedMailIDs, id]);
     } else {
-        const newCheckedMailIDs = [...props.checkedMailIDs];
-        const index = newCheckedMailIDs.indexOf(props.id);
+        const newCheckedMailIDs = [...checkedMailIDs];
+        const index = newCheckedMailIDs.indexOf(id);
         newCheckedMailIDs.splice(index, 1);
-        props.setCheckedMailIDs(newCheckedMailIDs);
+        setCheckedMailIDs(newCheckedMailIDs);
     }
   }
 
@@ -34,14 +49,14 @@ const Mail: React.FC<Props> = props => {
         <div className="checkbox-container">
           <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
         </div>
-        <div className= "message-infos" onClick={() => {props.setIsOpenedMail(true); props.setOpenedMailID(props.id)}}>
-          {console.log(props.typeOf)}
-          { props.typeOf === 'inbox' || props.typeOf === 'trash'
-            ? <span className="from-subject">From: {props.from}</span>	
-            : <span className="from-subject">To: {props.to}</span>	
+        <div className= "message-infos" onClick={() => {setIsOpenedMail(true); setOpenedMailID(id)}}>
+          {console.log(typeOfMail)}
+          { typeOfMail === 'inbox' || typeOfMail === 'trash'
+            ? <span className="from-subject">From: {from}</span>	
+            : <span className="from-subject">To: {to}</span>	
           }
-          <span className="from-subject">Subject: {props.subject}</span>	
-          <span className="message">Message: {props.message}</span>
+          <span className="from-subject">Subject: {subject}</span>	
+          <span className="message">Message: {message}</span>
         </div>
       </div>
 		</MailContainer>
