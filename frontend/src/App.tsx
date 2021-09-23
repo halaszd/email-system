@@ -1,8 +1,7 @@
 import React from 'react';
-import styled from '@emotion/styled'
+import { ContentDiv, SideBar, SubSideBar, ModButton } from './Styled';
 import 'antd/dist/antd.css';
 import './index.css';
-import { Button } from 'antd'
 import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined} from '@ant-design/icons';
 
 import {
@@ -12,7 +11,7 @@ import {
   Link
 } from "react-router-dom";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 
 import FetchedMail from './components/interfaces/FetchedMail';
@@ -49,41 +48,6 @@ import Login from './components/login/Login';
 // x: reply
 
 // -------------------- Style --------------------
-const ContentDiv = styled.div`
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  padding: 10px 0px 0 0;
-  background-color:#ffffff;
-
-  .login-registration {
-    margin: auto;
-  }
-  
-  button a {
-    color: white;
-  }
-`;
-
-const SideBar = styled.ul`
-  min-width: 200px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-  padding-top: 95px; // danger!
-`;
-
-const SubSideBar = styled(SideBar)`
-  padding-top: 0;
-`;
-
-const ModButton = styled(Button)`
-  width: 150px;
-
-  :hover {
-    width: 155px;
-  }
-`
 // -------------------- Declaring types and interfaces -------------------- 
 type FetchedMails = FetchedMail[] | null;
 
