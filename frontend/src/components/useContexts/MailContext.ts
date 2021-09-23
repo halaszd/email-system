@@ -1,12 +1,20 @@
 import React, {createContext, useContext } from 'react';
 import FetchedMail from '../interfaces/FetchedMail';
-type MailContextType = {
+
+interface MailContextType  {
   mails: FetchedMail[] | null;
   setMails: Function;
   typeOfMail: string | null;
-  setTypeOfMail: Function;
   setIsOpenedMail: Function;
   setOpenedMailID: Function;
 }
 
-export const MailContext = createContext<MailContextType | null>(null);
+export const MailContext = createContext<MailContextType>(
+   {
+  mails: null,
+  setMails: () => {}, 
+  typeOfMail: null,
+  setIsOpenedMail: () => {},
+  setOpenedMailID: () => {}
+  }
+);

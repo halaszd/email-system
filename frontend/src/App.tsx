@@ -71,16 +71,6 @@ export default function App() {
   const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
 
-  // Setting MailContext's value
-  const mailContextValue = {
-    mails: mails,
-    setMails: setMails,
-    typeOfMail: typeOfMail,
-    setTypeOfMail: setTypeOfMail,
-    setIsOpenedMail: setIsOpenedMail,
-    setOpenedMailID: setOpenedMailID
-  }
-
   // Custom hook for getting the parameters of clicked (opened mail)
   const openedMail = useSetOpenedMail(
     mails,
@@ -134,19 +124,16 @@ export default function App() {
                 <SearchBar mails={mails} setMails={setMails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
                   {isOpenedMail === false
                     ?
-                    <MailContext.Provider value={mailContextValue}>
+                    <MailContext.Provider value={{mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID}}>
                       <Switch>
                           <Route exact path="/">
-                            <Mails typeOf="inbox" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                            <Mails typeOf="inbox" setTypeOfMail={setTypeOfMail} />
                           </Route>
                           <Route exact path="/sent">
-                            <Mails typeOf="sent" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                            <Mails typeOf="sent" setTypeOfMail={setTypeOfMail} />
                           </Route>
                           <Route exact path="/trash">
-                            <Mails typeOf="trash" typeOfMail={typeOfMail} setTypeOfMail={setTypeOfMail}
-                            setIsOpenedMail={setIsOpenedMail} mails={mails} setMails={setMails} setOpenedMailID={setOpenedMailID} />
+                            <Mails typeOf="trash" setTypeOfMail={setTypeOfMail} />
                           </Route>
                       </Switch>
                     </ MailContext.Provider>

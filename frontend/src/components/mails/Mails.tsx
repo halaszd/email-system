@@ -10,38 +10,30 @@ import FetchedMail from '../interfaces/FetchedMail';
 import Mail from '../mail/Mail';
 
 // -------------------- Declaring types and interfaces -------------------- 
-type FetchedMails = FetchedMail[] | null;
 
 type Props = {
-  mails: FetchedMails;
-  setMails: Function;
   typeOf: "inbox" | "sent" | "trash";
-  typeOfMail: string | null;
   setTypeOfMail: Function;
-  setIsOpenedMail: Function;
-  setOpenedMailID: Function;
 }
 
 // -------------------- The component itself -------------------- 
 const Mails: React.FC<Props> = props => {
-  // TEST ZONE
-  const propsb = useContext(MailContext);
-  console.log("CONTEXT: ", propsb)
-
-  // To collect checked mails 
+  const { mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
+   // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
   props.setTypeOfMail(props.typeOf);
 
   useEffect(() => {
-    props.setMails(null);
+    setMails(null);
     fetchMails()
-  }, [props.typeOfMail] )
+  }, [typeOfMail] )
 
   async function fetchMails() {
+    console.log("FETCHING EMAILS")
     const response = await fetch(`http://localhost:3001/api/mails/${props.typeOf}`);
     const respJSON = await response.json();
-    props.setMails(respJSON["mails"]);
+    setMails(respJSON["mails"]);
   }
 
   function deleteCheckedMails() {
@@ -49,16 +41,16 @@ const Mails: React.FC<Props> = props => {
     const deletedMails: FetchedMail[] = [];
     const newMails: FetchedMail[] = [];
 
-    if(props.mails === null) {
+    if(mails === null) {
       return;
     }
 
-    for(const mail of props.mails) {
+    for(const mail of mails) {
       let isFoundMail = false;
 
       for(const id of checkedMailIDs) {
         if(mail.id === id) {
-          // cCollecting deleted mails for further purpuses
+          // Collecting deleted mails for further purpuses
           deletedMails.push(mail)
           isFoundMail = true;
           break;
@@ -70,7 +62,7 @@ const Mails: React.FC<Props> = props => {
       }
     }
     // Gives back only the not deleted emails
-    props.setMails(newMails)
+    setMails(newMails)
     // To clear the IDs of formerly checked emails
     setCheckedMailIDs([]);
   }
@@ -81,17 +73,16 @@ const Mails: React.FC<Props> = props => {
         <div className="trash-icon-container">
           <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
         </div>
-        {/* Making the first letter uppercase of props.typeOf */}
         <h1>{`${props.typeOf.charAt(0).toUpperCase()}${props.typeOf.slice(1)}`}</h1>
       </Header>
       <MailsContainer>
-        {props.mails && props.mails.map((mail, index) => {
+        {mails && mails.map((mail, index) => {
           return (
             <>
               <Mail 
               key={`${index}_${mail.id}`} typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
-              id={mail.id} setIsOpenedMail={props.setIsOpenedMail} setOpenedMailID={props.setOpenedMailID} 
+              id={mail.id} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
               checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
             </>
         )})}
