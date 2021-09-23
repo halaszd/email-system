@@ -57,6 +57,7 @@ export const Header = styled.div`
 
 export const MailsContainer = styled.div`
   width: calc(100vw - 220px);
+  padding-bottom: 170px;
   height: 100%;
   display: flex;
   flex-direction: column;

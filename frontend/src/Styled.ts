@@ -3,10 +3,11 @@ import { Button } from 'antd'
 
 export const ContentDiv = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 60px);
   display: flex;
   padding: 10px 0px 0 0;
   background-color:#ffffff;
+  overflow-y: hidden; // important
 
   .login-registration {
     margin: auto;
