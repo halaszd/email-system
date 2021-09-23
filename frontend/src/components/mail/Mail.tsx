@@ -6,7 +6,7 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
 // -------------------- Declaring types and interfaces -------------------- 
 interface Props extends FetchedMail {
-  typeOf: "inbox" | "sent" | "trash";
+  typeOf: "inbox" | "sent" | "trash" | ""; 
 	setIsOpenedMail: Function;
   setOpenedMailID: Function;
   checkedMailIDs: number[];

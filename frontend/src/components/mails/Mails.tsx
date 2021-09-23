@@ -9,32 +9,11 @@ import FetchedMail from '../interfaces/FetchedMail';
 
 import Mail from '../mail/Mail';
 
-// -------------------- Declaring types and interfaces -------------------- 
-
-type Props = {
-  typeOf: "inbox" | "sent" | "trash";
-  setTypeOfMail: Function;
-}
-
 // -------------------- The component itself -------------------- 
-const Mails: React.FC<Props> = props => {
+const Mails = () => {
   const { mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
    // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
-
-  props.setTypeOfMail(props.typeOf);
-
-  useEffect(() => {
-    setMails(null);
-    fetchMails()
-  }, [typeOfMail] )
-
-  async function fetchMails() {
-    console.log("FETCHING EMAILS")
-    const response = await fetch(`http://localhost:3001/api/mails/${props.typeOf}`);
-    const respJSON = await response.json();
-    setMails(respJSON["mails"]);
-  }
 
   function deleteCheckedMails() {
     // Deleting the checked mails and collecting them in another array
@@ -73,14 +52,14 @@ const Mails: React.FC<Props> = props => {
         <div className="trash-icon-container">
           <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
         </div>
-        <h1>{`${props.typeOf.charAt(0).toUpperCase()}${props.typeOf.slice(1)}`}</h1>
+        <h1>{`${typeOfMail.charAt(0).toUpperCase()}${typeOfMail.slice(1)}`}</h1>
       </Header>
       <MailsContainer>
         {mails && mails.map((mail, index) => {
           return (
             <>
               <Mail 
-              key={`${index}_${mail.id}`} typeOf={props.typeOf} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
+              key={`${index}_${mail.id}`} typeOf={typeOfMail} from={mail.from} fromEmailAddress={mail.fromEmailAddress} 
               to={mail.to} toEmailAddress={mail.fromEmailAddress} subject={mail.subject} message={mail.message} 
               id={mail.id} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID} 
               checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>

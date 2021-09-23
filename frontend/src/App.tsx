@@ -13,6 +13,7 @@ import {
 
 import { useState } from 'react';
 import { MailContext } from './components/useContexts/MailContext';
+import { fetchMails } from './components/functions/fetchMails';
 
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 
@@ -49,19 +50,16 @@ import Login from './components/login/Login';
 // x: post new mail to server, receive answer with updated sent mails
 // x: reply
 
-// -------------------- Style --------------------
 // -------------------- Declaring types and interfaces -------------------- 
 type FetchedMails = FetchedMail[] | null;
 
-type TypeOfMail = "inbox" | "sent" | "tras" | null;
-
-
+type TypeOfMail = "inbox" | "sent" | "trash"; 
 
 // -------------------- The component itself -------------------- 
 export default function App() {
   // To store fetched mails
   const [mails, setMails] = useState<FetchedMails>(null);
-  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>(null);
+  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
@@ -103,17 +101,23 @@ export default function App() {
                 <SubSideBar onClick={() => setIsOpenedMail(false)}>
                   <li>
                     <Link to="/">
-                      <ModButton type="primary" icon={<SearchOutlined />}>Inbox</ModButton>
+                      {/* <ModButton type="primary" icon={<SearchOutlined />} onClick={() => setTypeOfMail("inbox")}>Inbox</ModButton> */}
+                      <ModButton type="primary" icon={<SearchOutlined />} 
+                      onClick={() => {setTypeOfMail("inbox"); fetchMails("inbox", setMails)}}>Inbox</ModButton>
                     </Link>
                   </li>
                   <li>
                     <Link to="/sent">
-                      <ModButton type="primary" icon={<SendOutlined />}>Sent</ModButton>
+                      {/* <ModButton type="primary" icon={<SendOutlined />} onClick={() => setTypeOfMail("sent")}>Sent</ModButton> */}
+                      <ModButton type="primary" icon={<SendOutlined />} 
+                      onClick={() => {setTypeOfMail("sent"); fetchMails("sent", setMails)}}>Sent</ModButton>
                     </Link>
                   </li>
                   <li>
                     <Link to="/trash">
-                      <ModButton type="primary" icon={<DeleteOutlined />}>Trash</ModButton>
+                      {/* <ModButton type="primary" icon={<DeleteOutlined />} onClick={() => setTypeOfMail("trash")}>Trash</ModButton> */}
+                      <ModButton type="primary" icon={<DeleteOutlined />} 
+                      onClick={() => {setTypeOfMail("trash"); fetchMails("trash", setMails)}}>Trash</ModButton>
                     </Link>
                   </li>
                 </SubSideBar>
@@ -127,13 +131,13 @@ export default function App() {
                     <MailContext.Provider value={{mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID}}>
                       <Switch>
                           <Route exact path="/">
-                            <Mails typeOf="inbox" setTypeOfMail={setTypeOfMail} />
+                            <Mails />
                           </Route>
                           <Route exact path="/sent">
-                            <Mails typeOf="sent" setTypeOfMail={setTypeOfMail} />
+                            <Mails />
                           </Route>
                           <Route exact path="/trash">
-                            <Mails typeOf="trash" setTypeOfMail={setTypeOfMail} />
+                            <Mails  />
                           </Route>
                       </Switch>
                     </ MailContext.Provider>
