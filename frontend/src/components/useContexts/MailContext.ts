@@ -7,9 +7,9 @@ type MailContextType = {
 }
 
 export const MailContext = createContext<MailContextType>(
-   {
-  typeOfMail: "inbox",
-  setIsOpenedMail: () => {},
-  setOpenedMailID: () => {}
+  {
+    typeOfMail: "inbox",
+    setIsOpenedMail: () => {},
+    setOpenedMailID: () => {}
   }
 );

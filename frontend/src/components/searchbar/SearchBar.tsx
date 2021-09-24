@@ -1,4 +1,6 @@
 import React from 'react';
+import { useContext } from 'react';
+import { SearchBarContext } from '../useContexts/SearchBarContext';
 import { useState, useEffect } from 'react';
 import FetchedMail from '../interfaces/FetchedMail';
 import Results from '../results/Results';
@@ -6,10 +8,8 @@ import Results from '../results/Results';
 import { SearchDiv, ModSearch } from './Styled';
 
 type Props = {
-	mails: FetchedMail[] | null;
+	mails: FetchedMail[];
   setMails: Function;
-  setIsOpenedMail: Function;
-  setOpenedMailID: Function;
 }
 
 // -------------------- Component -------------------- 
@@ -17,20 +17,20 @@ const SearchBar = (
   {
     mails, 
     setMails, 
-    setIsOpenedMail, 
-    setOpenedMailID
   }: Props) => {
-    
-	const [resultMails, setResultMails] = useState<FetchedMail[] | null>(null)
-  const [showResultMails, setShowResultMails] = useState(false);
-	const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
 
-	useEffect(() => {
-    setResultMails(null);
-    setShowResultMails(true);
+    const {setIsOpenedMail, setOpenedMailID} = useContext(SearchBarContext);
+    
+    const [resultMails, setResultMails] = useState<FetchedMail[]>([])
+    const [showResultMails, setShowResultMails] = useState(false);
+    const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
+
+    useEffect(() => {
+      setResultMails([]);
+      setShowResultMails(true);
 
 		function handleChange() {
-      if(!currentInput || !mails) {
+      if(!currentInput || mails === []) {
         return;
       }
 
@@ -79,7 +79,7 @@ const SearchBar = (
 				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
 				{ showResultMails && resultMails &&
         <Results resultMails={resultMails} setIsOpenedMail={setIsOpenedMail} 
-        setOpenedMailID={setOpenedMailID} setResultMails={setResultMails}/>}
+        setOpenedMailID={setOpenedMailID} setResultMails={setResultMails}/> }
 			</div>
 		</SearchDiv>
 	)

@@ -13,6 +13,7 @@ import {
 
 import { useState, useEffect } from 'react';
 import { MailContext } from './components/useContexts/MailContext';
+import { SearchBarContext } from './components/useContexts/SearchBarContext';
 import { fetchMails } from './components/functions/fetchMails';
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 import FetchedMail from './components/interfaces/FetchedMail';
@@ -49,14 +50,12 @@ import Login from './components/login/Login';
 // x: reply
 
 // -------------------- Declaring types and interfaces -------------------- 
-type FetchedMails = FetchedMail[] | null;
-
 type TypeOfMail = "inbox" | "sent" | "trash"; 
 
 // -------------------- Component -------------------- 
 export default function App() {
   // To store fetched mails
-  const [mails, setMails] = useState<FetchedMails>(null);
+  const [mails, setMails] = useState<FetchedMail[]>([]);
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
@@ -123,8 +122,10 @@ export default function App() {
               </SideBar>
               <div>
 
-                {/* From here there should be useContext used*/}
-                <SearchBar mails={mails} setMails={setMails} setIsOpenedMail={setIsOpenedMail} setOpenedMailID={setOpenedMailID}/>
+                <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
+                  <SearchBar mails={mails} setMails={setMails} />
+                </SearchBarContext.Provider>
+
                   {isOpenedMail === false
                     ?
                     <MailContext.Provider value={{ typeOfMail, setIsOpenedMail, setOpenedMailID }}>
