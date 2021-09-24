@@ -7,13 +7,6 @@ import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/i
 const { TextArea } = Input;
 
 // -------------------- Declaring types and interfaces -------------------- 
-type Props = {
-  isNewMail: boolean;
-  setIsNewMail: Function;
-  sendTo: string;
-  setSendTo: Function;
-};
-
 interface DataToSend {
   // date
   from: string;
@@ -33,8 +26,22 @@ interface FormElement extends HTMLFormElement {
  readonly elements: FormElements
 };
 
-// -------------------- The component itself -------------------- 
-const NewMail = ({isNewMail, setIsNewMail, sendTo, setSendTo}: Props) => {
+type Props = {
+  isNewMail: boolean;
+  setIsNewMail: Function;
+  sendTo: string;
+  setSendTo: Function;
+};
+
+// -------------------- Component -------------------- 
+const NewMail = (
+  {
+    isNewMail, 
+    setIsNewMail, 
+    sendTo, 
+    setSendTo
+  }: Props) => {
+    
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 

@@ -11,12 +11,10 @@ import {
   Link
 } from "react-router-dom";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { MailContext } from './components/useContexts/MailContext';
 import { fetchMails } from './components/functions/fetchMails';
-
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
-
 import FetchedMail from './components/interfaces/FetchedMail';
 
 import Mails from './components/mails/Mails';
@@ -30,14 +28,15 @@ import Login from './components/login/Login';
 // Frontend side
 // 2: should use useContext 
 
-// 1: missing: when search is made when a mail is opened we need to hit enter twice to list result mails in mail box
-// 1: missing: clicking on mail boxes doesnt give us back the original mail list after listing search results
+// 1: elements in style component
+// 1: Dont use useEffect if you can evade using it
 // 3: On a single mail page: delete button
 // 3: pagination
-// 4: searchbar functionality when one pushes enter
 // 4: show only few results in onChange search. Other mails: scrolling?
 // 6: register and login buttons are on the top right corner
+// 6: register and login on frontend side (get to know ant form,  values)
 // 7: in Mails.tsx render for trash as well
+// 7: sidebar in a separate component
 // x: read, unread
 
 // Later on server side
@@ -54,7 +53,7 @@ type FetchedMails = FetchedMail[] | null;
 
 type TypeOfMail = "inbox" | "sent" | "trash"; 
 
-// -------------------- The component itself -------------------- 
+// -------------------- Component -------------------- 
 export default function App() {
   // To store fetched mails
   const [mails, setMails] = useState<FetchedMails>(null);
@@ -74,6 +73,10 @@ export default function App() {
     isOpenedMail,
     openedMailID
   );
+
+  useEffect(() => {
+    fetchMails(typeOfMail, setMails);
+  }, [])
 
   return (
     <Router>

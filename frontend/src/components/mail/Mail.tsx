@@ -12,7 +12,7 @@ type Props = {
   setCheckedMailIDs: Function;
 }
 
-// -------------------- The component -------------------- 
+// -------------------- Component -------------------- 
 const Mail = (
   {
     mail: 

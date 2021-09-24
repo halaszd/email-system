@@ -13,19 +13,24 @@ type Props  = {
 }
 
 // -------------------- The component itself -------------------- 
-const OpenedMail: React.FC<Props> = props => {
+const OpenedMail = (
+  {
+    openedMail, 
+    setIsNewMail, 
+    setSendTo
+  }: Props) => {
   
   function handleClick() {
-    props.setIsNewMail(true);
-    props.setSendTo(props.openedMail.fromEmailAddress)
+    setIsNewMail(true);
+    setSendTo(openedMail.fromEmailAddress)
   }
 
 	return (
 		<MailContextContainer>
-      <h1>Subject: {props.openedMail?.subject}</h1>
-      <h2>From: <span className="from">{props.openedMail?.from}</span><span className="email-address">{`<${props.openedMail?.fromEmailAddress}>`}</span></h2>
+      <h1>Subject: {openedMail?.subject}</h1>
+      <h2>From: <span className="from">{openedMail?.from}</span><span className="email-address">{`<${openedMail?.fromEmailAddress}>`}</span></h2>
       <div>
-        <span className="message">{props.openedMail?.message}</span>
+        <span className="message">{openedMail?.message}</span>
       </div>
       {/* <Button onClick={() => props.setIsNewMail(true)} className="reply-button" icon={<RollbackOutlined />}>Reply</Button> */}
       <Button onClick={handleClick} className="reply-button" icon={<RollbackOutlined />}>Reply</Button>

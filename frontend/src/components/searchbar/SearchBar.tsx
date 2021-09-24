@@ -1,12 +1,9 @@
 import React from 'react';
-import { SearchDiv, ModSearch } from './Styled';
-
 import { useState, useEffect } from 'react';
-
 import FetchedMail from '../interfaces/FetchedMail';
-
 import Results from '../results/Results';
 
+import { SearchDiv, ModSearch } from './Styled';
 
 type Props = {
 	mails: FetchedMail[] | null;
@@ -15,7 +12,15 @@ type Props = {
   setOpenedMailID: Function;
 }
 
-const SearchBar: React.FC<Props> = props => {
+// -------------------- Component -------------------- 
+const SearchBar = (
+  {
+    mails, 
+    setMails, 
+    setIsOpenedMail, 
+    setOpenedMailID
+  }: Props) => {
+    
 	const [resultMails, setResultMails] = useState<FetchedMail[] | null>(null)
   const [showResultMails, setShowResultMails] = useState(false);
 	const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
@@ -25,7 +30,7 @@ const SearchBar: React.FC<Props> = props => {
     setShowResultMails(true);
 
 		function handleChange() {
-      if(!currentInput || !props.mails) {
+      if(!currentInput || !mails) {
         return;
       }
 
@@ -37,15 +42,15 @@ const SearchBar: React.FC<Props> = props => {
 
       const currentResultMails: FetchedMail[] = [];
 
-      for(const mail of props.mails) {
+      for(const mail of mails) {
         const allStringFromEmail = 
-        mail.to + " " +
-        mail.fromEmailAddress + " " +
-        mail.from + " " +
-        mail.fromEmailAddress + " " +
-        mail.subject + " " +
-        mail.message
-        .toLowerCase();
+          mail.to + " " +
+          mail.fromEmailAddress + " " +
+          mail.from + " " +
+          mail.fromEmailAddress + " " +
+          mail.subject + " " +
+          mail.message
+          .toLowerCase();
 
         if(allStringFromEmail.includes(inputToFind)) {
           currentResultMails.push(mail);
@@ -63,9 +68,9 @@ const SearchBar: React.FC<Props> = props => {
       return;
     }
     setShowResultMails(false);
-    props.setMails(resultMails);
-    props.setOpenedMailID(null);
-    props.setIsOpenedMail(false);
+    setMails(resultMails);
+    setOpenedMailID(null);
+    setIsOpenedMail(false);
 	}
 
 	return (
@@ -73,8 +78,8 @@ const SearchBar: React.FC<Props> = props => {
 			<div className="search-container">
 				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
 				{ showResultMails && resultMails &&
-        <Results resultMails={resultMails} setIsOpenedMail={props.setIsOpenedMail} 
-        setOpenedMailID={props.setOpenedMailID} setResultMails={setResultMails}/>}
+        <Results resultMails={resultMails} setIsOpenedMail={setIsOpenedMail} 
+        setOpenedMailID={setOpenedMailID} setResultMails={setResultMails}/>}
 			</div>
 		</SearchDiv>
 	)

@@ -9,17 +9,24 @@ type Props = {
   setResultMails: Function;
 }
 
-const Results: React.FC<Props> = props => {
+// -------------------- Component -------------------- 
+const Results = (
+  {
+    resultMails, 
+    setIsOpenedMail, 
+    setOpenedMailID, 
+    setResultMails
+  }: Props) => {
 
   function handleClick(id: number) {
-    props.setIsOpenedMail(true); 
-    props.setOpenedMailID(id); 
+    setIsOpenedMail(true); 
+    setOpenedMailID(id); 
     console.log(id)
-    props.setResultMails(null);
+    setResultMails(null);
   }
 	return (
 		<div>
-			{props.resultMails && props.resultMails.map((mail, index) => {
+			{resultMails && resultMails.map((mail, index) => {
         return(
           <ResultsContainer key={`${mail.id}_${index}`}>
             <div className="content-container">
