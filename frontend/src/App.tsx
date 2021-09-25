@@ -1,8 +1,7 @@
 import React from 'react';
-import { ContentDiv, SideBar, SubSideBar, ModButton } from './Styled';
+import { ContentDiv } from './Styled';
 import 'antd/dist/antd.css';
 import './index.css';
-import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined} from '@ant-design/icons';
 
 import {
   BrowserRouter as Router,
@@ -19,6 +18,7 @@ import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 import FetchedMail from './components/interfaces/FetchedMail';
 
 import Mails from './components/mails/Mails';
+import SideBar from './components/sidebar/SideBar';
 import NewMail from './components/new_mail/NewMail';
 import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
@@ -94,31 +94,8 @@ export default function App() {
           {!isRegisterOrLoginClicked 
           ?
             <>
-              <SideBar>
-                <li>
-                  <ModButton type="primary" icon={<FormOutlined />} onClick={() => setIsNewMail(!isNewMail)}>New Mail</ModButton>
-                </li>
-                <SubSideBar onClick={() => setIsOpenedMail(false)}>
-                  <li>
-                    <Link to="/">
-                      <ModButton type="primary" icon={<SearchOutlined />} 
-                      onClick={() => {setTypeOfMail("inbox"); fetchMails("inbox", setMails)}}>Inbox</ModButton>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/sent">
-                      <ModButton type="primary" icon={<SendOutlined />} 
-                      onClick={() => {setTypeOfMail("sent"); fetchMails("sent", setMails)}}>Sent</ModButton>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link to="/trash">
-                      <ModButton type="primary" icon={<DeleteOutlined />} 
-                      onClick={() => {setTypeOfMail("trash"); fetchMails("trash", setMails)}}>Trash</ModButton>
-                    </Link>
-                  </li>
-                </SubSideBar>
-              </SideBar>
+            <SideBar setIsNewMail={setIsNewMail} isNewMail={isNewMail} 
+            setTypeOfMail={setTypeOfMail} setMails={setMails} setIsOpenedMail={setIsOpenedMail}/>
               <div>
 
                 <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
