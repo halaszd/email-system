@@ -1,5 +1,5 @@
 import React from 'react';
-import { ContentDiv } from './Styled';
+import { ContentDiv, LoginRegistration} from './Styled';
 import 'antd/dist/antd.css';
 import './index.css';
 
@@ -15,7 +15,7 @@ import { MailContext } from './components/useContexts/MailContext';
 import { SearchBarContext } from './components/useContexts/SearchBarContext';
 import { fetchMails } from './components/functions/fetchMails';
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
-import FetchedMail from './components/interfaces/FetchedMail';
+import { FetchedMail } from './components/types/FetchedMail';
 
 import Mails from './components/mails/Mails';
 import SideBar from './components/sidebar/SideBar';
@@ -36,7 +36,6 @@ import Login from './components/login/Login';
 // 6: register and login buttons are on the top right corner
 // 6: register and login on frontend side (get to know ant form,  values)
 // 7: in Mails.tsx render for trash as well
-// 7: sidebar in a separate component
 // x: read, unread
 
 // Later on server side
@@ -48,7 +47,7 @@ import Login from './components/login/Login';
 // x: post new mail to server, receive answer with updated sent mails
 // x: reply
 
-// -------------------- Declaring types and interfaces -------------------- 
+// -------------------- Declaring types -------------------- 
 type TypeOfMail = "inbox" | "sent" | "trash"; 
 
 // -------------------- Component -------------------- 
@@ -78,6 +77,7 @@ export default function App() {
 
   return (
     <Router>
+
       <ul>
         <li>
           <Link onClick={() => {setIsRegisterOrLoginClicked(true)}} to="registration">
@@ -90,19 +90,19 @@ export default function App() {
           </Link>
         </li>
       </ul>
+
         <ContentDiv>
           {!isRegisterOrLoginClicked 
           ?
             <>
-            <SideBar setIsNewMail={setIsNewMail} isNewMail={isNewMail} 
-            setTypeOfMail={setTypeOfMail} setMails={setMails} setIsOpenedMail={setIsOpenedMail}/>
-              <div>
+              <SideBar props={{setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail}} />
 
+              <div>
                 <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
                   <SearchBar mails={mails} setMails={setMails} />
                 </SearchBarContext.Provider>
 
-                  {isOpenedMail === false
+                  {!isOpenedMail
                     ?
                     <MailContext.Provider value={{ typeOfMail, setIsOpenedMail, setOpenedMailID }}>
                       <Switch>
@@ -121,10 +121,11 @@ export default function App() {
                     <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   }
               </div>
+
               { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
             </>
           :
-          <div className="login-registration">
+          <LoginRegistration>
           <Switch>
             <Route exact path="/registration">
               <Registration />
@@ -133,8 +134,9 @@ export default function App() {
               <Login />
             </Route>
           </Switch>
-          </div>
+          </LoginRegistration>
           }
+
         </ContentDiv>
 
     </Router>

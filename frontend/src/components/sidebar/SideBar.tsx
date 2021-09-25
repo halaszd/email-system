@@ -2,18 +2,19 @@ import React from 'react'
 import { fetchMails } from '../functions/fetchMails';
 import { SideBarContainer, SubSideBar, ModButton } from './Styled';
 import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined} from '@ant-design/icons';
-import {
-  Link
-} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 type Props = {
+	props: {
 	setIsNewMail: Function;
 	isNewMail: boolean;
 	setTypeOfMail: Function;
 	setMails: Function;
 	setIsOpenedMail: Function;
+	}
 }
-const SideBar = ({setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail}: Props) => {
+
+const SideBar = ( {props:{ setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail }}: Props) => {
 	return (
 		<SideBarContainer>
 		<li>

@@ -1,5 +1,5 @@
 import React from 'react'
-import { NewMailContainer } from './Styled';
+import { NewMailContainer, ContentContainer, Header, Form } from './Styled';
 import { useState } from 'react';
 import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
@@ -46,7 +46,9 @@ const NewMail = (
   const [isLoading, setIsloading] = useState(false);
 
   function minimize() {
-    const form = document.querySelector(".new-mail-container")!;
+    const newMailContainer = document.querySelector(".new-mail-container")!;
+    newMailContainer.classList.toggle("minimized");
+    const form = document.querySelector(".form")!;
     form.classList.toggle("minimized");
   }
 
@@ -80,8 +82,8 @@ const NewMail = (
 
 	return (
 		<NewMailContainer className="new-mail-container">
-      <div className="content-container">
-        <header>
+      <ContentContainer>
+        <Header>
           <span>New Message</span>
           <div className="header-icons">
             { !isMinimized 
@@ -89,15 +91,15 @@ const NewMail = (
               : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
             <CloseOutlined  onClick={() => {setIsNewMail(!isNewMail); setSendTo("")}}/>
           </div>
-        </header>
+        </Header>
         { isLoading && <Spin className="spinner" tip="Sending" /> }
-        <form onSubmit={handleSubmit}>
+        <Form className="form" onSubmit={handleSubmit}>
           <Input className="input" name="to" placeholder="To" defaultValue={sendTo} required/>
           <Input className="input" name="subject" placeholder="Subject" required/>
           <TextArea className="input message" name="message" placeholder="Message" />
           <Button className="button" type="primary" htmlType="submit">Send</Button>
-        </form>
-      </div>
+        </Form>
+      </ContentContainer>
 		</NewMailContainer>
 	)
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import FetchedMail from '../interfaces/FetchedMail';
+import { FetchedMail } from '../types/FetchedMail';
 
  
 export default function useSetIsOpenedMail(

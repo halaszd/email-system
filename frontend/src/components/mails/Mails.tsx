@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import {Header, MailsContainer } from './Styled';
+import {Header, MailsContainer, TrashIconContainer } from './Styled';
 import {DeleteFilled} from '@ant-design/icons'
 
 import { useState } from 'react';
 import { MailContext } from '../useContexts/MailContext';
 
-import FetchedMail from '../interfaces/FetchedMail';
+import { FetchedMail } from '../types/FetchedMail';
 
 import Mail from '../mail/Mail';  
 
@@ -61,9 +61,9 @@ const Mails = (
 	return (
     <>
       <Header>
-        <div className="trash-icon-container">
+        <TrashIconContainer>
           <DeleteFilled className="delete-all" onClick={deleteCheckedMails}/>
-        </div>
+        </TrashIconContainer>
         <h1>{`${typeOfMail.charAt(0).toUpperCase()}${typeOfMail.slice(1)}`}</h1>
       </Header>
       <MailsContainer>

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
-import FetchedMail from '../interfaces/FetchedMail';
+import { FetchedMail } from '../types/FetchedMail';
 import { MailContext } from '../useContexts/MailContext';
-import { MailContainer } from './Styled';
+import { MailContainer, ContentContainer, CheckboxContainer, MessageInfos } from './Styled';
 import { Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 
@@ -45,20 +45,19 @@ const Mail = (
 
 	return (
 		<MailContainer>
-      <div className="content-container">
-        <div className="checkbox-container">
+      <ContentContainer>
+        <CheckboxContainer>
           <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
-        </div>
-        <div className= "message-infos" onClick={() => {setIsOpenedMail(true); setOpenedMailID(id)}}>
-          {console.log(typeOfMail)}
+        </CheckboxContainer>
+        <MessageInfos onClick={() => {setIsOpenedMail(true); setOpenedMailID(id)}}>
           { typeOfMail === 'inbox' || typeOfMail === 'trash'
             ? <span className="from-subject">From: {from}</span>	
             : <span className="from-subject">To: {to}</span>	
           }
           <span className="from-subject">Subject: {subject}</span>	
           <span className="message">Message: {message}</span>
-        </div>
-      </div>
+        </MessageInfos>
+      </ContentContainer>
 		</MailContainer>
 	)
 }

@@ -10,64 +10,63 @@ export const NewMailContainer = styled.div`
   border: 1px solid #d9d9d9;
   display: flex;
   z-index: 10;
+  background-color: white;
 
   &.minimized {
     height: 40px;
+  }
+`;
 
-    form {
-      display: none;
-    }
+export const ContentContainer = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .spinner {
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+`;
+
+export const Header = styled.header`
+  height: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #202124;
+  color: white;
+  border-radius: 5px 5px 0 0;
+
+  span {
+    padding-left: 10px;
+    font-weight: bold;
   }
 
-  .content-container {
-    header {
-      height: 40px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background-color: #202124;
-      color: white;
-      border-radius: 5px 5px 0 0;
+  .header-icons {
+    justify-self: flex-end;
+    padding-right: 10px;
+  }
+`;
 
-      span {
-        padding-left: 10px;
-        font-weight: bold;
-      }
+export const Form = styled.form`
+  height: calc(100% - 40px);
+  display: flex;
+  flex-direction: column;
 
-      .header-icons {
-        justify-self: flex-end;
-        padding-right: 10px;
-      }
-    }
-
-    position: relative;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-
-    form {
-      height: calc(100% - 40px);
-      display: flex;
-      flex-direction: column;
-
-      .message {
-        height: 100%;
-      }
-
-      .button {
-        width: 100px;
-        font-weight: bold;
-      }
-    }
-
-    .spinner {
-      position: absolute;
-      z-index: 10;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-    }
+  &.minimized {
+    display: none;
   }
 
-    background-color: white;
+  .message {
+    height: 100%;
+  }
+
+  .button {
+    width: 100px;
+    font-weight: bold;
+  }
 `;

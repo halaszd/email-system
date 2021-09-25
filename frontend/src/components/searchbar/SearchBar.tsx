@@ -2,10 +2,10 @@ import React from 'react';
 import { useContext } from 'react';
 import { SearchBarContext } from '../useContexts/SearchBarContext';
 import { useState, useEffect } from 'react';
-import FetchedMail from '../interfaces/FetchedMail';
+import { FetchedMail } from '../types/FetchedMail';
 import Results from '../results/Results';
 
-import { SearchDiv, ModSearch } from './Styled';
+import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 
 type Props = {
 	mails: FetchedMail[];
@@ -75,13 +75,13 @@ const SearchBar = (
 
 	return (
 		<SearchDiv>
-			<div className="search-container">
+			<SearchContainer>
 				<ModSearch placeholder="input search text" allowClear 
         onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
 
 				{ showResultMails && resultMails &&
         <Results resultMails={resultMails} setResultMails={setResultMails}/> }
-			</div>
+			</SearchContainer>
 		</SearchDiv>
 	)
 }

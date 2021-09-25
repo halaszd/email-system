@@ -1,5 +1,5 @@
 
-export default interface FetchedMail {
+export type FetchedMail = {
   from: string;
   fromEmailAddress: string;
   to: string;

@@ -1,8 +1,8 @@
 import React from 'react';
 import { useContext } from 'react';
 import { SearchBarContext } from '../useContexts/SearchBarContext';
-import { ResultsContainer } from './Styled';
-import FetchedMail from '../interfaces/FetchedMail';
+import { ResultsContainer, ContentContainer, MessageInfos } from './Styled';
+import { FetchedMail } from '../types/FetchedMail';
 
 type Props = {
 	resultMails: FetchedMail[];
@@ -29,17 +29,16 @@ const Results = (
 			{resultMails && resultMails.map((mail, index) => {
         return(
           <ResultsContainer key={`${mail.id}_${index}`}>
-            <div className="content-container">
-              <div className= "message-infos" 
-              onClick={() => handleClick(mail.id)}>
+            <ContentContainer>
+              <MessageInfos onClick={() => handleClick(mail.id)}>
                 {/* { props.typeOf === 'inbox' || props.typeOf === 'trash' */}
                   {/* ? <span className="from-subject">From: {props.from}</span>	
                   : <span className="from-subject">To: {props.to}</span>	
                 } */}
                 <span className="from-subject">From: {mail.from}</span>	
                 <span className="from-subject">Subject: {mail.subject}</span>	
-              </div>
-            </div>
+              </MessageInfos>
+            </ContentContainer>
         </ResultsContainer>
         )
       })}
