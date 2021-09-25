@@ -1,11 +1,11 @@
 import React from 'react';
+import { useContext } from 'react';
+import { SearchBarContext } from '../useContexts/SearchBarContext';
 import { ResultsContainer } from './Styled';
 import FetchedMail from '../interfaces/FetchedMail';
 
 type Props = {
 	resultMails: FetchedMail[];
-  setIsOpenedMail: Function;
-  setOpenedMailID: Function;
   setResultMails: Function;
 }
 
@@ -13,17 +13,17 @@ type Props = {
 const Results = (
   {
     resultMails, 
-    setIsOpenedMail, 
-    setOpenedMailID, 
     setResultMails
   }: Props) => {
+
+    const {setIsOpenedMail, setOpenedMailID} = useContext(SearchBarContext);
 
   function handleClick(id: number) {
     setIsOpenedMail(true); 
     setOpenedMailID(id); 
-    console.log(id)
-    setResultMails(null);
+    setResultMails([]);
   }
+  
 	return (
 		<div>
 			{resultMails && resultMails.map((mail, index) => {

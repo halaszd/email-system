@@ -27,7 +27,6 @@ import Login from './components/login/Login';
 
 // TODO:
 // Frontend side
-// 2: should use useContext 
 
 // 1: elements in style component
 // 1: Dont use useEffect if you can evade using it

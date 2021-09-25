@@ -76,10 +76,11 @@ const SearchBar = (
 	return (
 		<SearchDiv>
 			<div className="search-container">
-				<ModSearch placeholder="input search text" allowClear onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
+				<ModSearch placeholder="input search text" allowClear 
+        onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
+
 				{ showResultMails && resultMails &&
-        <Results resultMails={resultMails} setIsOpenedMail={setIsOpenedMail} 
-        setOpenedMailID={setOpenedMailID} setResultMails={setResultMails}/> }
+        <Results resultMails={resultMails} setResultMails={setResultMails}/> }
 			</div>
 		</SearchDiv>
 	)
