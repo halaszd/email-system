@@ -23,6 +23,7 @@ import NewMail from './components/new_mail/NewMail';
 import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
 import Registration from './components/registration/Registration';
+import { ModRegistration } from './Styled';
 import Login from './components/login/Login';
 
 // TODO:
@@ -128,7 +129,7 @@ export default function App() {
           <LoginRegistration>
           <Switch>
             <Route exact path="/registration">
-              <Registration />
+              <ModRegistration />
             </Route>
             <Route exact path="/login">
               <Login />

@@ -5,6 +5,12 @@ import {
   Button,
 } from 'antd';
 
+import { ModForm, ModFormItem } from './Styled';
+
+const mailName = '@tmail.com';
+const regURL = 'http://localhost:3001/api/registration';
+const checkIsExistingUserURL = 'http://localhost:3001/api/is-existing-user';
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 24 },
@@ -32,12 +38,30 @@ const tailFormItemLayout = {
 const RegistrationForm = () => {
   const [form] = Form.useForm();
 
-  const onFinish = (values: any) => {
+  const onFinish = async (values: any) => {
     console.log('Received values of form: ', values);
+
+    const valuesToServer = {
+      username: `${values['username']}${mailName}`, 
+      password: values['password']
+    }
+
+    const response = 
+    await fetch(regURL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(valuesToServer)
+    })
+    
+    const respJSON = await response.text();
+    console.log("response fr: ", respJSON)
   };
 
+
   return (
-    <Form
+    <ModForm
       {...formItemLayout}
       form={form}
       name="register"
@@ -45,21 +69,40 @@ const RegistrationForm = () => {
       scrollToFirstError
       className="registration"
     >
+
       <Form.Item
-        name="email"
-        label="E-mail"
+        name="username"
+        label="Username"
+        hasFeedback
+        // tooltip="What do you want others to call you?"
         rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
+          { 
+            required: true, message: 'Please input your username!', 
+            whitespace: true 
           },
           {
-            required: true,
-            message: 'Please input your E-mail!',
+            validator: (_, value) =>
+              fetch(checkIsExistingUserURL, {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"username": value + mailName})
+              })
+              .then(response => response.text())
+              .then((data) => {
+                if(data === "OK") {
+                  console.log("data was OK")
+                  return Promise.resolve();
+                }
+                console.log("data was: ", data)
+                return Promise.reject(new Error('Existing Username'));
+              })
+            ,
           },
-        ]}
+          ]}
       >
-        <Input />
+        <Input addonAfter={<span>{mailName}</span>}/>
       </Form.Item>
 
       <Form.Item
@@ -78,7 +121,7 @@ const RegistrationForm = () => {
 
       <Form.Item
         name="confirm"
-        label="Confirm Password"
+        label="Confirm password"
         dependencies={['password']}
         hasFeedback
         rules={[
@@ -99,16 +142,7 @@ const RegistrationForm = () => {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item
-        name="profile-name"
-        label="Profile Name"
-        tooltip="What do you want others to call you?"
-        rules={[{ required: true, message: 'Please input your nickname!', whitespace: true }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
+      <ModFormItem
         name="agreement"
         valuePropName="checked"
         rules={[
@@ -122,13 +156,13 @@ const RegistrationForm = () => {
         <Checkbox>
           I have read the <a href="">agreement</a>
         </Checkbox>
-      </Form.Item>
+      </ModFormItem>
       <Form.Item {...tailFormItemLayout}>
         <Button type="primary" htmlType="submit">
           Register
         </Button>
       </Form.Item>
-    </Form>
+    </ModForm>
   );
 };
 

@@ -4,6 +4,7 @@ const port = 3001;
 const cors = require('cors');
 
 server.use(cors());
+server.use(express.json());
 
 let inbox = {"mails": [
 	{"typeOfMail": "inbox", "from": "Peter", "fromEmailAddress": "peter@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "howdy how id how are you hello hello here's the doomsday hello hello", "message": "hhhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 1},
@@ -26,9 +27,11 @@ let sent = {"mails": [
 	{"typeOfMail": "sent", "from": "Peter", "fromEmailAddress": "peter@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "C", "message": "FFF hhhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 10},
 	{"typeOfMail": "sent", "from": "Peter", "fromEmailAddress": "peter@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "D", "message": "GGG hhhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 11},
 ]};
+
+let users = {"users": []}
+
 // let mails = {"mails": []}; 
 
-// /api/mails get request-re visszaadja az emailek listáját egy JSON-ban
 server.get('/api/mails/inbox', (req, res) => {
 	res.send(JSON.stringify(inbox));
 })
@@ -41,8 +44,39 @@ server.get('/api/mails/trash', (req, res) => {
 	res.send(JSON.stringify(inbox));
 })
 
+server.post('/api/registration', (req, res) => {
+	console.log('registration: ', req.body)
+	let isExistingUser = false;
+	for(const user of users['users']) {
+        console.log('USER: ', user)
+		if(req.body.username === user.username) {
+            isExistingUser = true;
+			res.sendStatus(400)
+		}
+	}
+	if(!isExistingUser) {
+        users['users'].push(req.body)
+	    res.sendStatus(200)
+        console.log(users)
+	}
+})
+
+server.post('/api/is-existing-user', (req, res) => {
+	console.log('is-existing-user: ', req.body)
+	let isExistingUser = false;
+	for(const user of users['users']) {
+        console.log('USER: ', user)
+		if(req.body.username === user.username) {
+            isExistingUser = true;
+			res.sendStatus(400)
+		}
+	}
+	if(!isExistingUser) {
+	    res.sendStatus(200)
+	}
+})
+
 // arra készíti fel a szervert, hogy JSON fálj jön
-server.use(express.json());
 // ha nested json jönne
 server.use(express.urlencoded({ extended:true }))
 

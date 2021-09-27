@@ -1,4 +1,5 @@
 import styled from '@emotion/styled';
+import Registration from './components/registration/Registration';
 
 export const ContentDiv = styled.div`
   width: 100%;
@@ -14,5 +15,13 @@ export const ContentDiv = styled.div`
 `;
 
 export const LoginRegistration = styled.div`
-  margin: auto;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ModRegistration = styled(Registration)`
+  width: 100%;
+  display: flex;
 `;
