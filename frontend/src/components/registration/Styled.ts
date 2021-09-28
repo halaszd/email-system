@@ -11,6 +11,4 @@ export const ModForm = styled(Form)`
 `;
 
 export const ModFormItem = styled(Form.Item)`
-  background-color: blue;
-	
 `;
