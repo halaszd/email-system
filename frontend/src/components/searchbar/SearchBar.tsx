@@ -24,7 +24,7 @@ const SearchBar = (
     const [showResultMails, setShowResultMails] = useState(false);
     const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
 
-    useEffect(() => {i
+    useEffect(() => {
       setResultMails([]);
       setShowResultMails(true);
 
