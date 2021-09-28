@@ -27,21 +27,17 @@ import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
 import { ModRegistration } from './Styled';
-import {MainDiv, MainHeader, Menu, RegLogButton, ContentDiv, LoginRegistration} from './Styled';
+import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistration} from './Styled';
 
 // TODO:
 // Frontend side
 
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
-// 3: On a single mail page: delete button
 // 3: pagination
 // 4: show only few results in onChange search. Other mails: scrolling?
 // 6: loading animation for registration and login
 
-// 6: logout button when logged in.
-// 6: when we push log out we are logged out
-// 6: when we logged in the users name is on the top of the page right side
 // 6: when we logged in the users emails are present (fetched)
 // 7: in Mails.tsx render for trash as well
 // x: read, unread
@@ -90,16 +86,40 @@ export default function App() {
       <MainDiv>
         <MainHeader>
           <Menu>
+            { !isLoggedIn
+            ?
+            <>
             <li>
               <Link to="registration">
-                <RegLogButton content="Register">Register</RegLogButton>
+                <ButtonWithTextUnder content="Register">
+                  Register
+                </ButtonWithTextUnder>
               </Link>
             </li>
             <li>
               <Link to="login">
-                <RegLogButton content="Login">Login</RegLogButton>
+                <ButtonWithTextUnder content="Login">
+                  Login
+                </ButtonWithTextUnder>
               </Link>
             </li>
+            </>
+            :
+            <>
+            <li>
+              <Link to="login">
+                <ButtonWithTextUnder onClick={() => setIsLoggedIn(false)} content="Log out">
+                  Log out
+                </ButtonWithTextUnder>
+              </Link>
+            </li>
+            <li>
+                <ButtonWithTextUnder content={username} borderRadius="25px">
+                  {username.charAt(0).toUpperCase()}
+                </ButtonWithTextUnder>
+            </li>
+            </>
+            }
           </Menu>
 
           { isLoggedIn && 

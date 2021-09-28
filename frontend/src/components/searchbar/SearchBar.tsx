@@ -78,7 +78,8 @@ const SearchBar = (
 				<ModSearch 
         placeholder="input search text" size="large" 
         bordered={false} allowClear 
-        onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
+        onSearch={(word) => onSearch(word)} 
+        onChange={(e) => setCurrentInput(e)} />
 
 				{ showResultMails && resultMails &&
         <Results resultMails={resultMails} setResultMails={setResultMails}/> }

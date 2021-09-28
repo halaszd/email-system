@@ -12,13 +12,15 @@ export const MainDiv = styled.div`
 
 export const Menu = styled.div`
   display: flex;
+  justify-content: flex-end;
   gap: 10px;
   padding-left: 10px;
 `;
 
 export const MainHeader = styled.div`
-  display: flex;
-  gap: 80px;
+  width: 100%;
+  display: flex; 
+  gap: 110px;
   padding-top: 10px;
 `;
 
@@ -26,10 +28,10 @@ export const MainHeader = styled.div`
 //   background-color: ${props.bg};
 // `;
 
-type Props = {content: string};
-export const RegLogButton = styled(Button)<Props>`
+type Props = {content: string, borderRadius?: string};
+export const ButtonWithTextUnder = styled(Button)<Props>`
   height: 39px;
-  
+  border-radius: ${props => props.borderRadius};
 
   &:hover{
       cursor: pointer;

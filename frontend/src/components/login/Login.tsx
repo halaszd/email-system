@@ -32,11 +32,13 @@ const LoginForm = () => {
     })
 
     const status = await response.status;
+
     if(status === 200) {
       setIsLoggedIn(true);
       // It should fetch the users mail ofc
       await fetchMails("inbox", setMails)
-      // set userEmailAddress
+      setUsername(values["username"]);
+
     } else {
       setIsModalVisible(true);
     }
@@ -84,7 +86,7 @@ const LoginForm = () => {
         </Form.Item>
       </ModForm>
 
-      <Modal title="Login is not successful" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Login was not successful" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
         <p>Incorrect username or password!</p>
       </Modal>
     </>
