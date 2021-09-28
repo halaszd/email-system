@@ -1,9 +1,14 @@
+import { useState } from 'react';
 import {
   Form,
   Input,
   Checkbox,
   Button,
 } from 'antd';
+
+import {
+  Redirect
+} from "react-router-dom";
 
 import { ModForm, ModFormItem } from './Styled';
 
@@ -37,6 +42,7 @@ const tailFormItemLayout = {
 
 const RegistrationForm = () => {
   const [form] = Form.useForm();
+  const [isSuccessfulRegistration, setIsSuccessfulRegistration] = useState(false);
 
   const onFinish = async (values: any) => {
     console.log('Received values of form: ', values);
@@ -55,114 +61,124 @@ const RegistrationForm = () => {
       body: JSON.stringify(valuesToServer)
     })
     
-    const respJSON = await response.text();
-    console.log("response fr: ", respJSON)
+    const respText = await response.text();
+
+    if(respText === 'OK') {
+      setIsSuccessfulRegistration(true);
+    }
   };
 
 
   return (
-    <ModForm
-      {...formItemLayout}
-      form={form}
-      name="register"
-      onFinish={onFinish}
-      scrollToFirstError
-      className="registration"
-    >
+    <>
+    {!isSuccessfulRegistration 
+    ?
+      <ModForm
+        {...formItemLayout}
+        form={form}
+        name="register"
+        onFinish={onFinish}
+        scrollToFirstError
+        className="registration"
+      >
 
-      <Form.Item
-        name="username"
-        label="Username"
-        hasFeedback
-        // tooltip="What do you want others to call you?"
-        rules={[
-          { 
-            required: true, message: 'Please input your username!', 
-            whitespace: true 
-          },
-          {
-            validator: (_, value) =>
-              fetch(checkIsExistingUserURL, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({"username": value + mailName})
-              })
-              .then(response => response.text())
-              .then((data) => {
-                if(data === "OK") {
-                  console.log("data was OK")
+        <Form.Item
+          name="username"
+          label="Username"
+          hasFeedback
+          // tooltip="What do you want others to call you?"
+          rules={[
+            { 
+              required: true, message: 'Please input your username!', 
+              whitespace: true 
+            },
+            {
+              validator: (_, value) =>
+                fetch(checkIsExistingUserURL, {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({"username": value + mailName})
+                })
+                .then(response => response.text())
+                .then((data) => {
+                  if(data === "OK") {
+                    console.log("data was OK")
+                    return Promise.resolve();
+                  }
+                  console.log("data was: ", data)
+                  return Promise.reject(new Error('Existing Username'));
+                })
+              ,
+            },
+            ]}
+        >
+          <Input addonAfter={<span>{mailName}</span>}/>
+        </Form.Item>
+
+        <Form.Item
+          name="password"
+          label="Password"
+          rules={[
+            {
+              required: true,
+              message: 'Please input your password!',
+            },
+          ]}
+          hasFeedback
+        >
+          <Input.Password />
+        </Form.Item>
+
+        <Form.Item
+          name="confirm"
+          label="Confirm password"
+          dependencies={['password']}
+          hasFeedback
+          rules={[
+            {
+              required: true,
+              message: 'Please confirm your password!',
+            },
+            ({ getFieldValue }) => ({
+              validator(_, value) {
+                if (!value || getFieldValue('password') === value) {
                   return Promise.resolve();
                 }
-                console.log("data was: ", data)
-                return Promise.reject(new Error('Existing Username'));
-              })
-            ,
-          },
+                return Promise.reject(new Error('The two passwords that you entered do not match!'));
+              },
+            }),
           ]}
-      >
-        <Input addonAfter={<span>{mailName}</span>}/>
-      </Form.Item>
+        >
+          <Input.Password />
+        </Form.Item>
 
-      <Form.Item
-        name="password"
-        label="Password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-        hasFeedback
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <Form.Item
-        name="confirm"
-        label="Confirm password"
-        dependencies={['password']}
-        hasFeedback
-        rules={[
-          {
-            required: true,
-            message: 'Please confirm your password!',
-          },
-          ({ getFieldValue }) => ({
-            validator(_, value) {
-              if (!value || getFieldValue('password') === value) {
-                return Promise.resolve();
-              }
-              return Promise.reject(new Error('The two passwords that you entered do not match!'));
+        <ModFormItem
+          name="agreement"
+          valuePropName="checked"
+          rules={[
+            {
+              validator: (_, value) =>
+                value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
             },
-          }),
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
-
-      <ModFormItem
-        name="agreement"
-        valuePropName="checked"
-        rules={[
-          {
-            validator: (_, value) =>
-              value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
-          },
-        ]}
-        {...tailFormItemLayout}
-      >
-        <Checkbox>
-          I have read the <a href="">agreement</a>
-        </Checkbox>
-      </ModFormItem>
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
-          Register
-        </Button>
-      </Form.Item>
-    </ModForm>
+          ]}
+          {...tailFormItemLayout}
+        >
+          <Checkbox>
+            I have read the <a href="">agreement</a>
+          </Checkbox>
+        </ModFormItem>
+        <Form.Item {...tailFormItemLayout}>
+          <Button type="primary" htmlType="submit">
+            Register
+          </Button>
+        </Form.Item>
+      </ModForm>
+    :
+      <Redirect to="/login" />
+    }
+    </>
   );
 };
 

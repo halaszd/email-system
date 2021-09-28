@@ -6,13 +6,16 @@ import './index.css';
 import {
   BrowserRouter as Router,
   Switch,
+  Redirect,
   Route,
   Link
 } from "react-router-dom";
 
 import { useState, useEffect } from 'react';
+import { UserContext } from './components/useContexts/UserContext';
 import { MailContext } from './components/useContexts/MailContext';
 import { SearchBarContext } from './components/useContexts/SearchBarContext';
+
 import { fetchMails } from './components/functions/fetchMails';
 import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
 import { FetchedMail } from './components/types/FetchedMail';
@@ -22,7 +25,6 @@ import SideBar from './components/sidebar/SideBar';
 import NewMail from './components/new_mail/NewMail';
 import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
-import Registration from './components/registration/Registration';
 import { ModRegistration } from './Styled';
 import Login from './components/login/Login';
 
@@ -30,12 +32,15 @@ import Login from './components/login/Login';
 // Frontend side
 
 // 1: elements in style component
-// 1: Dont use useEffect if you can evade using it
+// 1: Dont use useEffect if you can avoid using it
 // 3: On a single mail page: delete button
 // 3: pagination
 // 4: show only few results in onChange search. Other mails: scrolling?
 // 6: register and login buttons are on the top right corner
-// 6: register and login on frontend side (get to know ant form,  values)
+// 6: logout button when logged in.
+// 6: when we logged in the users name is on the top of the page right side
+// 6: when we logged in the users emails are present (fetched)
+// 6: when we push log out we are logged out
 // 7: in Mails.tsx render for trash as well
 // x: read, unread
 
@@ -53,6 +58,10 @@ type TypeOfMail = "inbox" | "sent" | "trash";
 
 // -------------------- Component -------------------- 
 export default function App() {
+  // To get if user is logged in
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // to get user if the user is logged in
+  const [username, setUsername] = useState("");
   // To store fetched mails
   const [mails, setMails] = useState<FetchedMail[]>([]);
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
@@ -60,7 +69,9 @@ export default function App() {
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
-  const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
+
+  // const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
+
   // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
   const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
@@ -72,30 +83,32 @@ export default function App() {
     openedMailID
   );
 
-  useEffect(() => {
-    fetchMails(typeOfMail, setMails);
-  }, [])
+  // useEffect(() => {
+  //   fetchMails(typeOfMail, setMails);
+  // }, [])
 
   return (
     <Router>
 
       <ul>
         <li>
-          <Link onClick={() => {setIsRegisterOrLoginClicked(true)}} to="registration">
+          <Link to="registration">
             Register
           </Link>
         </li>
         <li>
-          <Link onClick={() => {setIsRegisterOrLoginClicked(true)}} to="login">
+          <Link to="login">
             Login
           </Link>
         </li>
       </ul>
 
         <ContentDiv>
-          {!isRegisterOrLoginClicked 
+          {isLoggedIn
           ?
             <>
+              <Redirect to="/" />
+
               <SideBar props={{setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail}} />
 
               <div>
@@ -105,16 +118,16 @@ export default function App() {
 
                   {!isOpenedMail
                     ?
-                    <MailContext.Provider value={{ typeOfMail, setIsOpenedMail, setOpenedMailID }}>
+                    <MailContext.Provider value={{ mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID }}>
                       <Switch>
                           <Route exact path="/">
-                            <Mails mails={mails} setMails={setMails} />
+                            <Mails />
                           </Route>
                           <Route exact path="/sent">
-                            <Mails mails={mails} setMails={setMails} />
+                            <Mails />
                           </Route>
                           <Route exact path="/trash">
-                            <Mails mails={mails} setMails={setMails} />
+                            <Mails />
                           </Route>
                       </Switch>
                     </ MailContext.Provider>
@@ -126,16 +139,21 @@ export default function App() {
               { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
             </>
           :
-          <LoginRegistration>
-          <Switch>
-            <Route exact path="/registration">
-              <ModRegistration />
-            </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-          </Switch>
-          </LoginRegistration>
+          <>
+          <Redirect to="/login" />
+            <LoginRegistration>
+            <Switch>
+              <Route exact path="/registration">
+                <ModRegistration />
+              </Route>
+              <UserContext.Provider value={{isLoggedIn, setIsLoggedIn, username, setUsername, setMails}} >
+                <Route exact path="/login">
+                  <Login />
+                </Route>
+              </UserContext.Provider>
+            </Switch>
+            </LoginRegistration>
+          </>
           }
 
         </ContentDiv>

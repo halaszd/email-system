@@ -9,20 +9,15 @@ import { FetchedMail } from '../types/FetchedMail';
 
 import Mail from '../mail/Mail';  
 
-type Props = {
-  mails: FetchedMail[] | null;
-  setMails: Function;
-}
+// type Props = {
+//   mails: FetchedMail[];
+//   setMails: Function;
+// }
 
 // -------------------- The component -------------------- 
-const Mails = (
-  { 
-    mails,
-    setMails
-  }: Props
-  ) => {
+const Mails = () => {
     
-  const { typeOfMail } = useContext(MailContext);
+  const { mails, setMails, typeOfMail } = useContext(MailContext);
   
    // To collect checked mails 
   const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
@@ -32,7 +27,7 @@ const Mails = (
     const deletedMails: FetchedMail[] = [];
     const newMails: FetchedMail[] = [];
 
-    if(mails === null) {
+    if(mails === []) {
       return;
     }
 

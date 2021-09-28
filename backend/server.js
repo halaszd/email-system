@@ -5,6 +5,8 @@ const cors = require('cors');
 
 server.use(cors());
 server.use(express.json());
+// arra készíti fel a szervert, hogy JSON fálj jön: ha nested json jönne
+server.use(express.urlencoded({ extended:true }))
 
 let inbox = {"mails": [
 	{"typeOfMail": "inbox", "from": "Peter", "fromEmailAddress": "peter@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "howdy how id how are you hello hello here's the doomsday hello hello", "message": "hhhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 1},
@@ -76,9 +78,21 @@ server.post('/api/is-existing-user', (req, res) => {
 	}
 })
 
-// arra készíti fel a szervert, hogy JSON fálj jön
-// ha nested json jönne
-server.use(express.urlencoded({ extended:true }))
+server.post('/api/login', (req, res) => {
+	console.log('login: ', req.body)
+	let isExistingUser = false;
+	for(const user of users['users']) {
+        console.log('USER: ', user)
+		if(req.body.username === user.username && req.body.password === user.password) {
+            isExistingUser = true;
+			res.sendStatus(200);
+		}
+	}
+	if(!isExistingUser) {
+	    res.sendStatus(400);
+        console.log("User is not existent!")
+	}
+})
 
 // server.post('/api/mails', (req, res) => {
 // 	let isIDExist = false;
