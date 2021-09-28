@@ -1,5 +1,4 @@
 import React from 'react';
-import { ContentDiv, LoginRegistration} from './Styled';
 import 'antd/dist/antd.css';
 import './index.css';
 
@@ -11,13 +10,12 @@ import {
   Link
 } from "react-router-dom";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { UserContext } from './components/useContexts/UserContext';
 import { MailContext } from './components/useContexts/MailContext';
 import { SearchBarContext } from './components/useContexts/SearchBarContext';
 
-import { fetchMails } from './components/functions/fetchMails';
-import useSetOpenedMail from './components/customHooks/useSetOpenedMail';
+import { useSetOpenedMail } from './components/customHooks/useSetOpenedMail';
 import { FetchedMail } from './components/types/FetchedMail';
 
 import Mails from './components/mails/Mails';
@@ -25,8 +23,10 @@ import SideBar from './components/sidebar/SideBar';
 import NewMail from './components/new_mail/NewMail';
 import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
-import { ModRegistration } from './Styled';
 import Login from './components/login/Login';
+
+import { ModRegistration } from './Styled';
+import {MainHeader, RegLogButton, ContentDiv, LoginRegistration} from './Styled';
 
 // TODO:
 // Frontend side
@@ -36,7 +36,9 @@ import Login from './components/login/Login';
 // 3: On a single mail page: delete button
 // 3: pagination
 // 4: show only few results in onChange search. Other mails: scrolling?
-// 6: register and login buttons are on the top right corner
+
+// 6: loading animation for registration and login
+
 // 6: logout button when logged in.
 // 6: when we logged in the users name is on the top of the page right side
 // 6: when we logged in the users emails are present (fetched)
@@ -77,39 +79,34 @@ export default function App() {
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
 
   // Custom hook for getting the parameters of clicked (opened mail)
-  const openedMail = useSetOpenedMail(
+  const [openedMail] = useSetOpenedMail(
     mails,
     isOpenedMail,
     openedMailID
   );
 
-  // useEffect(() => {
-  //   fetchMails(typeOfMail, setMails);
-  // }, [])
-
   return (
     <Router>
-
-      <ul>
+      <MainHeader>
         <li>
           <Link to="registration">
-            Register
+            <RegLogButton content="Register">Register</RegLogButton>
           </Link>
         </li>
         <li>
           <Link to="login">
-            Login
+            <RegLogButton content="Login">Login</RegLogButton>
           </Link>
         </li>
-      </ul>
+      </MainHeader>
 
         <ContentDiv>
-          {isLoggedIn
+          { isLoggedIn
           ?
             <>
               <Redirect to="/" />
 
-              <SideBar props={{setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail}} />
+              <SideBar props={{ setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail }} />
 
               <div>
                 <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
@@ -141,23 +138,23 @@ export default function App() {
           :
           <>
           <Redirect to="/login" />
+          
             <LoginRegistration>
-            <Switch>
-              <Route exact path="/registration">
-                <ModRegistration />
-              </Route>
-              <UserContext.Provider value={{isLoggedIn, setIsLoggedIn, username, setUsername, setMails}} >
-                <Route exact path="/login">
-                  <Login />
+              <Switch>
+                <Route exact path="/registration">
+                  <ModRegistration />
                 </Route>
-              </UserContext.Provider>
-            </Switch>
+                <UserContext.Provider value={{ setIsLoggedIn, setUsername, setMails}} >
+                  <Route exact path="/login">
+                    <Login />
+                  </Route>
+                </UserContext.Provider>
+              </Switch>
             </LoginRegistration>
           </>
           }
 
         </ContentDiv>
-
-    </Router>
+      </Router>
   );
 }

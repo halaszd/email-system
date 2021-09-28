@@ -11,4 +11,7 @@ export const ModForm = styled(Form)`
 `;
 
 export const ModFormItem = styled(Form.Item)`
+  .mail {
+    padding-right: 15px;
+  }
 `;

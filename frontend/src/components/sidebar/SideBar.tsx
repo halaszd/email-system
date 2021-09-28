@@ -14,7 +14,18 @@ type Props = {
 	}
 }
 
-const SideBar = ( {props:{ setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail }}: Props) => {
+const SideBar = (
+	 {
+		 props:
+		 { 
+			 setIsNewMail, 
+			 isNewMail, 
+			 setTypeOfMail, 
+			 setMails, 
+			 setIsOpenedMail 
+		}
+	}: Props) => {
+		
 	return (
 		<SideBarContainer>
 		<li>

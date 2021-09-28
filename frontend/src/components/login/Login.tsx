@@ -12,12 +12,8 @@ const logURL = 'http://localhost:3001/api/login'
 const LoginForm = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
-  const {isLoggedIn, setIsLoggedIn, setUsername, setMails} = useContext(UserContext);
+  const { setIsLoggedIn, setUsername, setMails} = useContext(UserContext);
   
-  function showModal() {
-    setIsModalVisible(true);
-  };
-
   function handleOk() {
     setIsModalVisible(false);
   };
@@ -40,7 +36,6 @@ const LoginForm = () => {
       setIsLoggedIn(true);
       // It should fetch the users mail ofc
       await fetchMails("inbox", setMails)
-      console.log(isLoggedIn)
       // set userEmailAddress
     } else {
       setIsModalVisible(true);

@@ -82,7 +82,7 @@ const RegistrationForm = () => {
         className="registration"
       >
 
-        <Form.Item
+        <ModFormItem
           name="username"
           label="Username"
           hasFeedback
@@ -114,8 +114,8 @@ const RegistrationForm = () => {
             },
             ]}
         >
-          <Input addonAfter={<span>{mailName}</span>}/>
-        </Form.Item>
+          <Input addonAfter={<span className="mail">{mailName}</span>}/>
+        </ModFormItem>
 
         <Form.Item
           name="password"

@@ -16,7 +16,6 @@ import Mail from '../mail/Mail';
 
 // -------------------- The component -------------------- 
 const Mails = () => {
-    
   const { mails, setMails, typeOfMail } = useContext(MailContext);
   
    // To collect checked mails 
