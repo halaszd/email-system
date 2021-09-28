@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 export const MailContextContainer = styled.div`
+  width: calc(100vw - 220px);
   display: flex;
   flex-direction: column;
   gap: 20px;

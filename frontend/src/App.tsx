@@ -18,6 +18,7 @@ import { SearchBarContext } from './components/useContexts/SearchBarContext';
 import { useSetOpenedMail } from './components/customHooks/useSetOpenedMail';
 import { FetchedMail } from './components/types/FetchedMail';
 
+import MailsHeader from './components/mails_header/MailsHeader';
 import Mails from './components/mails/Mails';
 import SideBar from './components/sidebar/SideBar';
 import NewMail from './components/new_mail/NewMail';
@@ -36,13 +37,12 @@ import {MainDiv, MainHeader, Menu, RegLogButton, ContentDiv, LoginRegistration} 
 // 3: On a single mail page: delete button
 // 3: pagination
 // 4: show only few results in onChange search. Other mails: scrolling?
-// 4: // When a single mail is opened the header (trash and box name) should be still seen
 // 6: loading animation for registration and login
 
 // 6: logout button when logged in.
+// 6: when we push log out we are logged out
 // 6: when we logged in the users name is on the top of the page right side
 // 6: when we logged in the users emails are present (fetched)
-// 6: when we push log out we are logged out
 // 7: in Mails.tsx render for trash as well
 // x: read, unread
 
@@ -73,11 +73,10 @@ export default function App() {
   // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
 
-  // const [isRegisterOrLoginClicked, setIsRegisterOrLoginClicked] = useState(false);
-
   // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
   const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
   const [openedMailID, setOpenedMailID] = useState<number | null>(null);
+  const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
 
   // Custom hook for getting the parameters of clicked (opened mail)
   const [openedMail] = useSetOpenedMail(
@@ -89,7 +88,7 @@ export default function App() {
   return (
     <Router>
       <MainDiv>
-      <MainHeader>
+        <MainHeader>
           <Menu>
             <li>
               <Link to="registration">
@@ -104,12 +103,16 @@ export default function App() {
           </Menu>
 
           { isLoggedIn && 
-            <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
+            <SearchBarContext.Provider value={
+              {
+                setIsOpenedMail, 
+                setOpenedMailID
+              }}>
               <SearchBar mails={mails} setMails={setMails} />
             </SearchBarContext.Provider>
           }
 
-      </MainHeader>
+        </MainHeader>
 
         <ContentDiv>
           { isLoggedIn
@@ -117,26 +120,58 @@ export default function App() {
             <>
               <Redirect to="/" />
 
-              <SideBar props={{ setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail }} />
+              <SideBar props={
+                { 
+                  setIsNewMail, 
+                  isNewMail, 
+                  setTypeOfMail, 
+                  setMails, 
+                  setIsOpenedMail 
+                }} />
+              
               <div>
-                  {!isOpenedMail
-                    ?
-                    <MailContext.Provider value={{ mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID }}>
-                      <Switch>
-                          <Route exact path="/">
-                            <Mails />
-                          </Route>
-                          <Route exact path="/sent">
-                            <Mails />
-                          </Route>
-                          <Route exact path="/trash">
-                            <Mails />
-                          </Route>
-                      </Switch>
-                    </MailContext.Provider>
-                    :
-                    <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
-                  }
+                <MailContext.Provider value={
+                  { 
+                    mails, 
+                    setMails, 
+                    typeOfMail, 
+                    setIsOpenedMail, 
+                    setOpenedMailID, 
+                    checkedMailIDs, 
+                    setCheckedMailIDs 
+                  }}>
+                  <MailsHeader />
+                </MailContext.Provider>
+
+                {!isOpenedMail
+                  ?
+                  <MailContext.Provider value={
+                    { mails, 
+                    setMails, 
+                    typeOfMail, 
+                    setIsOpenedMail, 
+                    setOpenedMailID, 
+                    checkedMailIDs, 
+                    setCheckedMailIDs 
+                    }}>
+
+                    <Switch>
+                        <Route exact path="/">
+                          <Mails />
+                        </Route>
+                        <Route exact path="/sent">
+                          <Mails />
+                        </Route>
+                        <Route exact path="/trash">
+                          <Mails />
+                        </Route>
+                    </Switch>
+
+                  </MailContext.Provider>
+                  :
+                  <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+                }
+
               </div>
 
               { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
@@ -146,22 +181,32 @@ export default function App() {
           <Redirect to="/login" />
           
             <LoginRegistration>
+
               <Switch>
+
                 <Route exact path="/registration">
                   <ModRegistration />
                 </Route>
-                <UserContext.Provider value={{ setIsLoggedIn, setUsername, setMails}} >
+
+                <UserContext.Provider value={
+                  { 
+                    setIsLoggedIn, 
+                    setUsername, 
+                    setMails
+                  }} >
                   <Route exact path="/login">
                     <Login />
                   </Route>
                 </UserContext.Provider>
+
               </Switch>
+
             </LoginRegistration>
           </>
           }
 
         </ContentDiv>
-        </MainDiv>
-      </Router>
+      </MainDiv>
+    </Router>
   );
 }
