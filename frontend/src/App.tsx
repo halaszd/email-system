@@ -61,8 +61,8 @@ type TypeOfMail = "inbox" | "sent" | "trash";
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   // To store fetched mails
@@ -134,11 +134,13 @@ export default function App() {
                   { 
                     mails, 
                     setMails, 
-                    typeOfMail, 
-                    setIsOpenedMail, 
+                    typeOfMail,
+                    isOpenedMail,
+                    setIsOpenedMail,
+                    openedMailID,
                     setOpenedMailID, 
                     checkedMailIDs, 
-                    setCheckedMailIDs 
+                    setCheckedMailIDs,
                   }}>
                   <MailsHeader />
                 </MailContext.Provider>
@@ -146,13 +148,14 @@ export default function App() {
                 {!isOpenedMail
                   ?
                   <MailContext.Provider value={
-                    { mails, 
-                    setMails, 
-                    typeOfMail, 
-                    setIsOpenedMail, 
-                    setOpenedMailID, 
-                    checkedMailIDs, 
-                    setCheckedMailIDs 
+                    {
+                      mails, 
+                      setMails, 
+                      typeOfMail, 
+                      setIsOpenedMail, 
+                      setOpenedMailID, 
+                      checkedMailIDs, 
+                      setCheckedMailIDs,
                     }}>
 
                     <Switch>
