@@ -3,7 +3,8 @@ import styled from '@emotion/styled';
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  padding-bottom: 30px;
+  padding-bottom: 25px;
+  padding-left: 10px;
 
   h1 {
     font-weight: 600;
@@ -57,7 +58,7 @@ export const TrashIconContainer = styled.div`
 
 export const MailsContainer = styled.div`
   width: calc(100vw - 220px);
-  padding-bottom: 170px;
+  padding-bottom: 80px;
   height: 100%;
   display: flex;
   flex-direction: column;

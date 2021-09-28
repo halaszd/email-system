@@ -4,6 +4,9 @@ import { SearchBarContext } from '../useContexts/SearchBarContext';
 import { useState, useEffect } from 'react';
 import { FetchedMail } from '../types/FetchedMail';
 import Results from '../results/Results';
+import {SearchOutlined} from '@ant-design/icons';
+import { Button } from 'antd';
+
 
 import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 
@@ -76,7 +79,9 @@ const SearchBar = (
 	return (
 		<SearchDiv>
 			<SearchContainer>
-				<ModSearch placeholder="input search text" allowClear 
+				<ModSearch 
+        placeholder="input search text" size="large" 
+        bordered={false} allowClear 
         onSearch={(word) => onSearch(word)} onChange={(e) => setCurrentInput(e)}/>
 
 				{ showResultMails && resultMails &&

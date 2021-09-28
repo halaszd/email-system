@@ -2,9 +2,24 @@ import styled from '@emotion/styled';
 import Registration from './components/registration/Registration';
 import { Button } from 'antd'
 
-export const MainHeader = styled.ul`
+export const MainDiv = styled.div`
+  height: 100vh;
   display: flex;
-  justify-content: flex-start;
+  flex-direction: column;
+  gap: 30px;
+  overflow-y: hidden;
+`;
+
+export const Menu = styled.div`
+  display: flex;
+  gap: 10px;
+  padding-left: 10px;
+`;
+
+export const MainHeader = styled.div`
+  display: flex;
+  gap: 80px;
+  padding-top: 10px;
 `;
 
 // export const CustomButton = (props: {bg: string}) => styled(Button)`
@@ -13,6 +28,9 @@ export const MainHeader = styled.ul`
 
 type Props = {content: string};
 export const RegLogButton = styled(Button)<Props>`
+  height: 39px;
+  
+
   &:hover{
       cursor: pointer;
       background-color: #eceff1;
@@ -40,9 +58,10 @@ export const ContentDiv = styled.div`
   width: 100%;
   height: calc(100vh - 60px);
   display: flex;
-  padding: 10px 0px 0 0;
   background-color:#ffffff;
   overflow-y: hidden; // important
+  padding-left: 10px;;
+
 
   button a {
     color: white;

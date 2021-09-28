@@ -26,7 +26,7 @@ import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
 import { ModRegistration } from './Styled';
-import {MainHeader, RegLogButton, ContentDiv, LoginRegistration} from './Styled';
+import {MainDiv, MainHeader, Menu, RegLogButton, ContentDiv, LoginRegistration} from './Styled';
 
 // TODO:
 // Frontend side
@@ -36,7 +36,7 @@ import {MainHeader, RegLogButton, ContentDiv, LoginRegistration} from './Styled'
 // 3: On a single mail page: delete button
 // 3: pagination
 // 4: show only few results in onChange search. Other mails: scrolling?
-
+// 4: // When a single mail is opened the header (trash and box name) should be still seen
 // 6: loading animation for registration and login
 
 // 6: logout button when logged in.
@@ -62,6 +62,7 @@ type TypeOfMail = "inbox" | "sent" | "trash";
 export default function App() {
   // To get if user is logged in
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   // To store fetched mails
@@ -87,32 +88,37 @@ export default function App() {
 
   return (
     <Router>
+      <MainDiv>
       <MainHeader>
-        <li>
-          <Link to="registration">
-            <RegLogButton content="Register">Register</RegLogButton>
-          </Link>
-        </li>
-        <li>
-          <Link to="login">
-            <RegLogButton content="Login">Login</RegLogButton>
-          </Link>
-        </li>
+          <Menu>
+            <li>
+              <Link to="registration">
+                <RegLogButton content="Register">Register</RegLogButton>
+              </Link>
+            </li>
+            <li>
+              <Link to="login">
+                <RegLogButton content="Login">Login</RegLogButton>
+              </Link>
+            </li>
+          </Menu>
+
+          { isLoggedIn && 
+            <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
+              <SearchBar mails={mails} setMails={setMails} />
+            </SearchBarContext.Provider>
+          }
+
       </MainHeader>
 
         <ContentDiv>
           { isLoggedIn
-          ?
+            ?
             <>
               <Redirect to="/" />
 
               <SideBar props={{ setIsNewMail, isNewMail, setTypeOfMail, setMails, setIsOpenedMail }} />
-
               <div>
-                <SearchBarContext.Provider value={{setIsOpenedMail, setOpenedMailID}}>
-                  <SearchBar mails={mails} setMails={setMails} />
-                </SearchBarContext.Provider>
-
                   {!isOpenedMail
                     ?
                     <MailContext.Provider value={{ mails, setMails, typeOfMail, setIsOpenedMail, setOpenedMailID }}>
@@ -127,7 +133,7 @@ export default function App() {
                             <Mails />
                           </Route>
                       </Switch>
-                    </ MailContext.Provider>
+                    </MailContext.Provider>
                     :
                     <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
                   }
@@ -155,6 +161,7 @@ export default function App() {
           }
 
         </ContentDiv>
+        </MainDiv>
       </Router>
   );
 }
