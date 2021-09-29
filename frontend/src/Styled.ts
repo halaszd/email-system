@@ -32,11 +32,14 @@ type Props = {content: string, borderRadius?: string};
 export const ButtonWithTextUnder = styled(Button)<Props>`
   height: 39px;
   border-radius: ${props => props.borderRadius};
+  z-index: 10;
 
   &:hover{
       cursor: pointer;
       background-color: #eceff1;
-      border-radius: 5px;
+      border-radius: ${props => props.borderRadius 
+      ? props.borderRadius 
+      : '5px'};
 
       &::after {
         content: '${props => props.content}';
@@ -62,8 +65,6 @@ export const ContentDiv = styled.div`
   display: flex;
   background-color:#ffffff;
   overflow-y: hidden; // important
-  padding-left: 10px;;
-
 
   button a {
     color: white;
@@ -71,10 +72,31 @@ export const ContentDiv = styled.div`
 `;
 
 export const LoginRegistration = styled.div`
+  position: absolute;
+  top: 0;
   width: 100%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  /* background-color: blue; */
+`;
+
+export const RegistratonDiv = styled.div`
+  font-family: 'Open Sans', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  max-height: 80vh;
+  border: 1px solid #dadce0;
+  padding: 60px;
+  border-radius: 8px;
+
+  h1 {
+    font-weight: 400;
+  }
 `;
 
 export const ModRegistration = styled(Registration)`

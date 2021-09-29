@@ -5,6 +5,7 @@ export const MailContextContainer = styled.div`
   display: flex;
   flex-direction: column;
   gap: 20px;
+  padding-top: 10px;
   font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
 
   .reply-button {
@@ -14,6 +15,7 @@ export const MailContextContainer = styled.div`
     font-size: 1.375rem;
     color: #202124;
     font-weight: 400;
+    font-family: 'Open Sans', sans-serif;
     }
 
     h2 {

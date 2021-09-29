@@ -1,16 +1,29 @@
 import styled from '@emotion/styled';
 
 export const Header = styled.div`
+  font-family: 'Open Sans', sans-serif;
   display: flex;
   align-items: center;
   padding-bottom: 25px;
   padding-left: 10px;
 
   h1 {
-    font-weight: 600;
+    font-weight: 500;
     margin-bottom: 0px;
     position: relative;
     margin: auto;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    width: calc(100% - 10px);
+    overflow: hidden;
+    margin-left: 10px;
+    margin-top: 95px;
+    border-bottom: 1px solid black;
+    border-bottom: 1px solid #dadce0;
   }
 `;
 

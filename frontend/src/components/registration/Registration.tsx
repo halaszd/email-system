@@ -10,7 +10,7 @@ import {
   Redirect
 } from "react-router-dom";
 
-import { ModForm, ModFormItem } from './Styled';
+import { ModForm, ModFormItem, RegButton } from './Styled';
 
 const mailName = '@tmail.com';
 const regURL = 'http://localhost:3001/api/registration';
@@ -71,6 +71,7 @@ const RegistrationForm = () => {
 
   return (
     <>
+    <h1>Create your Account</h1>
     {!isSuccessfulRegistration 
     ?
       <ModForm
@@ -170,9 +171,9 @@ const RegistrationForm = () => {
           </Checkbox>
         </ModFormItem>
         <Form.Item {...tailFormItemLayout}>
-          <Button type="primary" htmlType="submit">
+          <RegButton type="primary" htmlType="submit">
             Register
-          </Button>
+          </RegButton>
         </Form.Item>
       </ModForm>
     :

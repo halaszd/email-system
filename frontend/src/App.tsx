@@ -27,16 +27,17 @@ import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
 import { ModRegistration } from './Styled';
-import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistration} from './Styled';
+import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistration, RegistratonDiv} from './Styled';
 
 // TODO:
 // Frontend side
 
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
-// 3: pagination
-// 4: show only few results in onChange search. Other mails: scrolling?
+
 // 6: loading animation for registration and login
+// 3: pagination on mails and single mail
+// 4: show only few results in onChange search. Other mails: scrolling?
 
 // 6: when we logged in the users emails are present (fetched)
 // 7: in Mails.tsx render for trash as well
@@ -208,7 +209,9 @@ export default function App() {
               <Switch>
 
                 <Route exact path="/registration">
-                  <ModRegistration />
+                  <RegistratonDiv>
+                    <ModRegistration />
+                  </RegistratonDiv>
                 </Route>
 
                 <UserContext.Provider value={
@@ -218,7 +221,9 @@ export default function App() {
                     setMails
                   }} >
                   <Route exact path="/login">
-                    <Login />
+                    <RegistratonDiv>
+                      <Login />
+                    </RegistratonDiv>
                   </Route>
                 </UserContext.Provider>
 

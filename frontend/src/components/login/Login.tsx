@@ -4,8 +4,8 @@ import { UserContext } from '../useContexts/UserContext';
 
 import { fetchMails } from '../functions/fetchMails';
 
-import { ModForm } from './Styled';
-import { Form, Input, Button, Checkbox, Modal } from 'antd';
+import { ModForm, LogButton } from './Styled';
+import { Form, Input, Checkbox, Modal } from 'antd';
 
 const logURL = 'http://localhost:3001/api/login'
 
@@ -50,6 +50,7 @@ const LoginForm = () => {
 
   return (
     <>
+    <h1>Sign in</h1>
       <ModForm
         name="basic"
         labelCol={{ span: 8 }}
@@ -80,9 +81,9 @@ const LoginForm = () => {
         </Form.Item>
 
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            Submit
-          </Button>
+          <LogButton type="primary" htmlType="submit">
+            Sign in
+          </LogButton>
         </Form.Item>
       </ModForm>
 
