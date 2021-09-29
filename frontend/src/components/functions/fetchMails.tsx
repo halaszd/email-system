@@ -5,5 +5,6 @@ export async function fetchMails(
 	  setMails([])
     const response = await fetch(`http://localhost:3001/api/mails/${typeOfMail}`);
     const respJSON = await response.json();
-    setMails(respJSON["mails"]);
+    console.log("json: ", respJSON);
+    setMails(respJSON);
   }

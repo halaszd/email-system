@@ -35,6 +35,7 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
 
+// 2: date in mails
 // 6: loading animation for registration and login
 // 3: pagination on mails and single mail
 // 4: show only few results in onChange search. Other mails: scrolling?

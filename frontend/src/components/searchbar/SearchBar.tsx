@@ -76,7 +76,7 @@ const SearchBar = (
 		<SearchDiv>
 			<SearchContainer>
 				<ModSearch 
-        placeholder="input search text" size="large" 
+        placeholder="Search mail" size="large" 
         bordered={false} allowClear 
         onSearch={(word) => onSearch(word)} 
         onChange={(e) => setCurrentInput(e)} />

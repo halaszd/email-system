@@ -91,8 +91,10 @@ export const RegistratonDiv = styled.div`
   gap: 30px;
   max-height: 80vh;
   border: 1px solid #dadce0;
+  border-top: 4px solid #1a73e8;
   padding: 60px;
   border-radius: 8px;
+  transition: 1s;
 
   h1 {
     font-weight: 400;
