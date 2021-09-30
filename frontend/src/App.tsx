@@ -32,14 +32,14 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // TODO:
 // Frontend side
 
+// 3: pagination on single mail
+
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
 
 // 2: search should send a fetch and search results should coome from the server
-// 2: the server gives back only one page amount of emails
 // 2: date in mails
 // 6: loading animation for registration and login
-// 3: pagination on mails and single mail
 // 4: show only few results in onChange search. Other mails: scrolling?
 
 // 6: when we logged in the users emails are present (fetched)
@@ -63,8 +63,8 @@ type TypeOfMail = "inbox" | "sent" | "trash";
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   // To store fetched mails
@@ -161,6 +161,7 @@ export default function App() {
                     mails, 
                     setMails, 
                     typeOfMail,
+                    openedMail,
                     isOpenedMail,
                     setIsOpenedMail,
                     openedMailID,

@@ -20,17 +20,15 @@ export function useSetOpenedMail(
 	const [openedMail, setOpenedMail] = useState<FetchedMail> (emptyMail);
 
 	useEffect(() => {
-		// if(mails === null || isOpenedMail) {
 		if(!mails.mails || !openedMailID) {
 			setOpenedMail(emptyMail);
-			console.log("NINCS OPENED MAIL ID NULL")
 			return;
 		};
 		
 		// Picks the clicked email to open
 		for(const mail of mails["mails"]) {
 			if(openedMailID === mail.id) {
-				console.log(mail)
+				// console.log(mail)
 				setOpenedMail(mail)
 			}
 		}

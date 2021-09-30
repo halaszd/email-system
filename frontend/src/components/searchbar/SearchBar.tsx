@@ -15,7 +15,7 @@ type Props = {
 const SearchBar = (
   {
     mails, 
-    setMails, 
+    setMails 
   }: Props) => {
 
     const {setIsOpenedMail, setOpenedMailID} = useContext(SearchBarContext);

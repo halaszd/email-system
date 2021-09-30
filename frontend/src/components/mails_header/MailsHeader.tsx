@@ -8,7 +8,6 @@ import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
 import { Pagination } from 'antd';
 
-
 const MailsHeader = () => {
 	const {
     mails, 
@@ -16,14 +15,30 @@ const MailsHeader = () => {
     checkedMailIDs, 
     setMails, 
     typeOfMail,
+    openedMail,
 	  isOpenedMail,
     openedMailID,
 	  setOpenedMailID
   	} = useContext(MailContext);
 
-    const [pageNumber, setPageNumber] = useState(1);
-    const [pageSize, setPageSize] = useState(20);
-  
+  const [pageNumber, setPageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+
+  useEffect(() => {
+    fetchMails(typeOfMail, pageNumber, pageSize, setMails);
+
+  }, [pageNumber, pageSize])
+
+  useEffect(() => {
+    if(isOpenedMail) {
+      setPageSize(1)
+      return;
+    }
+
+    setPageSize(20)
+    setPageNumber(1)
+  }, [isOpenedMail])
+
   function handleDeletion() {
     if(!isOpenedMail) {
       deleteCheckedMails();
@@ -83,13 +98,14 @@ const MailsHeader = () => {
 		setCheckedMailIDs([]);
   }
 
-  useEffect(() => {
-  fetchMails(typeOfMail, pageNumber, pageSize, setMails);
-
-  }, [pageNumber, pageSize])
-
   async function onChange(pageNumberOnChange: number) {
     console.log('Page: ', pageNumberOnChange);
+    if(isOpenedMail && openedMail) {
+      setOpenedMailID(mails["mails"][0].id);
+      // const newPageNumber = pageNumberOnChange + ((pageNumber -1) * pageSize);
+      // setSinglePageNumber(newPageNumber);
+      // setPageNumber(newPageNumber);
+    }
     setPageNumber(pageNumberOnChange);
   }
 
@@ -105,16 +121,34 @@ const MailsHeader = () => {
           <DeleteFilled className="delete-all" onClick={handleDeletion}/>
         </TrashIconContainer>
         <h1>{`${typeOfMail.charAt(0).toUpperCase()}${typeOfMail.slice(1)}`}</h1>
-        <Pagination
-          size="small"
-          total={mails["totalNumOfMails"]}
-          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-          showQuickJumper={false}
-          defaultPageSize={pageSize}
-          defaultCurrent={pageNumber}
-          onChange={onChange}
-          onShowSizeChange={onShowSizeChange}
-        />
+        { isOpenedMail
+          ?
+          <Pagination
+            size="small"
+            total={mails["totalNumOfMails"]}
+            showTotal={(total) => `${pageNumber} of ${total}` }
+            showQuickJumper={false}
+            showSizeChanger={false}
+            pageSize={1}
+            defaultCurrent={1}
+            current={pageNumber}
+            onChange={onChange}
+            onShowSizeChange={onShowSizeChange}
+          />
+
+          :
+          <Pagination
+            size="small"
+            total={mails["totalNumOfMails"]}
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+            showQuickJumper={false}
+            pageSize={pageSize}
+            defaultCurrent={1}
+            current={pageNumber}
+            onChange={onChange}
+            onShowSizeChange={onShowSizeChange}
+          />
+        }
       </Header>
 			
 		</div>
