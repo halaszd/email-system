@@ -7,6 +7,7 @@ import { FetchedMail } from '../types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
 import { Pagination } from 'antd';
+import { convertCompilerOptionsFromJson } from 'typescript';
 
 const MailsHeader = () => {
 	const {
@@ -22,20 +23,24 @@ const MailsHeader = () => {
   	} = useContext(MailContext);
 
   const [pageNumber, setPageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
   const [singlePageNumber, setSinglePageNumber] = useState(1);
+  const [pageSize, setPageSize] = useState(20);
+  const [multiPageSize, setMultiPageSize] = useState(20);
   const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
 
   useEffect(() => {
+    if(!isSinglePagePagination)
     fetchMails(typeOfMail, pageNumber, pageSize, setMails);
 
   }, [pageNumber, pageSize])
 
   useEffect(() => {
-    if(isOpenedMail && !isSinglePagePagination) {
-      console.log(mails.mails)
+    if(isOpenedMail && openedMail && !isSinglePagePagination) {
       setIsSinglePagePagination(true)
-      openedMail && setPageNumber((mails["mails"].indexOf(openedMail)) + 1)
+      const singlePageNumber = (mails["mails"].indexOf(openedMail)) + 1;
+      const toAddSinglePageNumber = multiPageSize * (pageNumber - 1);
+      setPageNumber(singlePageNumber);
+      setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
       setPageSize(1)
     }
 
@@ -45,6 +50,7 @@ const MailsHeader = () => {
     if(isOpenedMail) {
       return;
     }
+    setIsSinglePagePagination(false);
 
     setPageSize(20)
     setPageNumber(1)
@@ -112,17 +118,27 @@ const MailsHeader = () => {
 
   async function onChange(pageNumberOnChange: number) {
     console.log('Page: ', pageNumberOnChange);
+
     if(isOpenedMail && openedMail) {
-      setOpenedMailID(mails["mails"][0].id);
-      // const newPageNumber = pageNumberOnChange + ((pageNumber -1) * pageSize);
-      // setSinglePageNumber(newPageNumber);
-      // setPageNumber(newPageNumber);
+      setOpenedMailID(mails["mails"][pageNumber-1].id);
     }
+
+    if(pageNumberOnChange - pageNumber === -1) {
+      setSinglePageNumber(singlePageNumber - 1);
+    } else {
+      setSinglePageNumber(singlePageNumber + 1);
+    }
+
     setPageNumber(pageNumberOnChange);
   }
 
   async function onShowSizeChange(current: number, pageSizeOnChange: number) {
     console.log(current, pageSizeOnChange);
+
+    if(!isSinglePagePagination) {
+      setMultiPageSize(pageSizeOnChange);
+    }
+
     setPageSize(pageSizeOnChange);
   }
 
@@ -138,7 +154,7 @@ const MailsHeader = () => {
           <Pagination
             size="small"
             total={mails["totalNumOfMails"]}
-            showTotal={(total) => `${pageNumber} of ${total}` }
+            showTotal={(total) => `${singlePageNumber} of ${total}` }
             showQuickJumper={false}
             showSizeChanger={false}
             pageSize={1}
