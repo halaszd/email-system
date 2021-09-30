@@ -23,6 +23,8 @@ const MailsHeader = () => {
 
   const [pageNumber, setPageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
+  const [singlePageNumber, setSinglePageNumber] = useState(1);
+  const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
 
   useEffect(() => {
     fetchMails(typeOfMail, pageNumber, pageSize, setMails);
@@ -30,13 +32,23 @@ const MailsHeader = () => {
   }, [pageNumber, pageSize])
 
   useEffect(() => {
-    if(isOpenedMail) {
+    if(isOpenedMail && !isSinglePagePagination) {
+      console.log(mails.mails)
+      setIsSinglePagePagination(true)
+      openedMail && setPageNumber((mails["mails"].indexOf(openedMail)) + 1)
       setPageSize(1)
+    }
+
+  }, [openedMail])
+
+  useEffect(() => {
+    if(isOpenedMail) {
       return;
     }
 
     setPageSize(20)
     setPageNumber(1)
+
   }, [isOpenedMail])
 
   function handleDeletion() {
