@@ -2,12 +2,12 @@ import React from 'react';
 import { useContext } from 'react';
 import { SearchBarContext } from '../useContexts/SearchBarContext';
 import { useState, useEffect } from 'react';
-import { FetchedMail } from '../types/FetchedMail';
+import { FetchedMails, FetchedMail } from '../types/FetchedMail';
 import Results from '../results/Results';
 import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 
 type Props = {
-	mails: FetchedMail[];
+	mails: FetchedMails;
   setMails: Function;
 }
 
@@ -29,7 +29,7 @@ const SearchBar = (
       setShowResultMails(true);
 
       function handleChange() {
-        if(!currentInput || mails === []) {
+        if(!currentInput || mails["mails"] === []) {
           return;
         }
 
@@ -41,7 +41,7 @@ const SearchBar = (
 
         const currentResultMails: FetchedMail[] = [];
 
-        for(const mail of mails) {
+        for(const mail of mails["mails"]) {
           const allStringFromEmail = 
             mail.to + " " +
             mail.fromEmailAddress + " " +
@@ -67,7 +67,7 @@ const SearchBar = (
       return;
     }
     setShowResultMails(false);
-    setMails(resultMails);
+    setMails({totalNumOfMails: resultMails.length, mails:resultMails});
     setOpenedMailID(null);
     setIsOpenedMail(false);
 	}

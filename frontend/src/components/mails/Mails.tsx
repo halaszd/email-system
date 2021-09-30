@@ -14,7 +14,7 @@ const Mails = () => {
 
 	return (
     <MailsContainer>
-      {mails && mails.map((mail, index) => {
+      {mails["mails"] && mails["mails"].map((mail, index) => {
         return (
           <>
             <Mail 

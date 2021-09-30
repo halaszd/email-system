@@ -1,9 +1,13 @@
 import React from 'react'
+import { useState, useEffect } from 'react';
 import { useContext } from 'react';
 import { MailContext } from '../useContexts/MailContext';
+import { fetchMails } from '../functions/fetchMails';
 import { FetchedMail } from '../types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
-import {DeleteFilled} from '@ant-design/icons'
+import { DeleteFilled } from '@ant-design/icons'
+import { Pagination } from 'antd';
+
 
 const MailsHeader = () => {
 	const {
@@ -17,7 +21,8 @@ const MailsHeader = () => {
 	  setOpenedMailID
   	} = useContext(MailContext);
 
-	
+    const [pageNumber, setPageNumber] = useState(1);
+    const [pageSize, setPageSize] = useState(20);
   
   function handleDeletion() {
     if(!isOpenedMail) {
@@ -25,33 +30,38 @@ const MailsHeader = () => {
       return;
     }
 
+    deleteSingleMail();
+  } 
+
+  function deleteSingleMail() {
     const newMails: FetchedMail[] = [];
 
-    for(const mail of mails) {
+    for(const mail of mails["mails"]) {
       if(mail.id !== openedMailID) {
         newMails.push(mail);
       }
     }
 
-    setMails(newMails);
+    setMails({totalNumOfMails: mails["totalNumOfMails"] - 1, mails: newMails});
 
     if(newMails.length !== 0){
       setOpenedMailID(newMails[0].id);
     } else {
       setOpenedMailID(null);
     }
-  } 
+
+  }
 
 	function deleteCheckedMails() {
 		// Deleting the checked mails and collecting them in another array
 		const deletedMails: FetchedMail[] = [];
 		const newMails: FetchedMail[] = [];
 
-		if(mails === []) {
+		if(mails["mails"].length === 0) {
 		  return;
 		}
 
-		for(const mail of mails) {
+		for(const mail of mails["mails"]) {
       let isFoundMail = false;
 
       for(const id of checkedMailIDs) {
@@ -67,11 +77,26 @@ const MailsHeader = () => {
         newMails.push(mail)
       }
 		}
-		// Gives back only the not deleted emails
-		setMails(newMails)
+		// Until the real sever is no on: Gives back only the not deleted emails
+    setMails({totalNumOfMails: mails["totalNumOfMails"] - deletedMails.length, mails: newMails});
 		// To clear the IDs of formerly checked emails
 		setCheckedMailIDs([]);
-}
+  }
+
+  useEffect(() => {
+  fetchMails(typeOfMail, pageNumber, pageSize, setMails);
+
+  }, [pageNumber, pageSize])
+
+  async function onChange(pageNumberOnChange: number) {
+    console.log('Page: ', pageNumberOnChange);
+    setPageNumber(pageNumberOnChange);
+  }
+
+  async function onShowSizeChange(current: number, pageSizeOnChange: number) {
+    console.log(current, pageSizeOnChange);
+    setPageSize(pageSizeOnChange);
+  }
 
 	return (
 		<div>
@@ -80,6 +105,16 @@ const MailsHeader = () => {
           <DeleteFilled className="delete-all" onClick={handleDeletion}/>
         </TrashIconContainer>
         <h1>{`${typeOfMail.charAt(0).toUpperCase()}${typeOfMail.slice(1)}`}</h1>
+        <Pagination
+          size="small"
+          total={mails["totalNumOfMails"]}
+          showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+          showQuickJumper={false}
+          defaultPageSize={pageSize}
+          defaultCurrent={pageNumber}
+          onChange={onChange}
+          onShowSizeChange={onShowSizeChange}
+        />
       </Header>
 			
 		</div>

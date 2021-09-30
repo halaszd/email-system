@@ -16,7 +16,7 @@ import { MailContext } from './components/useContexts/MailContext';
 import { SearchBarContext } from './components/useContexts/SearchBarContext';
 
 import { useSetOpenedMail } from './components/customHooks/useSetOpenedMail';
-import { FetchedMail } from './components/types/FetchedMail';
+import { FetchedMail, FetchedMails } from './components/types/FetchedMail';
 
 import MailsHeader from './components/mails_header/MailsHeader';
 import Mails from './components/mails/Mails';
@@ -35,6 +35,8 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
 
+// 2: search should send a fetch and search results should coome from the server
+// 2: the server gives back only one page amount of emails
 // 2: date in mails
 // 6: loading animation for registration and login
 // 3: pagination on mails and single mail
@@ -53,8 +55,10 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // x: post new mail to server, receive answer with updated sent mails
 // x: reply
 
+const fetchedMailArray: FetchedMail[] = [];
+
 // -------------------- Declaring types -------------------- 
-type TypeOfMail = "inbox" | "sent" | "trash"; 
+type TypeOfMail = "inbox" | "sent" | "trash";
 
 // -------------------- Component -------------------- 
 export default function App() {
@@ -64,7 +68,7 @@ export default function App() {
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   // To store fetched mails
-  const [mails, setMails] = useState<FetchedMail[]>([]);
+  const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mails: fetchedMailArray});
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);

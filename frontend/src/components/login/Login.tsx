@@ -36,7 +36,7 @@ const LoginForm = () => {
     if(status === 200) {
       setIsLoggedIn(true);
       // It should fetch the users mail ofc
-      await fetchMails("inbox", setMails)
+      await fetchMails("inbox", 1, 20, setMails);
       setUsername(values["username"]);
 
     } else {

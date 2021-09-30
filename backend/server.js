@@ -16,16 +16,41 @@ let sent = mails["mails"]["sent"];
 
 let users = {"users": []}
 
+// just to the server able to send back appropriate amount of emails at once
+function getMails(pageNum, mailsPerPage, mails) {
+	// azt is le kell kezelni ha 0 jön be pageNum-ként
+    // const maxPageNum = Math.ceil(mails.length / mailsPerPage)
+    const mailsToSend = {"totalNumOfMails": mails.length, "mails": []};
+    const fromIndex = (pageNum - 1) * mailsPerPage;
+    let toIndex = (pageNum * mailsPerPage);
+	console.log("toindex: ", toIndex, "mails.lenght: ", mails.length)
+    if(toIndex > mails.length){
+		console.log("benne")
+        toIndex = mails.length
+    }
+
+    for(let i = fromIndex; i < toIndex; i++) {
+        mailsToSend["mails"].push(mails[i]);
+    }
+
+	return mailsToSend;
+}
+
+// server.get('/api/mails/inbox:pageNum', (req, res) => {
 server.get('/api/mails/inbox', (req, res) => {
-	res.send(JSON.stringify(inbox));
+	console.log(req.query.params)
+	const inboxPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	res.send(JSON.stringify(inboxPageToSend));
 })
 
 server.get('/api/mails/sent', (req, res) => {
-	res.send(JSON.stringify(sent));
+	const sentPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	res.send(JSON.stringify(sentPageToSend));
 })
 
 server.get('/api/mails/trash', (req, res) => {
-	res.send(JSON.stringify(inbox));
+	const trashPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	res.send(JSON.stringify(trashPageToSend));
 })
 
 server.post('/api/registration', (req, res) => {

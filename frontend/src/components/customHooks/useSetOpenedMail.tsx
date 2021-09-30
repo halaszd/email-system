@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FetchedMail } from '../types/FetchedMail';
+import { FetchedMails, FetchedMail } from '../types/FetchedMail';
 
 const emptyMail: FetchedMail = 
 {
@@ -13,7 +13,7 @@ const emptyMail: FetchedMail =
 }
  
 export function useSetOpenedMail(
-	mails: FetchedMail[], 
+	mails: FetchedMails, 
 	isOpenedMail: boolean,
 	openedMailID: number | null) {
 
@@ -21,14 +21,14 @@ export function useSetOpenedMail(
 
 	useEffect(() => {
 		// if(mails === null || isOpenedMail) {
-		if(mails === null || !openedMailID) {
+		if(!mails.mails || !openedMailID) {
 			setOpenedMail(emptyMail);
 			console.log("NINCS OPENED MAIL ID NULL")
 			return;
 		};
 		
 		// Picks the clicked email to open
-		for(const mail of mails) {
+		for(const mail of mails["mails"]) {
 			if(openedMailID === mail.id) {
 				console.log(mail)
 				setOpenedMail(mail)

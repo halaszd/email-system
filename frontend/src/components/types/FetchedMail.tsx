@@ -8,3 +8,8 @@ export type FetchedMail = {
   message: string;
   id: number;
 }
+
+export type FetchedMails = {
+  totalNumOfMails: number;
+  mails: FetchedMail[];
+}

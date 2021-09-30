@@ -35,19 +35,19 @@ const SideBar = (
 		  <li>
 			<Link to="/">
 			  <ModButton type="primary" icon={<SearchOutlined />} 
-			  onClick={() => {setTypeOfMail("inbox"); fetchMails("inbox", setMails)}}>Inbox</ModButton>
+			  onClick={() => {setTypeOfMail("inbox"); fetchMails("inbox", 1, 20, setMails)}}>Inbox</ModButton>
 			</Link>
 		  </li>
 		  <li>
 			<Link to="/sent">
 			  <ModButton type="primary" icon={<SendOutlined />} 
-			  onClick={() => {setTypeOfMail("sent"); fetchMails("sent", setMails)}}>Sent</ModButton>
+			  onClick={() => {setTypeOfMail("sent"); fetchMails("sent", 1, 20, setMails)}}>Sent</ModButton>
 			</Link>
 		  </li>
 		  <li>
 			<Link to="/trash">
 			  <ModButton type="primary" icon={<DeleteOutlined />} 
-			  onClick={() => {setTypeOfMail("trash"); fetchMails("trash", setMails)}}>Trash</ModButton>
+			  onClick={() => {setTypeOfMail("trash"); fetchMails("trash", 1, 20, setMails)}}>Trash</ModButton>
 			</Link>
 		  </li>
 		</SubSideBar>

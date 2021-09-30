@@ -7,6 +7,18 @@ export const Header = styled.div`
   padding-bottom: 25px;
   padding-left: 10px;
 
+  .ant-pagination-item {
+    display: none;
+  }
+
+  .ant-pagination-jump-prev{
+    display: none;
+  }
+
+  .ant-pagination-jump-next {
+    display: none;
+  }
+
   h1 {
     font-weight: 500;
     margin-bottom: 0px;

@@ -1,8 +1,8 @@
 import React, { createContext } from 'react';
-import { FetchedMail } from '../types/FetchedMail';
+import { FetchedMail, FetchedMails } from '../types/FetchedMail';
 
 type MailContextType = {
-  mails: FetchedMail[];
+  mails: FetchedMails;
   setMails: Function;
   typeOfMail: "inbox" | "sent" | "trash";
   isOpenedMail?: boolean;
@@ -13,11 +13,11 @@ type MailContextType = {
   setCheckedMailIDs: Function;
 }
 
-const mails: FetchedMail[] = [];
+const fetchedMails: FetchedMail[] = [];
 
 export const MailContext = createContext<MailContextType>(
   {
-    mails: mails,
+    mails: {totalNumOfMails: 0, mails: fetchedMails},
     setMails: () => {},
     typeOfMail: "inbox",
     isOpenedMail: false,
