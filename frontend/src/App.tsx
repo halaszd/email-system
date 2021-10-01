@@ -32,7 +32,8 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // TODO:
 // Frontend side
 
-// 3: pagination on single mail: dont start from the first element after deletion
+// 3: when paginating over the current mail list fetch the new ones
+// 3: fetch mails when single mail paginaton hits the end of the current list
 
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
@@ -67,6 +68,8 @@ export default function App() {
   // const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
+
+  const [isSideBarClicked, setIsSideBarClicked] = useState(false);
   // To store fetched mails
   const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mails: fetchedMailArray});
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
@@ -147,7 +150,8 @@ export default function App() {
               <Redirect to="/" />
 
               <SideBar props={
-                { 
+                { isSideBarClicked,
+                  setIsSideBarClicked,
                   setIsNewMail, 
                   isNewMail, 
                   setTypeOfMail, 
@@ -158,6 +162,7 @@ export default function App() {
               <div>
                 <MailContext.Provider value={
                   { 
+                    isSideBarClicked,
                     mails, 
                     setMails, 
                     typeOfMail,

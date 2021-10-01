@@ -2,6 +2,7 @@ import React, { createContext } from 'react';
 import { FetchedMail, FetchedMails } from '../types/FetchedMail';
 
 type MailContextType = {
+  isSideBarClicked?: boolean;
   mails: FetchedMails;
   setMails: Function;
   typeOfMail: "inbox" | "sent" | "trash";
@@ -29,6 +30,7 @@ const fetchedMails: FetchedMail[] = [];
 
 export const MailContext = createContext<MailContextType>(
   {
+    isSideBarClicked: false,
     mails: {totalNumOfMails: 0, mails: fetchedMails},
     setMails: () => {},
     typeOfMail: "inbox",

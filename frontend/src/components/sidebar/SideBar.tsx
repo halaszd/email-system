@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 
 type Props = {
 	props: {
+	isSideBarClicked: boolean;
+	setIsSideBarClicked: Function;
 	setIsNewMail: Function;
 	isNewMail: boolean;
 	setTypeOfMail: Function;
@@ -18,6 +20,8 @@ const SideBar = (
 	 {
 		 props:
 		 { 
+			 isSideBarClicked,
+			 setIsSideBarClicked,
 			 setIsNewMail, 
 			 isNewMail, 
 			 setTypeOfMail, 
@@ -31,7 +35,7 @@ const SideBar = (
 		<li>
 		  <ModButton type="primary" icon={<FormOutlined />} onClick={() => setIsNewMail(!isNewMail)}>New Mail</ModButton>
 		</li>
-		<SubSideBar onClick={() => setIsOpenedMail(false)}>
+		<SubSideBar onClick={() => {setIsOpenedMail(false); setIsSideBarClicked(!isSideBarClicked)}}>
 		  <li>
 			<Link to="/">
 			  <ModButton type="primary" icon={<SearchOutlined />} 

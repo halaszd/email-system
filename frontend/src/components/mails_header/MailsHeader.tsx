@@ -10,6 +10,7 @@ import { Pagination } from 'antd';
 
 const MailsHeader = () => {
 	const {
+    isSideBarClicked,
     mails, 
     setCheckedMailIDs, 
     checkedMailIDs, 
@@ -28,7 +29,13 @@ const MailsHeader = () => {
   const [multiMailPageSize, setMultiMailPageSize] = useState(20);
 
   useEffect(() => {
-    fetchMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails);
+    async function fetchCurrentMails() {
+      const currentMails = await fetchMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails);
+      if(isOpenedMail) {
+        setOpenedMailID(currentMails.mails[0].id);
+      }
+    }
+    fetchCurrentMails();
 
   }, [multiMailPageNumber, multiMailPageSize])
 
@@ -53,7 +60,7 @@ const MailsHeader = () => {
     setMultiMailPageSize(20)
     setMultiMailPageNumber(1)
 
-  }, [isOpenedMail])
+  }, [isSideBarClicked])
 
   function handleDeletion() {
     if(!isOpenedMail) {
@@ -64,19 +71,48 @@ const MailsHeader = () => {
     deleteSingleMail();
   } 
 
-  function deleteSingleMail() {
-    const newMails: FetchedMail[] = [];
+  async function deleteSingleMail() {
+    // single mail deletion is working, but due to that 
+    // fetched mails are always the same (server dont delete
+    // the mails just the frontend) you can delete in a loop forever
+    if(!openedMail){
+      return;
+    }
 
-    for(const mail of mails["mails"]) {
-      if(mail.id !== openedMailID) {
+    let newMails: FetchedMail[] = [];
+    console.log("opened mal: ", openedMail)
+    let deletedMailIndex = 0;
+
+    for(const [i, mail] of mails["mails"].entries()){
+
+      if(mail.id === openedMailID) {
+        deletedMailIndex = i;
+        console.log("total and single: ", mails["totalNumOfMails"], singlePageNumber)
+        
+        if(i < mails["mails"].length - 1) {
+          newMails = [...newMails, ...mails["mails"].slice(i + 1, mails["mails"].length)]
+        }
+        else if(singlePageNumber !== mails["totalNumOfMails"]) {
+          setMultiMailPageNumber(multiMailPageNumber + 1);
+          return;
+        }
+        else if(mails["mails"].length > 1) {
+          deletedMailIndex = i - 1;
+        } else {
+          setMultiMailPageNumber(multiMailPageNumber - 1);
+          return;
+        } 
+        break;
+      }
         newMails.push(mail);
       }
-    }
+
+    console.log(newMails)
 
     setMails({totalNumOfMails: mails["totalNumOfMails"] - 1, mails: newMails});
 
     if(newMails.length !== 0){
-      setOpenedMailID(newMails[0].id);
+      setOpenedMailID(newMails[deletedMailIndex].id);
     } else {
       setOpenedMailID(null);
     }
