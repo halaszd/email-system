@@ -7,7 +7,6 @@ import { FetchedMail } from '../types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
 import { Pagination } from 'antd';
-import { convertCompilerOptionsFromJson } from 'typescript';
 
 const MailsHeader = () => {
 	const {
@@ -22,28 +21,27 @@ const MailsHeader = () => {
 	  setOpenedMailID
   	} = useContext(MailContext);
 
-  const [pageNumber, setPageNumber] = useState(1);
+  const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
   const [singlePageNumber, setSinglePageNumber] = useState(1);
   const [pageSize, setPageSize] = useState(20);
-  const [multiPageSize, setMultiPageSize] = useState(20);
-  const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
+  const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
+  const [multiMailPageSize, setMultiMailPageSize] = useState(20);
 
   useEffect(() => {
-    if(!isSinglePagePagination)
-    fetchMails(typeOfMail, pageNumber, pageSize, setMails);
+    fetchMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails);
 
-  }, [pageNumber, pageSize])
+  }, [multiMailPageNumber, multiMailPageSize])
 
   useEffect(() => {
-    if(isOpenedMail && openedMail && !isSinglePagePagination) {
-      setIsSinglePagePagination(true)
+    if(isOpenedMail && openedMail) {
       const singlePageNumber = (mails["mails"].indexOf(openedMail)) + 1;
-      const toAddSinglePageNumber = multiPageSize * (pageNumber - 1);
-      setPageNumber(singlePageNumber);
+      const toAddSinglePageNumber = multiMailPageSize * (multiMailPageNumber - 1);
       setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
-      setPageSize(1)
+      if(!isSinglePagePagination) {
+        setIsSinglePagePagination(true);
+        setPageSize(1)
+      }
     }
-
   }, [openedMail])
 
   useEffect(() => {
@@ -52,8 +50,8 @@ const MailsHeader = () => {
     }
     setIsSinglePagePagination(false);
 
-    setPageSize(20)
-    setPageNumber(1)
+    setMultiMailPageSize(20)
+    setMultiMailPageNumber(1)
 
   }, [isOpenedMail])
 
@@ -82,7 +80,6 @@ const MailsHeader = () => {
     } else {
       setOpenedMailID(null);
     }
-
   }
 
 	function deleteCheckedMails() {
@@ -119,24 +116,25 @@ const MailsHeader = () => {
   async function onChange(pageNumberOnChange: number) {
     console.log('Page: ', pageNumberOnChange);
 
+    if(!isSinglePagePagination){
+      setMultiMailPageNumber(pageNumberOnChange);
+      return;
+    }
+
     if(isOpenedMail && openedMail) {
-      setOpenedMailID(mails["mails"][pageNumber-1].id);
+      const mailIndex = pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))
+      setOpenedMailID(mails["mails"][mailIndex-1].id);
     }
 
-    if(pageNumberOnChange - pageNumber === -1) {
-      setSinglePageNumber(singlePageNumber - 1);
-    } else {
-      setSinglePageNumber(singlePageNumber + 1);
-    }
-
-    setPageNumber(pageNumberOnChange);
+    setSinglePageNumber(pageNumberOnChange)
   }
 
   async function onShowSizeChange(current: number, pageSizeOnChange: number) {
     console.log(current, pageSizeOnChange);
 
     if(!isSinglePagePagination) {
-      setMultiPageSize(pageSizeOnChange);
+      setMultiMailPageSize(pageSizeOnChange);
+      return;
     }
 
     setPageSize(pageSizeOnChange);
@@ -159,7 +157,7 @@ const MailsHeader = () => {
             showSizeChanger={false}
             pageSize={1}
             defaultCurrent={1}
-            current={pageNumber}
+            current={singlePageNumber}
             onChange={onChange}
             onShowSizeChange={onShowSizeChange}
           />
@@ -170,9 +168,9 @@ const MailsHeader = () => {
             total={mails["totalNumOfMails"]}
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             showQuickJumper={false}
-            pageSize={pageSize}
+            pageSize={multiMailPageSize}
             defaultCurrent={1}
-            current={pageNumber}
+            current={multiMailPageNumber}
             onChange={onChange}
             onShowSizeChange={onShowSizeChange}
           />

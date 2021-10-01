@@ -32,7 +32,7 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // TODO:
 // Frontend side
 
-// 3: pagination on single mail
+// 3: pagination on single mail: dont start from the first element after deletion
 
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
@@ -63,8 +63,8 @@ type TypeOfMail = "inbox" | "sent" | "trash";
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   // To store fetched mails
