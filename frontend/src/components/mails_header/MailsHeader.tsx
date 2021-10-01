@@ -24,15 +24,23 @@ const MailsHeader = () => {
 
   const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
   const [singlePageNumber, setSinglePageNumber] = useState(1);
-  const [pageSize, setPageSize] = useState(20);
   const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
   const [multiMailPageSize, setMultiMailPageSize] = useState(20);
 
   useEffect(() => {
     async function fetchCurrentMails() {
       const currentMails = await fetchMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails);
+
       if(isOpenedMail) {
-        setOpenedMailID(currentMails.mails[0].id);
+        // if we hit either end of the current list of mails while paginating:
+        // 1. Was moving forward: set the opened mail to the first element of the fetched list
+        if(singlePageNumber % 10 === 0) {
+          setOpenedMailID(currentMails.mails[0].id);
+        } 
+        // 2. Was moving backwards: set the opened mail to the last element of the fethed list
+        else {
+          setOpenedMailID(currentMails.mails[currentMails.mails.length - 1].id);
+        }
       }
     }
     fetchCurrentMails();
@@ -40,14 +48,16 @@ const MailsHeader = () => {
   }, [multiMailPageNumber, multiMailPageSize])
 
   useEffect(() => {
-    if(isOpenedMail && openedMail) {
-      const singlePageNumber = (mails["mails"].indexOf(openedMail)) + 1;
-      const toAddSinglePageNumber = multiMailPageSize * (multiMailPageNumber - 1);
-      setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
-      if(!isSinglePagePagination) {
-        setIsSinglePagePagination(true);
-        setPageSize(1)
-      }
+    if(!isOpenedMail || !openedMail) {
+      return;
+    }
+
+    const singlePageNumber = (mails["mails"].indexOf(openedMail)) + 1;
+    const toAddSinglePageNumber = multiMailPageSize * (multiMailPageNumber - 1);
+    setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
+
+    if(!isSinglePagePagination) {
+      setIsSinglePagePagination(true);
     }
   }, [openedMail])
 
@@ -67,7 +77,6 @@ const MailsHeader = () => {
       deleteCheckedMails();
       return;
     }
-
     deleteSingleMail();
   } 
 
@@ -84,7 +93,6 @@ const MailsHeader = () => {
     let deletedMailIndex = 0;
 
     for(const [i, mail] of mails["mails"].entries()){
-
       if(mail.id === openedMailID) {
         deletedMailIndex = i;
         console.log("total and single: ", mails["totalNumOfMails"], singlePageNumber)
@@ -157,10 +165,22 @@ const MailsHeader = () => {
       return;
     }
 
-    if(isOpenedMail && openedMail) {
-      const mailIndex = pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))
-      setOpenedMailID(mails["mails"][mailIndex-1].id);
+    // if(!isOpenedMail || !openedMail) {
+    //   return;
+    // }
+    const mailIndex = (pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))) - 1;
+    if (mailIndex === mails["mails"].length) {
+      setMultiMailPageNumber(multiMailPageNumber + 1);
+      return;
     }
+    else if(mailIndex < 0) {
+      // setSinglePageNumber(pageNumberOnChange);
+      setMultiMailPageNumber(multiMailPageNumber - 1);
+      return;
+    }
+
+    setOpenedMailID(mails["mails"][mailIndex].id);
+    // }
 
     setSinglePageNumber(pageNumberOnChange)
   }
@@ -172,8 +192,6 @@ const MailsHeader = () => {
       setMultiMailPageSize(pageSizeOnChange);
       return;
     }
-
-    setPageSize(pageSizeOnChange);
   }
 
 	return (

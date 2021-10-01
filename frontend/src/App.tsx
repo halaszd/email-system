@@ -32,9 +32,6 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistr
 // TODO:
 // Frontend side
 
-// 3: when paginating over the current mail list fetch the new ones
-// 3: fetch mails when single mail paginaton hits the end of the current list
-
 // 1: elements in style component
 // 1: Dont use useEffect if you can avoid using it
 
