@@ -26,8 +26,8 @@ import OpenedMail from './components/opened_mail/OpenedMail';
 import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
-import { ModRegistration } from './Styled';
-import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, ContentDiv, LoginRegistration, RegistratonDiv} from './Styled';
+import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, 
+  ContentDiv, LoginRegistration, LoginRegistratonDiv, ModRegistration} from './Styled';
 
 // TODO:
 // Frontend side
@@ -217,9 +217,9 @@ export default function App() {
               <Switch>
 
                 <Route exact path="/registration">
-                  <RegistratonDiv>
+                  <LoginRegistratonDiv>
                     <ModRegistration />
-                  </RegistratonDiv>
+                  </LoginRegistratonDiv>
                 </Route>
 
                 <UserContext.Provider value={
@@ -229,9 +229,9 @@ export default function App() {
                     setMails
                   }} >
                   <Route exact path="/login">
-                    <RegistratonDiv>
+                    <LoginRegistratonDiv>
                       <Login />
-                    </RegistratonDiv>
+                    </LoginRegistratonDiv>
                   </Route>
                 </UserContext.Provider>
 

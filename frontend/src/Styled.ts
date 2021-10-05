@@ -82,7 +82,7 @@ export const LoginRegistration = styled.div`
   /* background-color: blue; */
 `;
 
-export const RegistratonDiv = styled.div`
+export const LoginRegistratonDiv = styled.div`
   font-family: 'Open Sans', sans-serif;
   display: flex;
   flex-direction: column;
