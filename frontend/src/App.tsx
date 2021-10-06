@@ -69,7 +69,7 @@ export default function App() {
 
   const [isSideBarClicked, setIsSideBarClicked] = useState(false);
   // To store fetched mails
-  const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mails: fetchedMailArray});
+  const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mailsPerPage: 20, mails: fetchedMailArray});
   const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
@@ -148,12 +148,14 @@ export default function App() {
               <Redirect to="/" />
 
               <SideBar props={
-                { isSideBarClicked,
+                { 
+                  mails,
+                  setMails, 
+                  isSideBarClicked,
                   setIsSideBarClicked,
                   setIsNewMail, 
                   isNewMail, 
                   setTypeOfMail, 
-                  setMails, 
                   setIsOpenedMail 
                 }} />
               

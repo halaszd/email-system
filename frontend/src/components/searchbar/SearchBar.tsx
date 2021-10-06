@@ -67,7 +67,7 @@ const SearchBar = (
       return;
     }
     setShowResultMails(false);
-    setMails({totalNumOfMails: resultMails.length, mails:resultMails});
+    setMails({totalNumOfMails: resultMails.length, mailsPerPage: mails.mailsPerPage, mails:resultMails});
     setOpenedMailID(null);
     setIsOpenedMail(false);
 	}

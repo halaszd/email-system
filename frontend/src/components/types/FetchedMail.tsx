@@ -11,5 +11,6 @@ export type FetchedMail = {
 
 export type FetchedMails = {
   totalNumOfMails: number;
+  mailsPerPage: number;
   mails: FetchedMail[];
 }

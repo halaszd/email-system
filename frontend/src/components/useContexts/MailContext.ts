@@ -31,7 +31,7 @@ const fetchedMails: FetchedMail[] = [];
 export const MailContext = createContext<MailContextType>(
   {
     isSideBarClicked: false,
-    mails: {totalNumOfMails: 0, mails: fetchedMails},
+    mails: {totalNumOfMails: 0, mailsPerPage: 20, mails: fetchedMails},
     setMails: () => {},
     typeOfMail: "inbox",
     openedMail: emptyMail,

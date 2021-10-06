@@ -20,7 +20,7 @@ let users = {"users": []}
 function getMails(pageNum, mailsPerPage, mails) {
 	// azt is le kell kezelni ha 0 jön be pageNum-ként
     // const maxPageNum = Math.ceil(mails.length / mailsPerPage)
-    const mailsToSend = {"totalNumOfMails": mails.length, "mails": []};
+    const mailsToSend = {"totalNumOfMails": mails.length, "mailsPerPage": mailsPerPage, "mails": []};
     const fromIndex = (pageNum - 1) * mailsPerPage;
     let toIndex = (pageNum * mailsPerPage);
 	console.log("toindex: ", toIndex, "mails.lenght: ", mails.length)
@@ -39,18 +39,29 @@ function getMails(pageNum, mailsPerPage, mails) {
 // server.get('/api/mails/inbox:pageNum', (req, res) => {
 server.get('/api/mails/inbox', (req, res) => {
 	console.log(req.query.params)
-	const inboxPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	// const inboxPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	console.log("inbox mails per page: ", mails.mails.settings.mailsPerPage)
+	const inboxPageToSend = getMails(parseInt(req.query.pageNum), mails.mails.settings.mailsPerPage, inbox);
 	res.send(JSON.stringify(inboxPageToSend));
 })
 
 server.get('/api/mails/sent', (req, res) => {
-	const sentPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	// const sentPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, sent);
+	const sentPageToSend = getMails(parseInt(req.query.pageNum), mails.mails.settings.mailsPerPage, sent);
 	res.send(JSON.stringify(sentPageToSend));
 })
 
 server.get('/api/mails/trash', (req, res) => {
-	const trashPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
+	// const trashPageToSend = getMails(parseInt(req.query.pageNum), query.mailsPerPage, inbox);
+	const trashPageToSend = getMails(parseInt(req.query.pageNum), mails.mails.settings.mailsPerPage, inbox);
 	res.send(JSON.stringify(trashPageToSend));
+})
+
+server.post('/api/mails/mail-settings', (req, res) => {
+	const newMailsPerPage = parseInt(req.query.mailsPerPage);
+	console.log("newmailsPerPage: ", newMailsPerPage)
+	mails.mails.settings.mailsPerPage = newMailsPerPage;
+	res.sendStatus(200);
 })
 
 server.post('/api/registration', (req, res) => {

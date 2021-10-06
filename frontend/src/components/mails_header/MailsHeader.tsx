@@ -25,7 +25,7 @@ const MailsHeader = () => {
   const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
   const [singlePageNumber, setSinglePageNumber] = useState(1);
   const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
-  const [multiMailPageSize, setMultiMailPageSize] = useState(20);
+  const [multiMailPageSize, setMultiMailPageSize] = useState(mails.mailsPerPage);
 
   useEffect(() => {
     async function fetchCurrentMails() {
@@ -48,6 +48,7 @@ const MailsHeader = () => {
   }, [multiMailPageNumber, multiMailPageSize])
 
   useEffect(() => {
+    console.log("51 use isopenedmail: ", isOpenedMail)
     if(!isOpenedMail || !openedMail) {
       return;
     }
@@ -62,13 +63,7 @@ const MailsHeader = () => {
   }, [openedMail])
 
   useEffect(() => {
-    if(isOpenedMail) {
-      return;
-    }
     setIsSinglePagePagination(false);
-
-    setMultiMailPageSize(20)
-    setMultiMailPageNumber(1)
 
   }, [isSideBarClicked])
 
@@ -165,16 +160,12 @@ const MailsHeader = () => {
       return;
     }
 
-    // if(!isOpenedMail || !openedMail) {
-    //   return;
-    // }
     const mailIndex = (pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))) - 1;
     if (mailIndex === mails["mails"].length) {
       setMultiMailPageNumber(multiMailPageNumber + 1);
       return;
     }
     else if(mailIndex < 0) {
-      // setSinglePageNumber(pageNumberOnChange);
       setMultiMailPageNumber(multiMailPageNumber - 1);
       return;
     }
@@ -222,6 +213,7 @@ const MailsHeader = () => {
             total={mails["totalNumOfMails"]}
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             showQuickJumper={false}
+            showSizeChanger={true}
             pageSize={multiMailPageSize}
             defaultCurrent={1}
             current={multiMailPageNumber}

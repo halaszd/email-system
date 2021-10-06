@@ -1,5 +1,6 @@
 {
 	"mails": {
+		"settings": {"mailsPerPage": 20},
 		"inbox": [
 			{"typeOfMail": "inbox", "from": "Peter", "fromEmailAddress": "peter@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "howdy how id how are you hello hello here's the doomsday hello hello", "message": "hhhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 1},
 			{"typeOfMail": "inbox", "from": "Henry", "fromEmailAddress": "henry@gmail.com", "to": "David", "toEmailAddress": "david@gmail.com", "subject": "how id how are you hello hello here's the doomsday hello hello", "message": "how are you todayhello, how are you todayhello, how are you todayhello, how are you todayhello, how are you todayello, how are you todayello, how are you today", "id": 2},
