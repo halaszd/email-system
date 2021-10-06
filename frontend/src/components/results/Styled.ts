@@ -1,15 +1,18 @@
 import styled from '@emotion/styled';
 
 export const ResultsContainer = styled.div`
+  height: 500px;
+  overflow: scroll;
+`;
+
+export const ResultContainer = styled.div`
   &:hover {
     background-color: #e7f0f0;
     z-index: 10;
   }
-
 `;
 
 export const ContentContainer = styled.div`
-  width: 80%;
   display: flex;
   gap: 10px;
   border-top: 1px solid #eceff1;

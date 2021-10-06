@@ -39,7 +39,6 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder,
 // 2: search should send a fetch and search results should coome from the server
 // 2: date in mails
 // 6: loading animation for registration and login
-// 4: show only few results in onChange search. Other mails: scrolling?
 
 // 6: when we logged in the users emails are present (fetched)
 // 7: in Mails.tsx render for trash as well
