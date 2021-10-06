@@ -8,7 +8,10 @@ import { Form, Input, Checkbox, Modal } from 'antd';
 
 const logURL = 'http://localhost:3001/api/login'
 
-type IProps = {};
+type IProps = {
+  status: number;
+  setStatus(values: any, URL: string): void;
+};
 
 type IState = {
   isModalVisible: boolean;
@@ -39,17 +42,9 @@ class LoginForm extends React.Component<IProps, IState> {
   async onFinish(values: any) {
     const {setIsLoggedIn, setUsername, setMails} = this.context;
 
-    const response = await fetch(logURL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(values)
-    })
+    await this.props.setStatus(values, logURL);
 
-    const status = await response.status;
-
-    if(status === 200) {
+    if(this.props.status === 200) {
       setIsLoggedIn(true);
       // It should fetch the users mail ofc
       await fetchMails("inbox", 1, 20, setMails);

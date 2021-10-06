@@ -16,6 +16,7 @@ import { MailContext } from './components/useContexts/MailContext';
 import { SearchBarContext } from './components/useContexts/SearchBarContext';
 
 import { useSetOpenedMail } from './components/customHooks/useSetOpenedMail';
+import { StatusSetter } from './components/render_props/StatusSetter';
 import { FetchedMail, FetchedMails } from './components/types/FetchedMail';
 
 import MailsHeader from './components/mails_header/MailsHeader';
@@ -230,7 +231,11 @@ export default function App() {
                   }} >
                   <Route exact path="/login">
                     <LoginRegistratonDiv>
-                      <Login />
+                      <StatusSetter 
+                        render={(status, setStatus) => (
+                          <Login status={status} setStatus={setStatus}/>
+                        )} 
+                      />
                     </LoginRegistratonDiv>
                   </Route>
                 </UserContext.Provider>

@@ -21,31 +21,31 @@ const withStatus = <P extends InjectedIsSuccessfulProps>(
       status: 0
     };
 
-	onFinish = async (values: {}, URL: string) => {
-		console.log('Received values of form: ', values);
+    onFinish = async (values: {}, URL: string) => {
+      console.log('Received values of form: ', values);
 
-		const response = 
-		await fetch(URL, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json'
-		},
-		body: JSON.stringify(values)
-		})
-		
-		const respStatus = await response.status;
-    this.setState({ status: respStatus })
-	};
+      const response = 
+      await fetch(URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(values)
+      })
+      
+      const respStatus = await response.status;
+      this.setState({ status: respStatus })
+    };
 
-  render() {
-    return (
-      <Component
-        {...this.props as P}
-        status={this.state.status}
-        onFinish={this.onFinish}
-      />
-    );
-  }
-};
+    render() {
+      return (
+        <Component
+          {...this.props as P}
+          status={this.state.status}
+          onFinish={this.onFinish}
+        />
+      );
+    }
+  };
 
 export default withStatus;
