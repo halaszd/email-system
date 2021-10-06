@@ -56,9 +56,6 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder,
 
 const fetchedMailArray: FetchedMail[] = [];
 
-// -------------------- Declaring types -------------------- 
-type TypeOfMail = "inbox" | "sent" | "trash";
-
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
@@ -69,8 +66,13 @@ export default function App() {
 
   const [isSideBarClicked, setIsSideBarClicked] = useState(false);
   // To store fetched mails
-  const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mailsPerPage: 20, mails: fetchedMailArray});
-  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
+  const [mails, setMails] = useState<FetchedMails>(
+    {
+      totalNumOfMails: 1, 
+      mailsPerPage: 20, 
+      typeOfMail: "inbox",
+      mails: fetchedMailArray
+    });
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
@@ -155,7 +157,6 @@ export default function App() {
                   setIsSideBarClicked,
                   setIsNewMail, 
                   isNewMail, 
-                  setTypeOfMail, 
                   setIsOpenedMail 
                 }} />
               
@@ -165,7 +166,6 @@ export default function App() {
                     isSideBarClicked,
                     mails, 
                     setMails, 
-                    typeOfMail,
                     openedMail,
                     isOpenedMail,
                     setIsOpenedMail,
@@ -183,7 +183,6 @@ export default function App() {
                     {
                       mails, 
                       setMails, 
-                      typeOfMail, 
                       setIsOpenedMail, 
                       setOpenedMailID, 
                       checkedMailIDs, 

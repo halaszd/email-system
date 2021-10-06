@@ -12,7 +12,6 @@ type Props = {
 	setIsSideBarClicked: Function;
 	setIsNewMail: Function;
 	isNewMail: boolean;
-	setTypeOfMail: Function;
 	setMails: Function;
 	setIsOpenedMail: Function;
 	}
@@ -22,13 +21,12 @@ const SideBar = (
 	 {
 		 props:
 		 { 
-       mails,
+       mails: {mailsPerPage},
 			 setMails, 
 			 isSideBarClicked,
 			 setIsSideBarClicked,
 			 setIsNewMail, 
 			 isNewMail, 
-			 setTypeOfMail, 
 			 setIsOpenedMail 
 		}
 	}: Props) => {
@@ -43,8 +41,8 @@ const SideBar = (
 			<Link to="/">
 			  <ModButton type="primary" icon={<SearchOutlined />} 
 			  onClick={() => {
-				  setTypeOfMail("inbox"); 
-			  	fetchMails("inbox", 1, mails.mailsPerPage, setMails)
+				  // setTypeOfMail("inbox"); 
+			  	fetchMails("inbox", 1, mailsPerPage, setMails)
         }}
           >Inbox
         </ModButton>
@@ -55,8 +53,8 @@ const SideBar = (
 			<Link to="/sent">
 			  <ModButton type="primary" icon={<SendOutlined />} 
 			  onClick={() => {
-          setTypeOfMail("sent");
-          fetchMails("sent", 1, mails.mailsPerPage, setMails)
+          // setTypeOfMail("sent");
+          fetchMails("sent", 1, mailsPerPage, setMails)
         }}
           >Sent
           </ModButton>
@@ -67,8 +65,8 @@ const SideBar = (
 			<Link to="/trash">
 			  <ModButton type="primary" icon={<DeleteOutlined />} 
 			  onClick={() => {
-          setTypeOfMail("trash"); 
-          fetchMails("trash", 1, mails.mailsPerPage, setMails)
+          // setTypeOfMail("trash"); 
+          fetchMails("trash", 1, mailsPerPage, setMails)
           }}
           >Trash
           </ModButton>

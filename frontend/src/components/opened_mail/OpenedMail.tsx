@@ -16,25 +16,25 @@ type Props  = {
 // -------------------- The component itself -------------------- 
 const OpenedMail = (
   {
-    openedMail, 
+    openedMail: {from, fromEmailAddress, subject, message}, 
     setIsNewMail, 
     setSendTo
   }: Props) => {
   
   function handleClick() {
     setIsNewMail(true);
-    setSendTo(openedMail.fromEmailAddress)
+    setSendTo(fromEmailAddress)
   }
 
 	return (
 		<MailContextContainer>
-      <h1>Subject: {openedMail?.subject}</h1>
+      <h1>Subject: {subject}</h1>
       <h2>
-        From: <span className="from">{openedMail?.from}</span>
-        <span className="email-address">{`<${openedMail?.fromEmailAddress}>`}</span>
+        From: <span className="from">{from}</span>
+        <span className="email-address">{`<${fromEmailAddress}>`}</span>
       </h2>
       <div>
-        <span className="message">{openedMail?.message}</span>
+        <span className="message">{message}</span>
       </div>
       <Button onClick={handleClick} className="reply-button" icon={<RollbackOutlined />}>Reply</Button>
 		</MailContextContainer>

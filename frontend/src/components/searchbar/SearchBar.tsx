@@ -14,7 +14,7 @@ type Props = {
 // -------------------- Component -------------------- 
 const SearchBar = (
   {
-    mails, 
+    mails: {mailsPerPage, typeOfMail, mails}, 
     setMails 
   }: Props) => {
 
@@ -29,7 +29,7 @@ const SearchBar = (
       setShowResultMails(true);
 
       function handleChange() {
-        if(!currentInput || mails["mails"] === []) {
+        if(!currentInput || mails === []) {
           return;
         }
 
@@ -41,7 +41,7 @@ const SearchBar = (
 
         const currentResultMails: FetchedMail[] = [];
 
-        for(const mail of mails["mails"]) {
+        for(const mail of mails) {
           const allStringFromEmail = 
             mail.to + " " +
             mail.fromEmailAddress + " " +
@@ -67,7 +67,13 @@ const SearchBar = (
       return;
     }
     setShowResultMails(false);
-    setMails({totalNumOfMails: resultMails.length, mailsPerPage: mails.mailsPerPage, mails:resultMails});
+
+    setMails({
+      totalNumOfMails: resultMails.length,
+      typeOfMail: typeOfMail,
+      mailsPerPage: mailsPerPage, 
+      mails:resultMails});
+
     setOpenedMailID(null);
     setIsOpenedMail(false);
 	}

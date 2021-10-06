@@ -1,5 +1,5 @@
 export async function fetchMails(
-	typeOfMail: "inbox" | "sent" | "trash" | "", 
+	typeOfMail: "inbox" | "sent" | "trash",
   pageNum: number,
   mailsPerPage: number,
 	setMails: Function,

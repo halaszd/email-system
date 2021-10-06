@@ -30,7 +30,7 @@ const Mail = (
   }: Props
   ) => {
 
-  const { typeOfMail, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
+  const { mails: {typeOfMail}, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
 
   function handleCheckMail(e:CheckboxChangeEvent) {
     if(e.target.checked) {

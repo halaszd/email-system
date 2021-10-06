@@ -5,7 +5,7 @@ type MailContextType = {
   isSideBarClicked?: boolean;
   mails: FetchedMails;
   setMails: Function;
-  typeOfMail: "inbox" | "sent" | "trash";
+  // typeOfMail: "inbox" | "sent" | "trash";
   openedMail?: FetchedMail;
   isOpenedMail?: boolean;
   setIsOpenedMail: Function;
@@ -31,9 +31,9 @@ const fetchedMails: FetchedMail[] = [];
 export const MailContext = createContext<MailContextType>(
   {
     isSideBarClicked: false,
-    mails: {totalNumOfMails: 0, mailsPerPage: 20, mails: fetchedMails},
+    mails: {totalNumOfMails: 0, mailsPerPage: 20, typeOfMail: "inbox", mails: fetchedMails},
     setMails: () => {},
-    typeOfMail: "inbox",
+    // typeOfMail: "inbox",
     openedMail: emptyMail,
     isOpenedMail: false,
     setIsOpenedMail: () => {},
