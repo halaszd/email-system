@@ -1,8 +1,8 @@
 import styled from '@emotion/styled';
 
 export const ResultsContainer = styled.div`
-  height: 500px;
-  overflow: scroll;
+  max-height: 500px;
+  overflow-y: scroll;
 `;
 
 export const ResultContainer = styled.div`
