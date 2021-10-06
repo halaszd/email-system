@@ -28,7 +28,7 @@ import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
 import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, 
-  ContentDiv, LoginRegistration, LoginRegistratonDiv, ModRegistration} from './Styled';
+  ContentDiv, LoginRegistration, ModRegistration} from './Styled';
 
 // TODO:
 // Frontend side
@@ -218,9 +218,7 @@ export default function App() {
               <Switch>
 
                 <Route exact path="/registration">
-                  <LoginRegistratonDiv>
                     <ModRegistration />
-                  </LoginRegistratonDiv>
                 </Route>
 
                 <UserContext.Provider value={
@@ -230,13 +228,11 @@ export default function App() {
                     setMails
                   }} >
                   <Route exact path="/login">
-                    <LoginRegistratonDiv>
                       <StatusSetter 
                         render={(status, setStatus) => (
                           <Login status={status} setStatus={setStatus}/>
                         )} 
                       />
-                    </LoginRegistratonDiv>
                   </Route>
                 </UserContext.Provider>
 

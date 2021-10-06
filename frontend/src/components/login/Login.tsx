@@ -3,7 +3,8 @@ import { UserContext } from '../useContexts/UserContext';
 
 import { fetchMails } from '../functions/fetchMails';
 
-import { ModForm, LogButton } from './Styled';
+import { LoginDiv, ModForm, LogButton } from './Styled';
+import { LoginRegistratonDiv } from '../../Styled';
 import { Form, Input, Checkbox, Modal } from 'antd';
 
 const logURL = 'http://localhost:3001/api/login'
@@ -61,8 +62,8 @@ class LoginForm extends React.Component<IProps, IState> {
 
   render() {
   return (
-    <>
-    <h1>Sign in</h1>
+    <LoginRegistratonDiv>
+      <h1>Sign in</h1>
       <ModForm
         name="basic"
         labelCol={{ span: 8 }}
@@ -102,7 +103,7 @@ class LoginForm extends React.Component<IProps, IState> {
       <Modal title="Login was not successful" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
         <p>Incorrect username or password!</p>
       </Modal>
-    </>
+    </LoginRegistratonDiv>
   );
 
   }

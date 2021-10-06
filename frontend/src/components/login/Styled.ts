@@ -1,6 +1,12 @@
 import styled from '@emotion/styled';
 import { Form, Button } from 'antd';
 
+export const LoginDiv = styled.div`
+  width: 100%;
+  height: 100%;
+  background-color: blue;
+`;
+
 export const ModForm = styled(Form)`
   width: 300px;
   .login-form-forgot {
