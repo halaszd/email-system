@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import { useContext } from 'react';
+import React from 'react';
 import { UserContext } from '../useContexts/UserContext';
 
 import { fetchMails } from '../functions/fetchMails';
@@ -9,20 +8,37 @@ import { Form, Input, Checkbox, Modal } from 'antd';
 
 const logURL = 'http://localhost:3001/api/login'
 
-const LoginForm = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
+type IProps = {};
 
-  const { setIsLoggedIn, setUsername, setMails} = useContext(UserContext);
+type IState = {
+  isModalVisible: boolean;
+};
+
+class LoginForm extends React.Component<IProps, IState> {
+  static contextType = UserContext;
+
+  constructor(props: IProps) {
+    super(props)
+    this.onFinish = this.onFinish.bind(this);
+    this.handleCancel = this.handleCancel.bind(this);
+    this.handleOk = this.handleOk.bind(this);
   
-  function handleOk() {
-    setIsModalVisible(false);
+    this.state = {
+      isModalVisible: false
+    }
+  }
+  
+  handleOk() {
+    this.setState({ isModalVisible: false })
   };
 
-  function handleCancel() {
-    setIsModalVisible(false);
+  handleCancel() {
+    this.setState({ isModalVisible: false })
   };
 
-  async function onFinish(values: any) {
+  async onFinish(values: any) {
+    const {setIsLoggedIn, setUsername, setMails} = this.context;
+
     const response = await fetch(logURL, {
       method: 'POST',
       headers: {
@@ -40,14 +56,15 @@ const LoginForm = () => {
       setUsername(values["username"]);
 
     } else {
-      setIsModalVisible(true);
+      this.setState({ isModalVisible: true })
     }
   };
 
-  function onFinishFailed(errorInfo: any) {
+  onFinishFailed(errorInfo: any) {
     console.log('Failed:', errorInfo);
   };
 
+  render() {
   return (
     <>
     <h1>Sign in</h1>
@@ -56,8 +73,8 @@ const LoginForm = () => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
+        onFinish={this.onFinish}
+        onFinishFailed={this.onFinishFailed}
         autoComplete="off"
       >
         <Form.Item
@@ -87,11 +104,13 @@ const LoginForm = () => {
         </Form.Item>
       </ModForm>
 
-      <Modal title="Login was not successful" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      <Modal title="Login was not successful" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
         <p>Incorrect username or password!</p>
       </Modal>
     </>
   );
+
+  }
 };
 
 export default LoginForm;
