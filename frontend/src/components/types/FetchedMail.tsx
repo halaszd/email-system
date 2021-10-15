@@ -1,5 +1,5 @@
 
-export default interface FetchedMail {
+export type FetchedMail = {
   from: string;
   fromEmailAddress: string;
   to: string;
@@ -7,4 +7,9 @@ export default interface FetchedMail {
   subject: string;
   message: string;
   id: number;
+}
+
+export type FetchedMails = {
+  totalNumOfMails: number;
+  mails: FetchedMail[];
 }
