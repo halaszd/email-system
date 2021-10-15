@@ -1,7 +1,7 @@
 import React from 'react';
 import { useContext } from 'react';
 import { SearchBarContext } from '../useContexts/SearchBarContext';
-import { ResultsContainer, ContentContainer, MessageInfos } from './Styled';
+import { ResultsContainer, ResultContainer, ContentContainer, MessageInfos } from './Styled';
 import { FetchedMail } from '../types/FetchedMail';
 
 type Props = {
@@ -25,10 +25,10 @@ const Results = (
   }
   
 	return (
-		<div>
+		<ResultsContainer>
 			{resultMails && resultMails.map((mail, index) => {
         return(
-          <ResultsContainer key={`${mail.id}_${index}`}>
+          <ResultContainer key={`${mail.id}_${index}`}>
             <ContentContainer>
               <MessageInfos onClick={() => handleClick(mail.id)}>
                 {/* { props.typeOf === 'inbox' || props.typeOf === 'trash' */}
@@ -39,10 +39,10 @@ const Results = (
                 <span className="from-subject">Subject: {mail.subject}</span>	
               </MessageInfos>
             </ContentContainer>
-        </ResultsContainer>
+        </ResultContainer>
         )
       })}
-		</div>
+		</ResultsContainer>
 	)
 }
 

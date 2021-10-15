@@ -28,7 +28,7 @@ import SearchBar from './components/searchbar/SearchBar';
 import Login from './components/login/Login';
 
 import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, 
-  ContentDiv, LoginRegistration, LoginRegistratonDiv, ModRegistration} from './Styled';
+  ContentDiv, LoginRegistration, ModRegistration} from './Styled';
 
 // TODO:
 // Frontend side
@@ -39,7 +39,6 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder,
 // 2: search should send a fetch and search results should coome from the server
 // 2: date in mails
 // 6: loading animation for registration and login
-// 4: show only few results in onChange search. Other mails: scrolling?
 
 // 6: when we logged in the users emails are present (fetched)
 // 7: in Mails.tsx render for trash as well
@@ -56,9 +55,6 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder,
 
 const fetchedMailArray: FetchedMail[] = [];
 
-// -------------------- Declaring types -------------------- 
-type TypeOfMail = "inbox" | "sent" | "trash";
-
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
@@ -69,8 +65,13 @@ export default function App() {
 
   const [isSideBarClicked, setIsSideBarClicked] = useState(false);
   // To store fetched mails
-  const [mails, setMails] = useState<FetchedMails>({totalNumOfMails: 1, mails: fetchedMailArray});
-  const [typeOfMail, setTypeOfMail] = useState<TypeOfMail>("inbox");
+  const [mails, setMails] = useState<FetchedMails>(
+    {
+      totalNumOfMails: 1, 
+      mailsPerPage: 20, 
+      typeOfMail: "inbox",
+      mails: fetchedMailArray
+    });
   // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
@@ -148,12 +149,13 @@ export default function App() {
               <Redirect to="/" />
 
               <SideBar props={
-                { isSideBarClicked,
+                { 
+                  mails,
+                  setMails, 
+                  isSideBarClicked,
                   setIsSideBarClicked,
                   setIsNewMail, 
                   isNewMail, 
-                  setTypeOfMail, 
-                  setMails, 
                   setIsOpenedMail 
                 }} />
               
@@ -163,7 +165,6 @@ export default function App() {
                     isSideBarClicked,
                     mails, 
                     setMails, 
-                    typeOfMail,
                     openedMail,
                     isOpenedMail,
                     setIsOpenedMail,
@@ -181,7 +182,6 @@ export default function App() {
                     {
                       mails, 
                       setMails, 
-                      typeOfMail, 
                       setIsOpenedMail, 
                       setOpenedMailID, 
                       checkedMailIDs, 
@@ -218,9 +218,7 @@ export default function App() {
               <Switch>
 
                 <Route exact path="/registration">
-                  <LoginRegistratonDiv>
                     <ModRegistration />
-                  </LoginRegistratonDiv>
                 </Route>
 
                 <UserContext.Provider value={
@@ -230,13 +228,11 @@ export default function App() {
                     setMails
                   }} >
                   <Route exact path="/login">
-                    <LoginRegistratonDiv>
                       <StatusSetter 
                         render={(status, setStatus) => (
                           <Login status={status} setStatus={setStatus}/>
                         )} 
                       />
-                    </LoginRegistratonDiv>
                   </Route>
                 </UserContext.Provider>
 

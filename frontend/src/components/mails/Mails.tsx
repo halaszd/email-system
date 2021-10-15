@@ -7,14 +7,14 @@ import Mail from '../mail/Mail';
 const Mails = () => {
   
   const {
-     mails, 
+     mails: {mails}, 
      checkedMailIDs, 
      setCheckedMailIDs 
     } = useContext(MailContext);
 
 	return (
     <MailsContainer>
-      {mails["mails"] && mails["mails"].map((mail, index) => {
+      {mails && mails.map((mail, index) => {
         return (
           <>
             <Mail 

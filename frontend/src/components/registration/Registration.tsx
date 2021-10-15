@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 
 import { ModForm, ModFormItem, RegButton } from './Styled';
+import { LoginRegistratonDiv } from '../../Styled';
 
 const formItemLayout = {
   labelCol: {
@@ -78,7 +79,7 @@ export class Registration extends Component<IProps, IState> {
     
   render() {
     return (
-      <>
+      <LoginRegistratonDiv>
       <h1>Create your Account</h1>
       {!this.state.isSuccessfulRegistration
       ?
@@ -185,7 +186,7 @@ export class Registration extends Component<IProps, IState> {
       :
         <Redirect to="/login" />
       }
-      </>
+      </LoginRegistratonDiv>
     );
   };
 };
