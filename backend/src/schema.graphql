@@ -1,0 +1,29 @@
+type Query {
+    feed: String!
+    # emails(typeOfEmail: String): [Email!]!
+}
+
+type Mutation {
+    send(from: String!, to: String!, message: String): Email!
+    signup(email: String!, password: String!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+}
+
+type Email {
+    id: ID!
+    from: User!
+    to: User!
+    message: String
+}
+
+type User {
+    id: ID!
+    emailAddress: String!
+    inbox: [Email!]!
+    sent: [Email!]!
+}
+
+type AuthPayload {
+    token: String
+    user: User
+}
