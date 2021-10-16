@@ -9,8 +9,6 @@ const User = require('./resolvers/User');
 const Email = require('./resolvers/Email');
 
 // TODO:
-// check if only logged in users are able to get their mails
-// query inbox, sent and trash mails
 // search through mails
 // trash box
 // updateMail(Mutation) --> to move a mail to trash folder
