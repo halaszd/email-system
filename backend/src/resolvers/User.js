@@ -1,10 +1,10 @@
-function inbox(parent, args, context) {
-    return context.prisma.user.findUnique({
+async function inbox(parent, args, context) {
+    return await context.prisma.user.findUnique({
         where: {
             id: parent.id
         }
     })
-    .to()
+    .inbox()
 }
 
 function sent(parent, args, context) {
@@ -13,7 +13,7 @@ function sent(parent, args, context) {
             id: parent.id
         }
     })
-    .from()
+    .sent()
 }
 
 module.exports = {

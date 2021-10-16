@@ -15,7 +15,7 @@ async function signup(parent, args, context, info) {
     const token = jwt.sign({
         userId: user.id,
         },
-    APP_SECRET
+        APP_SECRET
     )
 
     return {
@@ -43,8 +43,9 @@ async function login(parent, args, context, info) {
 
     const token = jwt.sign({
         userId: user.id,
+        },
         APP_SECRET
-    })
+    )
 
     return {
         token,
@@ -54,6 +55,11 @@ async function login(parent, args, context, info) {
 
 async function send(parent, args, context, info) {
     const { userId } = context;
+    
+    if(!userId) {
+        throw new Error('User cannot be null')
+    }
+
     const toUser = await context.prisma.user.findUnique({
         where: {
             email: args.to

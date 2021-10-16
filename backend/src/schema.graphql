@@ -1,6 +1,5 @@
 type Query {
-    feed: String!
-    # emails(typeOfEmail: String): [Email!]!
+    userInfo: User!
 }
 
 type Mutation {
