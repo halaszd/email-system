@@ -14,8 +14,6 @@ model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
   password  String
-  // emails    Email[]
-  // mailBoxes UserMail[]
   toUser UserMail[] @relation("toUser")
   fromUser UserMail[] @relation("fromUser")
   all UserMail[] @relation("possessedBy") 
@@ -26,8 +24,6 @@ model User {
 model Email {
   id        Int        @id @default(autoincrement())
   createdAt DateTime   @default(now())
-  // fromUser  User?      @relation(fields: [fromId], references: [id])
-  // fromId    Int
   subject   String?
   message   String?
   mailBoxes UserMail[]
@@ -38,8 +34,6 @@ model UserMail {
   id         Int    @id @default(autoincrement())
   email      Email? @relation(fields: [emailId], references: [id])
   emailId    Int
-  // user      User?  @relation(fields: [userId], references: [id])
-  // userId    Int
   possessedBy User? @relation(name: "possessedBy", fields: [possessedById], references: [id])
   possessedById Int
   fromUser   User?  @relation(name: "fromUser", fields: [fromUserId], references: [id])
@@ -51,21 +45,3 @@ model UserMail {
 
   @@unique([emailId, possessedById, fromUserId, toUserId, typeOfBox])
 }
-
-// model Email {
-//   id        Int      @id @default(autoincrement())
-//   createdAt DateTime @default(now())
-//   from      User?    @relation(name: "from", fields: [fromId], references: [id])
-//   fromId    Int
-//   to        User?    @relation(name: "to", fields: [toId], references: [id])
-//   toId      Int
-//   message   String?
-// }
-
-// model User {
-//   id       Int     @id @default(autoincrement())
-//   email    String  @unique
-//   password String
-//   inbox    Email[] @relation("to")
-//   sent     Email[] @relation("from")
-// }

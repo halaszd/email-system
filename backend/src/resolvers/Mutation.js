@@ -72,27 +72,10 @@ async function send(parent, args, context, info) {
 
     const newEmail = await context.prisma.email.create({
         data: {
-            // fromUser: { connect: { id: userId } },
             subject: args.subject,
             message: args.message
         }
     })
-
-    // const newFromUserMail = await context.prisma.userMail.create({
-    //     data: {
-    //         email: { connect: { id: newEmail.id } },
-    //         user: { connect: { id: userId } },
-    //         typeOfBox: 'sent'
-    //     }
-    // })
-
-    // const newToUserMail = await context.prisma.userMail.create({
-    //     data: {
-    //         email: { connect: { id: newEmail.id } },
-    //         user: { connect: { id: toUser.id } },
-    //         typeOfBox: 'inbox'
-    //     }
-    // })
 
     const newFromUserMail = await context.prisma.userMail.create({
         data: {

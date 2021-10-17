@@ -39,4 +39,5 @@ module.exports = {
     email,
     fromUser,
     toUser,
+    possessedBy,
 }

@@ -16,7 +16,6 @@ type User {
 
 type Email {
     id: ID!
-    # from: User!
     subject: String
     message: String
 
@@ -36,18 +35,3 @@ type AuthPayload {
     token: String
     user: User
 }
-
-# type Email {
-#     id: ID!
-#     from: User!
-#     to: User!
-#     message: String
-# }
-
-# type User {
-#     id: ID!
-#     email: String!
-#     inbox: [Email!]!
-#     sent: [Email!]!
-#     # trash: [Email!]!
-# }

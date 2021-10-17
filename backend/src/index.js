@@ -6,8 +6,6 @@ const { getUserId } = require('./utils');
 const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const UserMail = require('./resolvers/UserMail');
-// const User = require('./resolvers/User');
-// const Email = require('./resolvers/Email');
 
 // TODO:
 // search through mails
@@ -21,8 +19,6 @@ const resolvers = {
     Query,
     Mutation,
     UserMail,
-    // Email
-    // User,
 }
 
 const server = new ApolloServer({
