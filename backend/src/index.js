@@ -5,7 +5,8 @@ const path = require('path');
 const { getUserId } = require('./utils');
 const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
-const User = require('./resolvers/User');
+const UserMail = require('./resolvers/UserMail');
+// const User = require('./resolvers/User');
 const Email = require('./resolvers/Email');
 
 // TODO:
@@ -19,10 +20,10 @@ const prisma = new PrismaClient();
 const resolvers = {
     Query,
     Mutation,
-    User,
+    UserMail,
     Email
+    // User,
 }
-
 
 const server = new ApolloServer({
     typeDefs: fs.readFileSync(

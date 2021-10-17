@@ -4,19 +4,19 @@ function from(parent, args, context) {
             id: parent.id
         }
     })
-    .from()
+    .fromUser()
 }
 
-function to(parent, args, context) {
-    return context.prisma.email.findUnique({
-        where: {
-            id: parent.id
-        }
-    })
-    .to()
-}
+// function to(parent, args, context) {
+//     return context.prisma.email.findUnique({
+//         where: {
+//             id: parent.id
+//         }
+//     })
+//     .to()
+// }
 
 module.exports = {
     from,
-    to,
+    // to,
 }

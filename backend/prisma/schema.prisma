@@ -10,20 +10,58 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Email {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  from      User?    @relation(name: "from", fields: [fromId], references: [id])
-  fromId    Int
-  to        User?    @relation(name: "to", fields: [toId], references: [id])
-  toId      Int
-  message   String?
-}
-
 model User {
   id       Int     @id @default(autoincrement())
   email    String  @unique
   password String
-  inbox    Email[] @relation("to")
-  sent     Email[] @relation("from")
+  emails Email[]
+  mailBoxes UserMail[]
+  // toUser UserMail[] @relation("to")
+  // fromUser UserMail[] @relation("from")
+
 }
+
+model Email {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  fromUser      User?    @relation(fields: [fromId], references: [id])
+  fromId    Int
+  subject   String?
+  message   String?
+  mailBoxes UserMail[]
+
+}
+
+model UserMail {
+  id Int @id @default(autoincrement())
+  email Email? @relation(fields: [emailId], references: [id])
+  emailId Int
+  user User?  @relation(fields: [userId], references: [id])
+  userId Int
+  // fromUser      User?    @relation(name: "from", fields: [fromUserId], references: [id])
+  // fromUserId    Int
+  // toUser User?  @relation(name: "to", fields: [toUserId], references: [id])
+  // toUserId Int
+  typeOfBox String 
+  // isRead Boolean
+
+  @@unique([emailId, userId])
+}
+
+// model Email {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   from      User?    @relation(name: "from", fields: [fromId], references: [id])
+//   fromId    Int
+//   to        User?    @relation(name: "to", fields: [toId], references: [id])
+//   toId      Int
+//   message   String?
+// }
+
+// model User {
+//   id       Int     @id @default(autoincrement())
+//   email    String  @unique
+//   password String
+//   inbox    Email[] @relation("to")
+//   sent     Email[] @relation("from")
+// }

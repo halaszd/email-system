@@ -1,28 +1,50 @@
 type Query {
     userInfo: User!
+    emails(typeOfBox: String!): [UserMail!]!
 }
 
 type Mutation {
-    send(from: String!, to: String!, message: String): Email!
+    send(from: String!, to: String!, subject: String, message: String): UserMail!
     signup(email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
-}
-
-type Email {
-    id: ID!
-    from: User!
-    to: User!
-    message: String
 }
 
 type User {
     id: ID!
     email: String!
-    inbox: [Email!]!
-    sent: [Email!]!
 }
+
+type Email {
+    id: ID!
+    from: User!
+    subject: String
+    message: String
+
+}
+
+type UserMail {
+    email: Email
+    user: User
+    typeOfBox: String!
+}
+
 
 type AuthPayload {
     token: String
     user: User
 }
+
+# type Email {
+#     id: ID!
+#     from: User!
+#     to: User!
+#     message: String
+# }
+
+# type User {
+#     id: ID!
+#     email: String!
+#     inbox: [Email!]!
+#     sent: [Email!]!
+#     # trash: [Email!]!
+# }
