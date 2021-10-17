@@ -1,4 +1,10 @@
 
+const typeOfBoxes = [
+    "inbox",
+    "sent",
+    "trash"
+]
+
 async function userInfo(parent, args, context, info) {
     console.log("in the emails")
     const { userId } = context;
@@ -26,7 +32,7 @@ async function emails(parent, args, context, info) {
 
     const userMails = context.prisma.userMail.findMany({
         where: {
-            id: userId,
+            possessedById: userId,
             typeOfBox: args.typeOfBox
         }
     })

@@ -7,16 +7,36 @@ async function email(parent, args, context) {
     .email()
 }
 
-async function user(parent, args, context) {
+async function possessedBy(parent, args, context) {
     return await context.prisma.userMail.findUnique({
         where: {
             id: parent.id
         }
     })
-    .user()
+    .possessedBy()
 }
+
+async function fromUser(parent, args, context) {
+    return await context.prisma.userMail.findUnique({
+        where: {
+            id: parent.id
+        }
+    })
+    .fromUser()
+}
+
+async function toUser(parent, args, context) {
+    return await context.prisma.userMail.findUnique({
+        where: {
+            id: parent.id
+        }
+    })
+    .toUser()
+}
+
 
 module.exports = {
     email,
-    user,
+    fromUser,
+    toUser,
 }

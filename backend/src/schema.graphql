@@ -16,15 +16,18 @@ type User {
 
 type Email {
     id: ID!
-    from: User!
+    # from: User!
     subject: String
     message: String
 
 }
 
 type UserMail {
+    id: ID!
     email: Email
-    user: User
+    possessedBy: User
+    fromUser: User
+    toUser: User
     typeOfBox: String!
 }
 

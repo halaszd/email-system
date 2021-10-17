@@ -2,12 +2,6 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET, getUserId } = require('../utils');
 
-const typeOfBoxes = [
-    "inbox",
-    "sent",
-    "trash"
-]
-
 async function signup(parent, args, context, info) {
     const password = await bcrypt.hash(args.password, 10);
 
@@ -78,16 +72,34 @@ async function send(parent, args, context, info) {
 
     const newEmail = await context.prisma.email.create({
         data: {
-            fromUser: { connect: { id: userId } },
+            // fromUser: { connect: { id: userId } },
             subject: args.subject,
             message: args.message
         }
     })
 
+    // const newFromUserMail = await context.prisma.userMail.create({
+    //     data: {
+    //         email: { connect: { id: newEmail.id } },
+    //         user: { connect: { id: userId } },
+    //         typeOfBox: 'sent'
+    //     }
+    // })
+
+    // const newToUserMail = await context.prisma.userMail.create({
+    //     data: {
+    //         email: { connect: { id: newEmail.id } },
+    //         user: { connect: { id: toUser.id } },
+    //         typeOfBox: 'inbox'
+    //     }
+    // })
+
     const newFromUserMail = await context.prisma.userMail.create({
         data: {
             email: { connect: { id: newEmail.id } },
-            user: { connect: { id: userId } },
+            possessedBy: { connect: { id: userId } },
+            fromUser: { connect: { id: userId } },
+            toUser: { connect: { id: toUser.id } },
             typeOfBox: 'sent'
         }
     })
@@ -95,10 +107,13 @@ async function send(parent, args, context, info) {
     const newToUserMail = await context.prisma.userMail.create({
         data: {
             email: { connect: { id: newEmail.id } },
-            user: { connect: { id: toUser.id } },
+            possessedBy: { connect: { id: toUser.id } },
+            fromUser: { connect: { id: userId } },
+            toUser: { connect: { id: toUser.id } },
             typeOfBox: 'inbox'
         }
     })
+
 
     return newToUserMail
 }
