@@ -10,18 +10,18 @@ async function signup(parent, args, context, info) {
             ...args,
             password
         }
-    })
+    });
 
     const token = jwt.sign({
         userId: user.id,
         },
         APP_SECRET
-    )
+    );
 
     return {
         token,
         user,
-    }
+    };
 }
 
 async function login(parent, args, context, info) {
@@ -29,53 +29,53 @@ async function login(parent, args, context, info) {
         where: {
             email: args.email
         }
-    })
+    });
 
     if(!user) {
         throw new Error('No such user found')
-    }
+    };
 
-    const valid = await bcrypt.compare(args.password, user.password)
+    const valid = await bcrypt.compare(args.password, user.password);
 
     if(!valid) {
         throw new Error('Invalid password')
-    }
+    };
 
     const token = jwt.sign({
         userId: user.id,
         },
         APP_SECRET
-    )
+    );
 
     return {
         token,
         user,
-    }
+    };
 }
 
 async function send(parent, args, context, info) {
     const { userId } = context;
     
     if(!userId) {
-        throw new Error('User cannot be null')
-    }
+        throw new Error('User cannot be null');
+    };
 
     const toUser = await context.prisma.user.findUnique({
         where: {
             email: args.to
         }
-    })
+    });
 
     if(!toUser) {
-        throw new Error('No such user to send the mail to')
-    }
+        throw new Error('No such user to send the mail to');
+    };
 
     const newEmail = await context.prisma.email.create({
         data: {
             subject: args.subject,
             message: args.message
         }
-    })
+    });
 
     const newFromUserMail = await context.prisma.userMail.create({
         data: {
@@ -85,7 +85,7 @@ async function send(parent, args, context, info) {
             toUser: { connect: { id: toUser.id } },
             typeOfBox: 'sent'
         }
-    })
+    });
 
     const newToUserMail = await context.prisma.userMail.create({
         data: {
@@ -95,14 +95,66 @@ async function send(parent, args, context, info) {
             toUser: { connect: { id: toUser.id } },
             typeOfBox: 'inbox'
         }
-    })
+    });
 
 
-    return newToUserMail
+    return newToUserMail;
+}
+
+async function deleteUserMail(parent, args, context) {
+    const { userId } = context;
+
+    const deletedUserMails = [];
+
+    for(const userMailId of args.userMailIds) {
+
+        const userMailTodelete = await context.prisma.userMail.findUnique({
+            where: {
+                id_possessedById: {
+                    id: Number(userMailId),
+                    possessedById: userId
+                }
+            }
+        });
+        console.log("id: ", userMailId, "userId: ", userId, userMailTodelete)
+
+        if(!userMailTodelete) {
+            continue;
+        };
+
+        if(userMailTodelete.typeOfBox === 'trash'){
+            await context.prisma.userMail.delete({
+                where: {
+                    id_possessedById: {
+                        id: Number(userMailId),
+                        possessedById: userId
+                    }
+                }
+            });
+        } else {
+            await context.prisma.userMail.update({
+                where: {
+                    id_possessedById: {
+                        id: Number(userMailId),
+                        possessedById: userId
+                    }
+                },
+                data: {
+                    typeOfBox: 'trash'
+                }
+            });
+        };
+
+        deletedUserMails.push(userMailTodelete);
+
+    }
+
+    return deletedUserMails;
 }
 
 module.exports = {
     signup,
     login,
     send,
+    deleteUserMail,
 }

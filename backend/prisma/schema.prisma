@@ -41,5 +41,5 @@ model UserMail {
   typeOfBox  String
   // isRead Boolean
 
-  @@unique([emailId, possessedById, typeOfBox])
+  @@unique([id, possessedById])
 }

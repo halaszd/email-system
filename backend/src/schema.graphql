@@ -4,9 +4,10 @@ type Query {
 }
 
 type Mutation {
-    send(from: String!, to: String!, subject: String, message: String): UserMail!
     signup(email: String!, password: String!): AuthPayload
     login(email: String!, password: String!): AuthPayload
+    send(from: String!, to: String!, subject: String, message: String): UserMail!
+    deleteUserMail(userMailIds: [ID!]!): [UserMail!]
 }
 
 type User {
