@@ -8,10 +8,11 @@ const Mutation = require('./resolvers/Mutation');
 const UserMail = require('./resolvers/UserMail');
 
 // TODO:
-// search through mails
-// trash box
 // updateMail(Mutation) --> to move a mail to trash folder
+// trash box
+// search through mails
 // pagination of mails
+// logout
 
 const prisma = new PrismaClient();
 

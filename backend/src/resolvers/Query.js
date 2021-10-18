@@ -1,3 +1,4 @@
+const { toUser } = require("./UserMail");
 
 const typeOfBoxes = [
     "inbox",
@@ -30,11 +31,14 @@ async function emails(parent, args, context, info) {
 
     const { userId } = context;
 
+    const where = { possessedById: userId };
+
+    if(args.typeOfBox !== 'all') {
+        where["typeOfBox"] = args.typeOfBox;
+    }
+
     const userMails = context.prisma.userMail.findMany({
-        where: {
-            possessedById: userId,
-            typeOfBox: args.typeOfBox
-        }
+        where 
     })
 
     return userMails

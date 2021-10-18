@@ -14,11 +14,9 @@ model User {
   id        Int        @id @default(autoincrement())
   email     String     @unique
   password  String
-  toUser UserMail[] @relation("toUser")
-  fromUser UserMail[] @relation("fromUser")
-  all UserMail[] @relation("possessedBy") 
-  
-
+  pseud0 UserMail[] @relation("possessedBy")
+  pseud1 UserMail[] @relation("toUser")
+  pseud2 UserMail[] @relation("fromUser")
 }
 
 model Email {
@@ -26,7 +24,7 @@ model Email {
   createdAt DateTime   @default(now())
   subject   String?
   message   String?
-  mailBoxes UserMail[]
+  pseud UserMail[]
 
 }
 
@@ -43,5 +41,5 @@ model UserMail {
   typeOfBox  String
   // isRead Boolean
 
-  @@unique([emailId, possessedById, fromUserId, toUserId, typeOfBox])
+  @@unique([emailId, possessedById, typeOfBox])
 }
