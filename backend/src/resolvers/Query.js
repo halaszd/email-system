@@ -1,10 +1,15 @@
-const { toUser } = require("./UserMail");
+const { toUser, fromUser } = require("./UserMail");
 
 const typeOfBoxes = [
     "inbox",
     "sent",
     "trash"
 ]
+
+// const advancedSearchNames = {
+//     from: "fromUser",
+//     to: "toUser"
+// }
 
 // async function userInfo(parent, args, context, info) {
 //     console.log("in the emails")
@@ -45,6 +50,7 @@ async function emails(parent, args, context, info) {
 }
 
 async function searchEmails(parent, args, context) {
+    // fromUser, toUser, message, subject
     const { userId } = context;
     const where = {possessedById: userId}
     if(args.filter) {
@@ -65,6 +71,9 @@ async function searchEmails(parent, args, context) {
             },
             {   
                 email: {
+                    subject: {
+                        contains: args.filter
+                    },
                     message: {
                         contains: args.filter
                     }
@@ -81,9 +90,6 @@ async function searchEmails(parent, args, context) {
         where
     })
     return resultMails
-
-    // args.typeOfBox
-    // args.filter
 }
 
 module.exports = {
