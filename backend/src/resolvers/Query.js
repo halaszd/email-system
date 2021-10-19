@@ -3,7 +3,8 @@ const { toUser, fromUser } = require("./UserMail");
 const typeOfBoxes = [
     "inbox",
     "sent",
-    "trash"
+    "trash",
+    "all",
 ]
 
 // const advancedSearchNames = {
@@ -42,11 +43,22 @@ async function emails(parent, args, context, info) {
         where["typeOfBox"] = args.typeOfBox;
     }
 
-    const userMails = context.prisma.userMail.findMany({
-        where 
+    const resultMails = await context.prisma.userMail.findMany({
+        where,
+        skip: args.skip,
+        take:args.take,
+        orderBy: args.orderBy
     })
 
-    return userMails
+    const allInBoxtypeCount = await context.prisma.userMail.count({
+        where
+    });
+
+
+    return {
+        resultMails,
+        allInBoxtypeCount,
+    }
 }
 
 async function searchEmails(parent, args, context) {

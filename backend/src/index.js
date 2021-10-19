@@ -9,8 +9,6 @@ const UserMail = require('./resolvers/UserMail');
 
 // TODO:
 // when all ppl delete an email from their box it should be seen on an email entity
-// pagination of mails
-// orderBy
 // count
 
 const prisma = new PrismaClient();

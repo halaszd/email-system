@@ -1,6 +1,6 @@
 type Query {
     # userInfo: User!
-    emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): [UserMail!]!
+    emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
     searchEmails(typeOfBox: String, filter: String): [UserMail!]!
 }
 
@@ -36,6 +36,11 @@ type UserMail {
 type AuthPayload {
     token: String
     user: User
+}
+
+type ResultMails {
+    resultMails: [UserMail!]!
+    allInBoxtypeCount: Int!
 }
 
 input MailOrderByInut {

@@ -12,6 +12,7 @@ generator client {
 
 model User {
   id        Int        @id @default(autoincrement())
+  createdAt DateTime   @default(now())
   email     String     @unique
   password  String
   pseud0 UserMail[] @relation("possessedBy")
@@ -30,6 +31,7 @@ model Email {
 
 model UserMail {
   id         Int    @id @default(autoincrement())
+  createdAt DateTime   @default(now())
   email      Email? @relation(fields: [emailId], references: [id])
   emailId    Int
   possessedBy User? @relation(name: "possessedBy", fields: [possessedById], references: [id])
