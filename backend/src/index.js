@@ -8,11 +8,11 @@ const Mutation = require('./resolvers/Mutation');
 const UserMail = require('./resolvers/UserMail');
 
 // TODO:
-// updateMail(Mutation) --> to move a mail to trash folder
-// trash box
-// search through mails
+// when all ppl delete an email from their box it should be seen on an email entity
+// filter
 // pagination of mails
-// logout
+// orderBy
+// count
 
 const prisma = new PrismaClient();
 

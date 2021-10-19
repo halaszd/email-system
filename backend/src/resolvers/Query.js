@@ -6,23 +6,23 @@ const typeOfBoxes = [
     "trash"
 ]
 
-async function userInfo(parent, args, context, info) {
-    console.log("in the emails")
-    const { userId } = context;
-    console.log(userId)
+// async function userInfo(parent, args, context, info) {
+//     console.log("in the emails")
+//     const { userId } = context;
+//     console.log(userId)
 
-    const user = await context.prisma.user.findUnique({
-        where: {
-            id: userId
-        }
-    })
+//     const user = await context.prisma.user.findUnique({
+//         where: {
+//             id: userId
+//         }
+//     })
 
-    if(!user) {
-        throw new Error('User cannot be null')
-    }
+//     if(!user) {
+//         throw new Error('User cannot be null')
+//     }
 
-    return user;
-}
+//     return user;
+// }
 
 async function emails(parent, args, context, info) {
     if(!typeOfBoxes.includes(args.typeOfBox)) {
@@ -44,7 +44,50 @@ async function emails(parent, args, context, info) {
     return userMails
 }
 
+async function searchEmails(parent, args, context) {
+    const { userId } = context;
+    const where = {possessedById: userId}
+    if(args.filter) {
+        where["OR"] = [
+            {
+                fromUser: {
+                    email: {
+                        contains: args.filter
+                    }
+                }
+            },
+            {
+                toUser: {
+                    email: {
+                        contains: args.filter
+                    }
+                }
+            },
+            {   
+                email: {
+                    message: {
+                        contains: args.filter
+                    }
+                }
+            },
+        ]
+    }
+
+    if(args.typeOfBox){
+        where["typeOfBox"] = args.typeOfBox;
+    }
+
+    const resultMails = await context.prisma.userMail.findMany({
+        where
+    })
+    return resultMails
+
+    // args.typeOfBox
+    // args.filter
+}
+
 module.exports = {
-    userInfo,
+    // userInfo,
     emails,
+    searchEmails,
 }
