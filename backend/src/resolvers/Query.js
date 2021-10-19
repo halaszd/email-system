@@ -1,5 +1,3 @@
-const { toUser, fromUser } = require("./UserMail");
-
 const typeOfBoxes = [
     "inbox",
     "sent",

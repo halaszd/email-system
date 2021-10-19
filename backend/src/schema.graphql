@@ -20,7 +20,6 @@ type Email {
     id: ID!
     subject: String
     message: String
-
 }
 
 type UserMail {
@@ -31,7 +30,6 @@ type UserMail {
     toUser: User
     typeOfBox: String!
 }
-
 
 type AuthPayload {
     token: String
