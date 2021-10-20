@@ -43,7 +43,6 @@ function getMails(pageNum, mailsPerPage, typeOfMail, mails) {
 
 // server.get('/api/mails/inbox:pageNum', (req, res) => {
 server.get('/api/mails/inbox', (req, res) => {
-	console.log(req.query.params)
 	// const inboxPageToSend = getMails(parseInt(req.query.pageNum), req.query.mailsPerPage, inbox);
 	console.log("inbox mails per page: ", mails.mails.settings.mailsPerPage)
 	const inboxPageToSend = getMails(

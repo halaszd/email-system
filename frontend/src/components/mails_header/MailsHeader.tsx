@@ -1,7 +1,6 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useContext } from 'react';
-import { MailContext } from '../useContexts/MailContext';
+import { useMail } from '../useContexts/MailContextProvider'
 import { fetchMails } from '../functions/fetchMails';
 import { FetchedMail } from '../types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
@@ -19,7 +18,7 @@ const MailsHeader = () => {
 	  isOpenedMail,
     openedMailID,
 	  setOpenedMailID
-  	} = useContext(MailContext);
+  	} = useMail();
 
   const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
   const [singlePageNumber, setSinglePageNumber] = useState(1);

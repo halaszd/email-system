@@ -1,6 +1,5 @@
 import React from 'react';
-import { useContext } from 'react';
-import { SearchBarContext } from '../useContexts/SearchBarContext';
+import { useMail } from '../useContexts/MailContextProvider';
 import { ResultsContainer, ResultContainer, ContentContainer, MessageInfos } from './Styled';
 import { FetchedMail } from '../types/FetchedMail';
 
@@ -16,7 +15,7 @@ const Results = (
     setResultMails
   }: Props) => {
 
-    const {setIsOpenedMail, setOpenedMailID} = useContext(SearchBarContext);
+    const {setIsOpenedMail, setOpenedMailID} = useMail();
 
   function handleClick(id: number) {
     setIsOpenedMail(true); 

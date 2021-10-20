@@ -1,24 +1,14 @@
 import React from 'react';
-import { useContext } from 'react';
-import { SearchBarContext } from '../useContexts/SearchBarContext';
+import { useMail } from '../useContexts/MailContextProvider';  
 import { useState, useEffect } from 'react';
-import { FetchedMails, FetchedMail } from '../types/FetchedMail';
+import { FetchedMail } from '../types/FetchedMail';
 import Results from '../results/Results';
 import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 
-type Props = {
-	mails: FetchedMails;
-  setMails: Function;
-}
-
 // -------------------- Component -------------------- 
-const SearchBar = (
-  {
-    mails: {mailsPerPage, typeOfMail, mails}, 
-    setMails 
-  }: Props) => {
+const SearchBar = ()=> {
 
-    const {setIsOpenedMail, setOpenedMailID} = useContext(SearchBarContext);
+    const {setMails, mails: {mailsPerPage, typeOfMail, mails}, setIsOpenedMail, setOpenedMailID} = useMail();
     
     const [resultMails, setResultMails] = useState<FetchedMail[]>([])
     const [showResultMails, setShowResultMails] = useState(false);

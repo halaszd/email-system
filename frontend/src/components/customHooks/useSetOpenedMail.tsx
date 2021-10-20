@@ -18,6 +18,7 @@ export function useSetOpenedMail(
 	openedMailID: number | null) {
 
 	const [openedMail, setOpenedMail] = useState<FetchedMail> (emptyMail);
+	console.log("inside useOpenMail", isOpenedMail)
 
 	useEffect(() => {
 		if(!mails.mails || !openedMailID) {
@@ -30,6 +31,7 @@ export function useSetOpenedMail(
 			if(openedMailID === mail.id) {
 				// console.log(mail)
 				setOpenedMail(mail)
+				console.log(mail)
 			}
 		}
 	}, [isOpenedMail, openedMailID])

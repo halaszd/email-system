@@ -1,27 +1,31 @@
-import React, { useContext } from 'react';
 import { MailsContainer } from './Styled';
-import { MailContext } from '../useContexts/MailContext';
+import { useMail } from '../useContexts/MailContextProvider';
 import Mail from '../mail/Mail';  
+import OpenedMail from '../opened_mail/OpenedMail';
 
 // -------------------- The component -------------------- 
-const Mails = () => {
+type Props = {
+  setIsNewMail: Function;
+  setSendTo: Function;
+}
+const Mails = ({setIsNewMail, setSendTo}: Props) => {
   
-  const {
-     mails: {mails}, 
-     checkedMailIDs, 
-     setCheckedMailIDs 
-    } = useContext(MailContext);
-
+  const { mails: { mails }, isOpenedMail } = useMail();
 	return (
+    <>
+    {!isOpenedMail
+      ?
     <MailsContainer>
       {mails && mails.map((mail, index) => {
         return (
-          <>
-            <Mail 
-            key={`${index}_${mail.id}`} mail={mail} checkedMailIDs={checkedMailIDs} setCheckedMailIDs={setCheckedMailIDs}/>
-          </>
+            <Mail key={`${index}_${mail.id}`} mail={mail} />
       )})}
     </MailsContainer>
+
+    :
+    <OpenedMail setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
+    }
+    </>
 	)
 }
 

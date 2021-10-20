@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
+import { useMail } from '../useContexts/MailContextProvider';
 import { FetchedMail } from '../types/FetchedMail';
-import { MailContext } from '../useContexts/MailContext';
 import { MailContainer, ContentContainer, CheckboxContainer, MessageInfos } from './Styled';
 import { Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';
@@ -8,8 +7,6 @@ import { CheckboxChangeEvent } from 'antd/lib/checkbox';
 // -------------------- Declaring types and interfaces -------------------- 
 type Props = {
   mail: FetchedMail
-  checkedMailIDs: number[];
-  setCheckedMailIDs: Function;
 }
 
 // -------------------- Component -------------------- 
@@ -25,12 +22,16 @@ const Mail = (
       message, 
       id
     }, 
-    checkedMailIDs, 
-    setCheckedMailIDs 
   }: Props
   ) => {
 
-  const { mails: {typeOfMail}, setIsOpenedMail, setOpenedMailID } = useContext(MailContext);
+  const { 
+    mails: {typeOfMail}, 
+    setIsOpenedMail,
+    setOpenedMailID,
+    checkedMailIDs, 
+    setCheckedMailIDs 
+  } = useMail();
 
   function handleCheckMail(e:CheckboxChangeEvent) {
     if(e.target.checked) {

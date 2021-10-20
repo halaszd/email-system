@@ -1,40 +1,24 @@
-import React from 'react';
 import 'antd/dist/antd.css';
 import './index.css';
 
 import {
   BrowserRouter as Router,
-  Switch,
-  Redirect,
-  Route,
-  Link
 } from "react-router-dom";
 
-import { useState } from 'react';
-import { UserContext } from './components/useContexts/UserContext';
-import { MailContext } from './components/useContexts/MailContext';
-import { SearchBarContext } from './components/useContexts/SearchBarContext';
+import { MailProvider, useMail } from './components/useContexts/MailContextProvider';
+import { fetchMails } from './components/functions/fetchMails';
+import { useState, useEffect } from 'react';
 
-import { useSetOpenedMail } from './components/customHooks/useSetOpenedMail';
-import { StatusSetter } from './components/render_props/StatusSetter';
-import { FetchedMail, FetchedMails } from './components/types/FetchedMail';
-
-import MailsHeader from './components/mails_header/MailsHeader';
-import Mails from './components/mails/Mails';
-import SideBar from './components/sidebar/SideBar';
-import NewMail from './components/new_mail/NewMail';
-import OpenedMail from './components/opened_mail/OpenedMail';
+import { Menu } from './components/menu/Menu';
+import { Authentication } from './components/authentication/Authentication';
+import { ShowMails } from './components/show_mails/ShowMails';
 import SearchBar from './components/searchbar/SearchBar';
-import Login from './components/login/Login';
 
-import {MainDiv, MainHeader, Menu, ButtonWithTextUnder, 
-  ContentDiv, LoginRegistration, ModRegistration} from './Styled';
+import {MainDiv, MainHeader, ContentDiv} from './Styled';
 
 // TODO:
 // Frontend side
-
-// 1: elements in style component
-// 1: Dont use useEffect if you can avoid using it
+// 1: refactoring the usage of useContext
 
 // 2: search should send a fetch and search results should coome from the server
 // 2: date in mails
@@ -53,196 +37,48 @@ import {MainDiv, MainHeader, Menu, ButtonWithTextUnder,
 // x: post new mail to server, receive answer with updated sent mails
 // x: reply
 
-const fetchedMailArray: FetchedMail[] = [];
 
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // const [isLoggedIn, setIsLoggedIn] = useState(true);
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
-
-  const [isSideBarClicked, setIsSideBarClicked] = useState(false);
-  // To store fetched mails
-  const [mails, setMails] = useState<FetchedMails>(
-    {
-      totalNumOfMails: 1, 
-      mailsPerPage: 20, 
-      typeOfMail: "inbox",
-      mails: fetchedMailArray
-    });
   // For writing new mails modal window
-  const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
-  const [sendTo, setSendTo] = useState<string>("");
+  const { setMails } = useMail();
 
-  // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
-  const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
-  const [openedMailID, setOpenedMailID] = useState<number | null>(null);
-  const[checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
+  useEffect(() => {
+    if(!isLoggedIn) {
+      return
+    }
 
-  // Custom hook for getting the parameters of clicked (opened mail)
-  const [openedMail] = useSetOpenedMail(
-    mails,
-    isOpenedMail,
-    openedMailID
-  );
+    async function loginFetchMails(){
+      await fetchMails("inbox", 1, 20, setMails);
+    }
+
+    loginFetchMails();
+
+  }, [isLoggedIn])
 
   return (
     <Router>
       <MainDiv>
-        <MainHeader>
-          <Menu>
+        <MailProvider>
+          <MainHeader>
+            <Menu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} username={username}/> 
+            { isLoggedIn && <SearchBar/> }
+          </MainHeader>
+          <ContentDiv>
             { !isLoggedIn
-            ?
-            <>
-            <li>
-              <Link to="registration">
-                <ButtonWithTextUnder content="Register">
-                  Register
-                </ButtonWithTextUnder>
-              </Link>
-            </li>
-            <li>
-              <Link to="login">
-                <ButtonWithTextUnder content="Login">
-                  Login
-                </ButtonWithTextUnder>
-              </Link>
-            </li>
-            </>
-            :
-            <>
-            <li>
-              <Link to="login">
-                <ButtonWithTextUnder onClick={() => setIsLoggedIn(false)} content="Log out">
-                  Log out
-                </ButtonWithTextUnder>
-              </Link>
-            </li>
-            <li>
-                <ButtonWithTextUnder content={username} borderRadius="25px">
-                  {username.charAt(0).toUpperCase()}
-                </ButtonWithTextUnder>
-            </li>
-            </>
+              ?
+                <Authentication setIsLoggedIn={setIsLoggedIn} setUsername={setUsername}/>
+              :
+                <ShowMails />
             }
-          </Menu>
-
-          { isLoggedIn && 
-            <SearchBarContext.Provider value={
-              {
-                setIsOpenedMail, 
-                setOpenedMailID
-              }}>
-              <SearchBar mails={mails} setMails={setMails} />
-            </SearchBarContext.Provider>
-          }
-
-        </MainHeader>
-
-        <ContentDiv>
-          { isLoggedIn
-            ?
-            <>
-              <Redirect to="/" />
-
-              <SideBar props={
-                { 
-                  mails,
-                  setMails, 
-                  isSideBarClicked,
-                  setIsSideBarClicked,
-                  setIsNewMail, 
-                  isNewMail, 
-                  setIsOpenedMail 
-                }} />
-              
-              <div>
-                <MailContext.Provider value={
-                  { 
-                    isSideBarClicked,
-                    mails, 
-                    setMails, 
-                    openedMail,
-                    isOpenedMail,
-                    setIsOpenedMail,
-                    openedMailID,
-                    setOpenedMailID, 
-                    checkedMailIDs, 
-                    setCheckedMailIDs,
-                  }}>
-                  <MailsHeader />
-                </MailContext.Provider>
-
-                {!isOpenedMail
-                  ?
-                  <MailContext.Provider value={
-                    {
-                      mails, 
-                      setMails, 
-                      setIsOpenedMail, 
-                      setOpenedMailID, 
-                      checkedMailIDs, 
-                      setCheckedMailIDs,
-                    }}>
-
-                    <Switch>
-                        <Route exact path="/">
-                          <Mails />
-                        </Route>
-                        <Route exact path="/sent">
-                          <Mails />
-                        </Route>
-                        <Route exact path="/trash">
-                          <Mails />
-                        </Route>
-                    </Switch>
-
-                  </MailContext.Provider>
-                  :
-                  <OpenedMail openedMail={openedMail} setIsNewMail={setIsNewMail} setSendTo={setSendTo} />
-                }
-
-              </div>
-
-              { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}
-            </>
-          :
-          <>
-          <Redirect to="/login" />
-          
-            <LoginRegistration>
-
-              <Switch>
-
-                <Route exact path="/registration">
-                    <ModRegistration />
-                </Route>
-
-                <UserContext.Provider value={
-                  { 
-                    setIsLoggedIn, 
-                    setUsername, 
-                    setMails
-                  }} >
-                  <Route exact path="/login">
-                      <StatusSetter 
-                        render={(status, setStatus) => (
-                          <Login status={status} setStatus={setStatus}/>
-                        )} 
-                      />
-                  </Route>
-                </UserContext.Provider>
-
-              </Switch>
-
-            </LoginRegistration>
-          </>
-          }
-
-        </ContentDiv>
+          </ContentDiv>
+        </MailProvider>
       </MainDiv>
     </Router>
   );
