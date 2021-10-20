@@ -1,5 +1,5 @@
-import { useMail } from '../useContexts/MailContextProvider';
-import { FetchedMail } from '../types/FetchedMail';
+import { useMail } from '../../../utils/useContexts/MailContextProvider';
+import { FetchedMail } from '../../../utils/types/FetchedMail';
 import { MailContainer, ContentContainer, CheckboxContainer, MessageInfos } from './Styled';
 import { Checkbox } from 'antd';
 import { CheckboxChangeEvent } from 'antd/lib/checkbox';

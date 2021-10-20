@@ -1,8 +1,8 @@
 import React from 'react'
 import { useState, useEffect } from 'react';
-import { useMail } from '../useContexts/MailContextProvider'
-import { fetchMails } from '../functions/fetchMails';
-import { FetchedMail } from '../types/FetchedMail';
+import { useMail } from '../../utils/useContexts/MailContextProvider'
+import { fetchMails } from '../../utils/functions/fetchMails';
+import { FetchedMail } from '../../utils/types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
 import { Pagination } from 'antd';

@@ -1,6 +1,6 @@
-import { UserContext } from '../useContexts/UserContext';
-import { StatusSetter } from '../render_props/StatusSetter';
-import Login from '../login/Login';import {
+import { UserContext } from '../utils/useContexts/UserContext';
+import { StatusSetter } from '../utils/render_props/StatusSetter';
+import Login from './login/Login';import {
   Switch,
   Route,
   Redirect,

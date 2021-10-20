@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import withStatus, { InjectedIsSuccessfulProps } from '../hocs/withStatus';
+import withStatus, { InjectedIsSuccessfulProps } from '../../utils/hocs/withStatus';
 import { FormInstance } from 'antd/es/form';
 import {
   Form,
@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 import { ModForm, ModFormItem, RegButton } from './Styled';
-import { LoginRegistratonDiv } from '../../Styled';
+import { LoginRegistratonDiv } from '../../../Styled';
 
 const formItemLayout = {
   labelCol: {

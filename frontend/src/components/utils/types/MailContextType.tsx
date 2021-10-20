@@ -1,4 +1,4 @@
-import { FetchedMail, FetchedMails } from '../types/FetchedMail';
+import { FetchedMail, FetchedMails } from './FetchedMail';
 
 export type MailContextType = {
   // isSideBarClicked?: boolean;

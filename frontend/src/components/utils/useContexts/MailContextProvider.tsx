@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
-import { useSetOpenedMail } from '..//customHooks/useSetOpenedMail';
+import { useSetOpenedMail } from '../customHooks/useSetOpenedMail';
 import { fetchMails } from '../functions/fetchMails';
 
 import { FetchedMail, FetchedMails } from '../types/FetchedMail';

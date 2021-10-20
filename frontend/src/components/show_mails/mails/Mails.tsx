@@ -1,7 +1,7 @@
 import { MailsContainer } from './Styled';
-import { useMail } from '../useContexts/MailContextProvider';
-import Mail from '../mail/Mail';  
-import OpenedMail from '../opened_mail/OpenedMail';
+import { useMail } from '../../utils/useContexts/MailContextProvider';
+import Mail from './mail/Mail';  
+import OpenedMail from './opened_mail/OpenedMail';
 
 // -------------------- The component -------------------- 
 type Props = {

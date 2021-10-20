@@ -1,8 +1,8 @@
 import { useState } from "react";
-import MailsHeader from '../mails_header/MailsHeader';
-import Mails from '../mails/Mails';
-import SideBar from '../sidebar/SideBar';
-import NewMail from '../new_mail/NewMail';
+import MailsHeader from './mails_header/MailsHeader';
+import Mails from './mails/Mails';
+import SideBar from './sidebar/SideBar';
+import NewMail from './new_mail/NewMail';
 import {
   Switch,
   Redirect,

@@ -1,7 +1,7 @@
 import React from 'react';
-import { useMail } from '../useContexts/MailContextProvider';
+import { useMail } from '../../utils/useContexts/MailContextProvider';
 import { ResultsContainer, ResultContainer, ContentContainer, MessageInfos } from './Styled';
-import { FetchedMail } from '../types/FetchedMail';
+import { FetchedMail } from '../../utils/types/FetchedMail';
 
 type Props = {
 	resultMails: FetchedMail[];

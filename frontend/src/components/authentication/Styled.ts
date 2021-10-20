@@ -1,5 +1,5 @@
 import styled from '@emotion/styled';
-import Registration from '../registration/Registration';
+import Registration from './registration/Registration';
 
 export const LoginRegistration = styled.div`
   position: absolute;

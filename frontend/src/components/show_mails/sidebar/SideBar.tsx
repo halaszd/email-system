@@ -1,5 +1,5 @@
-import { useMail } from '../useContexts/MailContextProvider';
-import { fetchMails } from '../functions/fetchMails';
+import { useMail } from '../../utils/useContexts/MailContextProvider';
+import { fetchMails } from '../../utils/functions/fetchMails';
 import { SideBarContainer, SubSideBar, ModButton } from './Styled';
 import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";

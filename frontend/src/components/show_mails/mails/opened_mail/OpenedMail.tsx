@@ -1,4 +1,4 @@
-import { useMail } from '../useContexts/MailContextProvider';
+import { useMail } from '../../../utils/useContexts/MailContextProvider';
 import { MailContextContainer } from './Styled';
 import { Button } from 'antd'
 import { RollbackOutlined } from '@ant-design/icons';

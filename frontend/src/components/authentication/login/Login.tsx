@@ -1,10 +1,10 @@
 import React from 'react';
-import { UserContext } from '../useContexts/UserContext';
+import { UserContext } from '../../utils/useContexts/UserContext';
 
-import { fetchMails } from '../functions/fetchMails';
+import { fetchMails } from '../../utils/functions/fetchMails';
 
 import { LoginDiv, ModForm, LogButton } from './Styled';
-import { LoginRegistratonDiv } from '../../Styled';
+import { LoginRegistratonDiv } from '../../../Styled';
 import { Form, Input, Checkbox, Modal } from 'antd';
 
 const logURL = 'http://localhost:3001/api/login'

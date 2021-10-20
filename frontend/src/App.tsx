@@ -5,8 +5,8 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
-import { MailProvider, useMail } from './components/useContexts/MailContextProvider';
-import { fetchMails } from './components/functions/fetchMails';
+import { MailProvider, useMail } from './components/utils/useContexts/MailContextProvider';
+import { fetchMails } from './components/utils/functions/fetchMails';
 import { useState, useEffect } from 'react';
 
 import { Menu } from './components/menu/Menu';
@@ -14,7 +14,7 @@ import { Authentication } from './components/authentication/Authentication';
 import { ShowMails } from './components/show_mails/ShowMails';
 import SearchBar from './components/searchbar/SearchBar';
 
-import {MainDiv, MainHeader, ContentDiv} from './Styled';
+import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
 // Frontend side
@@ -69,8 +69,8 @@ export default function App() {
           <MainHeader>
             <Menu isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} username={username}/> 
             { isLoggedIn && <SearchBar/> }
-          </MainHeader>
-          <ContentDiv>
+            </MainHeader>
+            <ContentDiv>
             { !isLoggedIn
               ?
                 <Authentication setIsLoggedIn={setIsLoggedIn} setUsername={setUsername}/>

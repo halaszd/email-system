@@ -1,8 +1,8 @@
 import React from 'react';
-import { useMail } from '../useContexts/MailContextProvider';  
+import { useMail } from '../utils/useContexts/MailContextProvider';  
 import { useState, useEffect } from 'react';
-import { FetchedMail } from '../types/FetchedMail';
-import Results from '../results/Results';
+import { FetchedMail } from '../utils/types/FetchedMail';
+import Results from './results/Results';
 import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 
 // -------------------- Component -------------------- 
