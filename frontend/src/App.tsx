@@ -5,6 +5,8 @@ import {
   BrowserRouter as Router,
 } from "react-router-dom";
 
+import { UserContext } from './components/utils/useContexts/UserContext';
+
 import { MailProvider, useMail } from './components/utils/useContexts/MailContextProvider';
 import { fetchMails } from './components/utils/functions/fetchMails';
 import { useState, useEffect } from 'react';
@@ -41,27 +43,15 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [isLoggedIn, setIsLoggedIn] = useState(true);
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
-  // For writing new mails modal window
-  // When reply to a mail whom to reply
-  const { setMails } = useMail();
+  const {setMails} = useMail();
 
   useEffect(() => {
-    if(!isLoggedIn) {
-      return
-    }
-
-    async function loginFetchMails(){
-      await fetchMails("inbox", 1, 20, setMails);
-    }
-
-    loginFetchMails();
-
+    console.log("inuse 50 isloggedin: ", isLoggedIn)
   }, [isLoggedIn])
-
   return (
     <Router>
       <MainDiv>
@@ -73,7 +63,15 @@ export default function App() {
             <ContentDiv>
             { !isLoggedIn
               ?
-                <Authentication setIsLoggedIn={setIsLoggedIn} setUsername={setUsername}/>
+                    <UserContext.Provider value={
+                    { 
+                        isLoggedIn,
+                        setIsLoggedIn, 
+                        setUsername,
+                        setMails 
+                    }} > 
+                <Authentication />
+                </UserContext.Provider>
               :
                 <ShowMails />
             }

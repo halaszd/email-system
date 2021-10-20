@@ -41,15 +41,16 @@ class LoginForm extends React.Component<IProps, IState> {
   };
 
   async onFinish(values: any) {
-    // const {setIsLoggedIn, setUsername, setMails} = this.context;
-    const {setIsLoggedIn, setUsername} = this.context;
+    const {isLoggedIn, setIsLoggedIn, setUsername, setMails} = this.context;
+    console.log("isloggedin 45: ", isLoggedIn)
 
     await this.props.setStatus(values, logURL);
 
     if(this.props.status === 200) {
       setIsLoggedIn(true);
       // It should fetch the users mail ofc
-      // await fetchMails("inbox", 1, 20, setMails);
+      console.log("isloggedin 52: ", isLoggedIn)
+      await fetchMails("inbox", 1, 20, setMails);
       setUsername(values["username"]);
 
     } else {

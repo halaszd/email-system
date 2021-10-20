@@ -10,7 +10,9 @@ import {
 } from "react-router-dom";
 
 export function ShowMails() {
+  // For writing new mails modal window
   const [isNewMail, setIsNewMail] = useState(false);
+  // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
     return (
             <>
