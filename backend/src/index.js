@@ -9,6 +9,8 @@ const UserMail = require('./resolvers/UserMail');
 
 // TODO:
 // when all ppl delete an email from their box it should be seen on an email entity
+// filter by specific infos, e.g. from: x message: hello
+// create a user info update mutation
 
 const prisma = new PrismaClient();
 
