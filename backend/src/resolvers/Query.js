@@ -63,7 +63,9 @@ async function searchEmails(parent, args, context) {
     // fromUser, toUser, message, subject
     const { userId } = context;
     const where = {possessedById: userId}
+    console.log(where)
     if(args.filter) {
+        console.log(args.filter)
         where["OR"] = [
             {
                 fromUser: {
@@ -84,18 +86,23 @@ async function searchEmails(parent, args, context) {
                     subject: {
                         contains: args.filter
                     },
+
+                }
+            },
+            {
+                email: {
                     message: {
                         contains: args.filter
                     }
                 }
-            },
+            }
         ]
     }
-
+    console.log(where)
     if(args.typeOfBox){
         where["typeOfBox"] = args.typeOfBox;
     }
-
+    console.log(where)
     const resultMails = await context.prisma.userMail.findMany({
         where
     })

@@ -64,26 +64,24 @@ export function MailProvider({ children }: Props) {
     );
 
     return (
-        <div>
-            <MailContext.Provider value={
-                {
-                    isSideBarClicked,
-                    setIsSideBarClicked,
-                    mails,
-                    setMails,
-                    openedMail,
-                    isOpenedMail,
-                    setIsOpenedMail,
-                    openedMailID,
-                    setOpenedMailID,
-                    checkedMailIDs,
-                    setCheckedMailIDs
-                }}>
+        <MailContext.Provider value={
+            {
+                isSideBarClicked,
+                setIsSideBarClicked,
+                mails,
+                setMails,
+                openedMail,
+                isOpenedMail,
+                setIsOpenedMail,
+                openedMailID,
+                setOpenedMailID,
+                checkedMailIDs,
+                setCheckedMailIDs
+            }}>
 
-                {children}
+            {children}
 
-            </MailContext.Provider>
-        </div>
+        </MailContext.Provider>
     );
 }
 

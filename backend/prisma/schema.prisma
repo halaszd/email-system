@@ -27,7 +27,6 @@ model Email {
   subject   String?
   message   String?
   pseud UserMail[]
-
 }
 
 model UserMail {
