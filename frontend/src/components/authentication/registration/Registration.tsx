@@ -12,7 +12,7 @@ import {
 } from "react-router-dom";
 
 import { ModForm, ModFormItem, RegButton } from './Styled';
-import { LoginRegistratonDiv } from '../../../Styled';
+import { LoginRegistratonDiv } from '../../app/Styled';
 
 const formItemLayout = {
   labelCol: {

@@ -1,16 +1,18 @@
 import { MenuDiv, ButtonWithTextUnder } from './Styled';  
 import { Link } from "react-router-dom";
+import { AUTH_TOKEN } from '../../constants';
 
 type Props = {
-    isLoggedIn: boolean;
-    setIsLoggedIn: Function;
+    auth: string | null;
+    setAuth: Function;
     username: string;
 }
 
-export function Menu({ isLoggedIn, setIsLoggedIn, username }: Props) {
+export function Menu({ auth, setAuth, username }: Props) {
+    console.log(auth)
     return (
         <MenuDiv>
-            { !isLoggedIn
+            { auth === null
             ?
             <>
                 <li>
@@ -32,7 +34,9 @@ export function Menu({ isLoggedIn, setIsLoggedIn, username }: Props) {
             <>
                 <li>
                     <Link to="login">
-                        <ButtonWithTextUnder onClick={() => setIsLoggedIn(false)} content="Log out">
+                        <ButtonWithTextUnder 
+                        onClick={() => {setAuth(null); localStorage.removeItem(AUTH_TOKEN)}}
+                        content="Log out">
                         Log out
                         </ButtonWithTextUnder>
                     </Link>

@@ -1,16 +1,16 @@
 import React, { createContext } from 'react';
 
 type UserContextType = {
-	isLoggedIn: boolean;
-	setIsLoggedIn: Function;
+	auth : string | null;
+	setAuth: Function;
 	setUsername: Function;
 	setMails: Function;
 }
 
 export const UserContext = createContext<UserContextType>(
 	{
-		isLoggedIn: false,
-		setIsLoggedIn: () => {},
+		auth : null,
+		setAuth: () => {},
 		setUsername: () => {},
 		setMails: () => {}
 	}

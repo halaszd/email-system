@@ -197,7 +197,7 @@ const MailsHeader = () => {
 
 	return (
 		<div>
-      <Header>
+      {/* <Header>
         <TrashIconContainer>
           <DeleteFilled className="delete-all" onClick={handleDeletion}/>
         </TrashIconContainer>
@@ -231,7 +231,7 @@ const MailsHeader = () => {
             onShowSizeChange={onShowSizeChange}
           />
         }
-      </Header>
+      </Header> */}
 			
 		</div>
 	)
