@@ -8,18 +8,18 @@ import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 // -------------------- Component -------------------- 
 const SearchBar = ()=> {
 
-    const {setMails, mails: {mailsPerPage, typeOfMail, mails}, setIsOpenedMail, setOpenedMailID} = useMail();
+    const {setMails, mails: {mailsPerPage, typeOfMail, userMails}, setIsOpenedMail, setOpenedMailID} = useMail();
     
-    const [resultMails, setResultMails] = useState<FetchedMail[]>([])
+    const [filteredMails, setFilteredMails] = useState<FetchedMail[]>([])
     const [showResultMails, setShowResultMails] = useState(false);
     const [currentInput, setCurrentInput] = useState<React.ChangeEvent<HTMLInputElement>>();
 
     useEffect(() => {
-      setResultMails([]);
+      setFilteredMails([]);
       setShowResultMails(true);
 
       function handleChange() {
-        if(!currentInput || mails === []) {
+        if(!currentInput || filteredMails === []) {
           return;
         }
 
@@ -31,19 +31,17 @@ const SearchBar = ()=> {
 
         const currentResultMails: FetchedMail[] = [];
 
-        for(const mail of mails) {
+        for(const mail of userMails) {
           const allStringFromEmail = 
-            mail.to + " " +
-            mail.fromEmailAddress + " " +
-            mail.from + " " +
-            mail.fromEmailAddress + " " +
-            mail.subject + " " +
-            mail.message
+            mail.fromUser.email + " " +
+            mail.toUser.email + " " +
+            mail.email.subject + " " +
+            mail.email.message
             .toLowerCase();
 
           if(allStringFromEmail.includes(inputToFind)) {
             currentResultMails.push(mail);
-            setResultMails(currentResultMails);
+            setFilteredMails(currentResultMails);
           } 
         }
       }
@@ -59,10 +57,10 @@ const SearchBar = ()=> {
     setShowResultMails(false);
 
     setMails({
-      totalNumOfMails: resultMails.length,
+      totalNumOfMails: userMails.length,
       typeOfMail: typeOfMail,
       mailsPerPage: mailsPerPage, 
-      mails:resultMails});
+      mails: userMails});
 
     setOpenedMailID(null);
     setIsOpenedMail(false);
@@ -77,8 +75,8 @@ const SearchBar = ()=> {
         onSearch={(word) => onSearch(word)} 
         onChange={(e) => setCurrentInput(e)} />
 
-				{ showResultMails && resultMails &&
-        <Results resultMails={resultMails} setResultMails={setResultMails}/> }
+				{ showResultMails && filteredMails &&
+        <Results filteredMails={filteredMails} setFilteredMails={setFilteredMails}/> }
 			</SearchContainer>
 		</SearchDiv>
 	)

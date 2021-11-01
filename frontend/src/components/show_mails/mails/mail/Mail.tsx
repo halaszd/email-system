@@ -14,12 +14,9 @@ const Mail = (
   {
     mail: 
     { 
-      from, 
-      fromEmailAddress, 
-      to, 
-      toEmailAddress, 
-      subject, 
-      message, 
+      fromUser, 
+      toUser, 
+      email: {  subject, message  }, 
       id
     }, 
   }: Props
@@ -38,7 +35,7 @@ const Mail = (
       setCheckedMailIDs([...checkedMailIDs, id]);
     } else {
         const newCheckedMailIDs = [...checkedMailIDs];
-        const index = newCheckedMailIDs.indexOf(id);
+        const index = newCheckedMailIDs.indexOf(Number(id));
         newCheckedMailIDs.splice(index, 1);
         setCheckedMailIDs(newCheckedMailIDs);
     }
@@ -52,8 +49,8 @@ const Mail = (
         </CheckboxContainer>
         <MessageInfos onClick={() => {setIsOpenedMail(true); setOpenedMailID(id)}}>
           { typeOfMail === 'inbox' || typeOfMail === 'trash'
-            ? <span className="from-subject">From: {from}</span>	
-            : <span className="from-subject">To: {to}</span>	
+            ? <span className="from-subject">From: {fromUser.email}</span>	
+            : <span className="from-subject">To: {toUser.email}</span>	
           }
           <span className="from-subject">Subject: {subject}</span>	
           <span className="message">Message: {message}</span>

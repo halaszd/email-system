@@ -1,12 +1,12 @@
 import 'antd/dist/antd.css';
 import '../../index.css';
 
-import { UserContext } from '../utils/useContexts/UserContext';
 import { AUTH_TOKEN } from '../../constants';
 
+import { UserContext } from '../utils/useContexts/UserContext';
 import { MailProvider, useMail } from '../utils/useContexts/MailContextProvider';
 // import { fetchMails } from '../utils/functions/fetchMails';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import { Menu } from '../menu/Menu';
 import { Authentication } from '../authentication/Authentication';
@@ -40,16 +40,11 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 // -------------------- Component -------------------- 
 export default function App() {
   // To get if user is logged in
-  // const [auth, setAuth] = useState(false);
   const [auth, setAuth] = useState(localStorage.getItem(AUTH_TOKEN));
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   const {setMails} = useMail();
-
-  // useEffect(() => {
-  //   console.log("inuse 50 auth: ", auth)
-  //   // console.log(localStorage.getItem(AUTH_TOKEN))
-  // }, [auth])
+  console.log(auth)
   return (
     <MainDiv>
       <MailProvider>

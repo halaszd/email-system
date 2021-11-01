@@ -29,7 +29,6 @@ type UserMail {
     possessedBy: User
     fromUser: User
     toUser: User
-    typeOfBox: String!
 }
 
 type AuthPayload {
@@ -38,8 +37,10 @@ type AuthPayload {
 }
 
 type ResultMails {
-    resultMails: [UserMail!]!
+    userMails: [UserMail!]!
+    typeOfBox: String!
     allInBoxtypeCount: Int!
+    mailsPerPage: Int!
 }
 
 input MailOrderByInut {

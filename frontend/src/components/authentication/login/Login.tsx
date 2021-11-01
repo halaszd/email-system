@@ -1,15 +1,13 @@
 import React from 'react';
 import { UserContext } from '../../utils/useContexts/UserContext';
-import { fetchMails } from '../../utils/functions/fetchMails';
 import { AUTH_TOKEN } from '../../../constants';
-import { Mutation, ApolloProvider } from "react-apollo";
+import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 
 import { ModForm, LogButton } from './Styled';
 import { LoginRegistratonDiv } from '../../app/Styled';
 import { Form, Input, Checkbox, Modal } from 'antd';
 
-// const logURL = 'http://localhost:3001/api/login'
 const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
@@ -53,22 +51,10 @@ class LoginForm extends React.Component<IProps, IState> {
   };
 
   async onFinish(token: string) {
-    const {setAuth, setUsername, setMails} = this.context;
-    const { email, password } = this.state;
-    console.log(email, password)
+    const {setAuth, setUsername} = this.context;
+    const { email } = this.state;
     setAuth(token);
-
-    // await this.props.setStatus(values, '');
-
-  //   if(this.props.status === 200) {
-      // setIsLoggedIn(true);
-  //     // It should fetch the users mail ofc
-  //     await fetchMails("inbox", 1, 20, setMails);
-      setUsername(email);
-
-  //   } else {
-  //     this.setState({ isModalVisible: true })
-  //   }
+    setUsername(email);
   };
 
   onFinishFailed(errorInfo: any) {
@@ -85,7 +71,6 @@ class LoginForm extends React.Component<IProps, IState> {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        // onFinish={this.onFinish}
         onFinishFailed={this.onFinishFailed}
         autoComplete="off"
       >

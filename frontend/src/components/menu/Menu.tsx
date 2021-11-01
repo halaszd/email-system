@@ -9,7 +9,7 @@ type Props = {
 }
 
 export function Menu({ auth, setAuth, username }: Props) {
-    console.log(auth)
+    // console.log(auth)
     return (
         <MenuDiv>
             { auth === null

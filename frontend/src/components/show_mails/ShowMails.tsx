@@ -1,5 +1,5 @@
 import { useState } from "react";
-import MailsHeader from './mails_header/MailsHeader';
+// import MailsHeader from './mails_header/MailsHeader';
 import Mails from './mails/Mails';
 import SideBar from './sidebar/SideBar';
 import NewMail from './new_mail/NewMail';
@@ -19,9 +19,7 @@ export function ShowMails() {
             <Redirect to="/" />
             <SideBar setIsNewMail={setIsNewMail} isNewMail={isNewMail} />
             <div>
-                <MailsHeader />
-                {/* {!isOpenedMail */}
-                {/* ? */}
+                {/* <MailsHeader /> */}
                 <>
                 <Switch>
                     <Route exact path="/">
@@ -35,9 +33,6 @@ export function ShowMails() {
                     </Route>
                 </Switch>
                 </>
-                {/* // : */}
-                {/* // <OpenedMail setIsNewMail={setIsNewMail} setSendTo={setSendTo} /> */}
-                {/* } */}
             </div>
 
             { isNewMail && <NewMail isNewMail={isNewMail} setIsNewMail={setIsNewMail} sendTo={sendTo} setSendTo={setSendTo} />}

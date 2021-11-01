@@ -33,15 +33,19 @@ async function emails(parent, args, context, info) {
         throw new Error('Invalid box type')
     }
 
+    const typeOfBox = args.typeOfBox;
+    const mailsPerPage = args.take;
+
     const { userId } = context;
+    console.log("userId in query: ", userId)
 
     const where = { possessedById: userId };
 
-    if(args.typeOfBox !== 'all') {
-        where["typeOfBox"] = args.typeOfBox;
+    if(typeOfBox !== 'all') {
+        where["typeOfBox"] = typeOfBox;
     }
 
-    const resultMails = await context.prisma.userMail.findMany({
+    const userMails = await context.prisma.userMail.findMany({
         where,
         skip: args.skip,
         take:args.take,
@@ -52,10 +56,11 @@ async function emails(parent, args, context, info) {
         where
     });
 
-
     return {
-        resultMails,
+        userMails,
+        typeOfBox,
         allInBoxtypeCount,
+        mailsPerPage,
     }
 }
 

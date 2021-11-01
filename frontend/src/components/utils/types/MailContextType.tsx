@@ -13,7 +13,7 @@ export type MailContextType = {
   isOpenedMail: boolean;
   setIsOpenedMail: Function;
   // openedMailID?: number | null;
-  openedMailID: number | null;
+  openedMailID: string | null;
   setOpenedMailID: Function;
   checkedMailIDs: number[];
   setCheckedMailIDs: Function;

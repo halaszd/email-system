@@ -15,19 +15,19 @@ const OpenedMail = (
         setSendTo
     }: Props) => {
 
-    const { openedMail: { from, fromEmailAddress, subject, message } } = useMail();
+    const { openedMail: { fromUser, email: { subject, message } } } = useMail();
 
     function handleClick() {
         setIsNewMail(true);
-        setSendTo(fromEmailAddress)
+        setSendTo(fromUser.email)
     }
 
     return (
         <MailContextContainer>
             <h1>Subject: {subject}</h1>
             <h2>
-                From: <span className="from">{from}</span>
-                <span className="email-address">{`<${fromEmailAddress}>`}</span>
+                From: <span className="from">{fromUser.name}</span>
+                <span className="email-address">{`<${fromUser.email}>`}</span>
             </h2>
             <div>
                 <span className="message">{message}</span>
