@@ -7,7 +7,7 @@ import Login from './login/Login';import {
 
 import { LoginRegistration, ModRegistration } from './Styled';
 
-import { ApolloProvider } from 'react-apollo'
+import { ApolloProvider as ApolloProvider2 } from 'react-apollo';
 import { ApolloClient } from 'apollo-client'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
@@ -26,7 +26,7 @@ export function Authentication() {
     return (
         <>
             <Redirect to="/login" />
-            <ApolloProvider client={client}>
+            <ApolloProvider2 client={client}>
                 <LoginRegistration>
                     <Switch>
                         <Route exact path="/registration">
@@ -41,7 +41,7 @@ export function Authentication() {
                         </Route>
                     </Switch>
                 </LoginRegistration>
-            </ApolloProvider>
+            </ApolloProvider2>
         </>
     )
 }

@@ -15,6 +15,6 @@ export type MailContextType = {
   // openedMailID?: number | null;
   openedMailID: string | null;
   setOpenedMailID: Function;
-  checkedMailIDs: number[];
+  checkedMailIDs: string[];
   setCheckedMailIDs: Function;
 }

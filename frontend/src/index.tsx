@@ -4,6 +4,7 @@ import './index.css';
 import App from './components/app/App';
 import { setContext } from '@apollo/client/link/context';
 import { AUTH_TOKEN } from './constants';
+import { MAIL_QUERY } from './queries_mutations';
 
 import {
   BrowserRouter as Router,
@@ -39,10 +40,27 @@ const client = new ApolloClient({
 ReactDOM.render(
   <React.StrictMode>
     <Router>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
+        <ApolloProvider client={client}>
+          <App />
+        </ApolloProvider>
     </Router>
   </React.StrictMode>,
   document.getElementById('root')
 );
+
+// Exportable function which calls apollo client query
+export async function queryUserMails(
+    typeOfBox: "inbox" | "sent" | "trash" | "all",
+    pageNum: number,
+    mailsPerPage: number,
+    setMails?: Function
+) {
+    const result = await client.query({
+        query: MAIL_QUERY,
+        variables: {
+            typeOfBox: typeOfBox
+        }
+    })
+    setMails && setMails(result["data"]["emails"])
+    console.log("result: ", result["data"]["emails"])
+}

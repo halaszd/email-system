@@ -8,7 +8,7 @@ import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 // -------------------- Component -------------------- 
 const SearchBar = ()=> {
 
-    const {setMails, mails: {mailsPerPage, typeOfMail, userMails}, setIsOpenedMail, setOpenedMailID} = useMail();
+    const {setMails, mails: {mailsPerPage, typeOfBox, userMails}, setIsOpenedMail, setOpenedMailID} = useMail();
     
     const [filteredMails, setFilteredMails] = useState<FetchedMail[]>([])
     const [showResultMails, setShowResultMails] = useState(false);
@@ -58,7 +58,7 @@ const SearchBar = ()=> {
 
     setMails({
       totalNumOfMails: userMails.length,
-      typeOfMail: typeOfMail,
+      typeOfMail: typeOfBox,
       mailsPerPage: mailsPerPage, 
       mails: userMails});
 

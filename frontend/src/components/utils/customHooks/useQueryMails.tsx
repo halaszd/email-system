@@ -1,46 +1,8 @@
 import React, { useEffect } from 'react'
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
+import { MAIL_QUERY } from '../../../queries_mutations';
 import { AUTH_TOKEN } from '../../../constants';
 import { FetchedMails } from '../types/FetchedMail';
-
-export const MAIL_QUERY = gql `
-    query MailQuery(
-        $typeOfBox: String!
-        $skip: Int 
-        $take: Int
-        $orderBy: MailOrderByInut
-        ) {
-        emails(
-            typeOfBox: $typeOfBox, 
-            skip: $skip, 
-            take:$take, 
-            orderBy: $orderBy
-            ) {
-            userMails {
-                id
-                email {
-                    subject
-                    message
-                }
-                possessedBy{
-                  id
-                }
-                fromUser {
-                  id
-                  email
-                  name
-                }
-                toUser {
-                  id
-                  email
-                  name
-                }
-            }
-            allInBoxtypeCount,
-            typeOfBox
-        }
-    }
-`;
 
 // emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
 
@@ -67,7 +29,7 @@ export function useQueryMails(
 
     const { data } = useQuery(MAIL_QUERY, {
         variables: {
-            typeOfBox: "inbox",
+            typeOfBox: typeOfMail,
         }
     })
 

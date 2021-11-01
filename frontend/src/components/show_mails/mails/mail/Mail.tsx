@@ -23,7 +23,7 @@ const Mail = (
   ) => {
 
   const { 
-    mails: {typeOfMail}, 
+    mails: {typeOfBox}, 
     setIsOpenedMail,
     setOpenedMailID,
     checkedMailIDs, 
@@ -35,7 +35,7 @@ const Mail = (
       setCheckedMailIDs([...checkedMailIDs, id]);
     } else {
         const newCheckedMailIDs = [...checkedMailIDs];
-        const index = newCheckedMailIDs.indexOf(Number(id));
+        const index = newCheckedMailIDs.indexOf(id);
         newCheckedMailIDs.splice(index, 1);
         setCheckedMailIDs(newCheckedMailIDs);
     }
@@ -48,7 +48,7 @@ const Mail = (
           <Checkbox className="checkbox" onChange={(e) => handleCheckMail(e)}></Checkbox>
         </CheckboxContainer>
         <MessageInfos onClick={() => {setIsOpenedMail(true); setOpenedMailID(id)}}>
-          { typeOfMail === 'inbox' || typeOfMail === 'trash'
+          { typeOfBox === 'inbox' || typeOfBox === 'trash'
             ? <span className="from-subject">From: {fromUser.email}</span>	
             : <span className="from-subject">To: {toUser.email}</span>	
           }

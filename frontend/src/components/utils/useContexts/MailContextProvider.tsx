@@ -28,7 +28,7 @@ const MailContext = createContext<MailContextType>(
     {
         isSideBarClicked: false,
         setIsSideBarClicked: () => { },
-        mails: { allInBoxtypeCount: 0, mailsPerPage: 20, typeOfMail: "inbox", userMails: fetchedMails },
+        mails: { allInBoxtypeCount: 0, mailsPerPage: 20, typeOfBox: "inbox", userMails: fetchedMails },
         setMails: () => { },
         openedMail: emptyMail,
         isOpenedMail: false,
@@ -53,13 +53,13 @@ export function MailProvider({ children }: Props) {
         {
             allInBoxtypeCount: 1,
             mailsPerPage: 20,
-            typeOfMail: "inbox",
+            typeOfBox: "inbox",
             userMails: fetchedMailArray
         });
     // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
     const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);
     const [openedMailID, setOpenedMailID] = useState<string | null>(null);
-    const [checkedMailIDs, setCheckedMailIDs] = useState<number[]>([]);
+    const [checkedMailIDs, setCheckedMailIDs] = useState<string[]>([]);
     // Custom hook for getting the parameters of clicked (opened mail)
     const [openedMail] = useSetOpenedMail(
         mails,

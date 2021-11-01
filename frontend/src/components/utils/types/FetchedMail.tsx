@@ -28,6 +28,6 @@ export type FetchedMail = {
 export type FetchedMails = {
   allInBoxtypeCount: number;
   mailsPerPage: number;
-	typeOfMail: "inbox" | "sent" | "trash" | "all",
+	typeOfBox: "inbox" | "sent" | "trash" | "all",
   userMails: FetchedMail[];
 }

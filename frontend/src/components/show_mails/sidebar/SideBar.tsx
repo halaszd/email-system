@@ -1,5 +1,5 @@
 import { useMail } from '../../utils/useContexts/MailContextProvider';
-import { fetchMails } from '../../utils/functions/fetchMails';
+import { queryUserMails } from '../../..';
 import { SideBarContainer, SubSideBar, ModButton } from './Styled';
 import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -33,8 +33,7 @@ const SideBar = (
 					<Link to="/">
 						<ModButton type="primary" icon={<SearchOutlined />}
 							onClick={() => {
-								// setTypeOfMail("inbox"); 
-								fetchMails("inbox", 1, mailsPerPage, setMails)
+								queryUserMails("inbox", 1, 20, setMails)
 							}}
 						>Inbox
 						</ModButton>
@@ -45,8 +44,7 @@ const SideBar = (
 					<Link to="/sent">
 						<ModButton type="primary" icon={<SendOutlined />}
 							onClick={() => {
-								// setTypeOfMail("sent");
-								fetchMails("sent", 1, mailsPerPage, setMails)
+								queryUserMails("sent", 1, 20, setMails)
 							}}
 						>Sent
 						</ModButton>
@@ -57,8 +55,7 @@ const SideBar = (
 					<Link to="/trash">
 						<ModButton type="primary" icon={<DeleteOutlined />}
 							onClick={() => {
-								// setTypeOfMail("trash"); 
-								fetchMails("trash", 1, mailsPerPage, setMails)
+								queryUserMails("trash", 1, 20, setMails)
 							}}
 						>Trash
 						</ModButton>

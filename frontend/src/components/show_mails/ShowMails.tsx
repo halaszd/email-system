@@ -14,6 +14,7 @@ export function ShowMails() {
   const [isNewMail, setIsNewMail] = useState(false);
   // When reply to a mail whom to reply
   const [sendTo, setSendTo] = useState<string>("");
+
     return (
             <>
             <Redirect to="/" />
@@ -29,7 +30,7 @@ export function ShowMails() {
                         <Mails setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
                     </Route>
                     <Route exact path="/trash">
-                        <Mails setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
+                        <Mails  setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
                     </Route>
                 </Switch>
                 </>

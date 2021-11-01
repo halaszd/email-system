@@ -44,7 +44,7 @@ export default function App() {
   // to get user if the user is logged in
   const [username, setUsername] = useState("");
   const {setMails} = useMail();
-  console.log(auth)
+
   return (
     <MainDiv>
       <MailProvider>
