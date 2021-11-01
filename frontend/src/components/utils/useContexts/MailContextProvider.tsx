@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
+import { queryUserMails } from '../../..';
+import { useQueryMails } from '../customHooks/useQueryMails';
 import { useSetOpenedMail } from '../customHooks/useSetOpenedMail';
 import { FetchedMail, FetchedMails } from '../types/FetchedMail';
 import { MailContextType } from '../types/MailContextType';
@@ -40,8 +42,6 @@ const MailContext = createContext<MailContextType>(
     }
 );
 
-const fetchedMailArray: FetchedMail[] = [];
-
 type Props = {
     children: React.ReactNode;
 }
@@ -51,10 +51,10 @@ export function MailProvider({ children }: Props) {
     // To store fetched mails
     const [mails, setMails] = useState<FetchedMails>(
         {
-            allInBoxtypeCount: 1,
+            allInBoxtypeCount: 0,
             mailsPerPage: 20,
-            typeOfBox: "inbox",
-            userMails: fetchedMailArray
+            typeOfBox: "nobox",
+            userMails: fetchedMails
         });
     // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
     const [isOpenedMail, setIsOpenedMail] = useState<boolean>(false);

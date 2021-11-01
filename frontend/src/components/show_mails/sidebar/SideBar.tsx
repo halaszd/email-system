@@ -16,7 +16,7 @@ const SideBar = (
 	}: Props) => {
 	
 	const {
-		mails: { mailsPerPage },
+		mails: { mailsPerPage, allInBoxtypeCount, typeOfBox },
 		setMails,
 		isSideBarClicked,
 		setIsSideBarClicked,

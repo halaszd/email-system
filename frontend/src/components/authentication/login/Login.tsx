@@ -1,6 +1,7 @@
 import React from 'react';
 import { UserContext } from '../../utils/useContexts/UserContext';
-import { AUTH_TOKEN } from '../../../constants';
+import { queryUserMails } from '../../..';
+import { AUTH_TOKEN, USER_NAME } from '../../../constants';
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
 
@@ -12,6 +13,11 @@ const LOGIN_MUTATION = gql`
   mutation LoginMutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
       token
+      user {
+        id
+        email
+        name
+      }
     }
   }
 `
@@ -50,11 +56,11 @@ class LoginForm extends React.Component<IProps, IState> {
     this.setState({ isModalVisible: false })
   };
 
-  async onFinish(token: string) {
-    const {setAuth, setUsername} = this.context;
-    const { email } = this.state;
+  async onFinish(token: string, username: string) {
+    const {setMails, setAuth, setUsername} = this.context;
     setAuth(token);
-    setUsername(email);
+    setUsername(username);
+    await queryUserMails("inbox", 1, 20, setMails);
   };
 
   onFinishFailed(errorInfo: any) {
@@ -117,14 +123,13 @@ class LoginForm extends React.Component<IProps, IState> {
   );
   }
   async _confirm(data: any) {
-    console.log("hello")
-    const { token } = data.login;
-    this._saveUserData(token)
-    console.log(token)
-    this.onFinish(token);
+    const { token, user: { name } } = data.login;
+    this._saveUserData(token, name)
+    this.onFinish(token, name);
   }
-  _saveUserData(token: string) {
+  _saveUserData(token: string, username: string) {
     localStorage.setItem(AUTH_TOKEN, token)
+    localStorage.setItem(USER_NAME, username)
   }
 };
 

@@ -14,6 +14,7 @@ const Mails = ({
 }: Props) => {
   
   const {mails, isOpenedMail } = useMail();
+  console.log('mails in MAILS:', mails)
 
 	return (
     <>

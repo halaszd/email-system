@@ -8,7 +8,7 @@ export const MenuDiv = styled.div`
   padding-left: 10px;
 `;
 
-type Props = {content: string, borderRadius?: string};
+type Props = {content: string | null, borderRadius?: string};
 export const ButtonWithTextUnder = styled(Button)<Props>`
   height: 39px;
   border-radius: ${props => props.borderRadius};

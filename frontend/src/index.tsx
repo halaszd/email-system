@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/app/App';
 import { setContext } from '@apollo/client/link/context';
+import { MailProvider } from './components/utils/useContexts/MailContextProvider';
 import { AUTH_TOKEN } from './constants';
 import { MAIL_QUERY } from './queries_mutations';
 
@@ -23,7 +24,6 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem(AUTH_TOKEN);
-  console.log("In index: auth: ", AUTH_TOKEN);
   return {
     headers: {
       ...headers,
@@ -41,7 +41,9 @@ ReactDOM.render(
   <React.StrictMode>
     <Router>
         <ApolloProvider client={client}>
-          <App />
+          <MailProvider>
+            <App />
+          </MailProvider>
         </ApolloProvider>
     </Router>
   </React.StrictMode>,
@@ -61,6 +63,7 @@ export async function queryUserMails(
             typeOfBox: typeOfBox
         }
     })
+    console.log("result in index: ", result["data"]["emails"])
     setMails && setMails(result["data"]["emails"])
-    console.log("result: ", result["data"]["emails"])
+    return result["data"]["emails"]
 }

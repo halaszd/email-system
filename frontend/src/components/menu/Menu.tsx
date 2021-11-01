@@ -5,7 +5,7 @@ import { AUTH_TOKEN } from '../../constants';
 type Props = {
     auth: string | null;
     setAuth: Function;
-    username: string;
+    username: string | null;
 }
 
 export function Menu({ auth, setAuth, username }: Props) {
@@ -43,7 +43,7 @@ export function Menu({ auth, setAuth, username }: Props) {
                 </li>
                 <li>
                     <ButtonWithTextUnder content={username} borderRadius="25px">
-                    {username.charAt(0).toUpperCase()}
+                    {username && username.charAt(0).toUpperCase()}
                     </ButtonWithTextUnder>
                 </li>
             </>
