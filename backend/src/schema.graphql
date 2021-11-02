@@ -1,6 +1,6 @@
 type Query {
     # userInfo: User!
-    emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
+    emails(userEmail: String!, typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
     searchEmails(typeOfBox: String, filter: String): [UserMail!]!
 }
 

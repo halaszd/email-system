@@ -13,10 +13,11 @@ import { ShowMails } from '../show_mails/ShowMails';
 import SearchBar from '../searchbar/SearchBar';
 
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
-import { queryUserMails } from '../..';
+// import { queryUserMails } from '../..';
 
 // TODO:
-// new mail and reply
+// orderBy desc query is not sorting the emails properly
+// finish declaration of update in NewMails.tsx
 // searching
 // mails header: and single and bulk deletion and pagination
 // registration
@@ -24,8 +25,6 @@ import { queryUserMails } from '../..';
 // in frontend: save take and skip and use them in query
 // serer give back take and skip when querying mails
 // username when registering
-// when a user log out and another is logged in the former user's emails are present without refresh
-// finish declaration of update in NewMails.tsx
 
 
 // Frontend side
@@ -46,11 +45,11 @@ export default function App() {
   const [auth, setAuth] = useState(localStorage.getItem(AUTH_TOKEN));
   // to get user if the user is logged in
   const [username, setUsername] = useState(localStorage.getItem(USER_NAME));
-  const { mails, setMails } = useMail();
+  const { setUserEmail, setMails } = useMail();
 
-  if(mails.typeOfBox === "nobox" && auth) {
-    queryUserMails("inbox", 1, 20, setMails)
-  }
+  // if(mails.typeOfBox === "nobox" && auth) {
+  //   queryUserMails("inbox", 1, 20, setMails)
+  // }
 
   return (
     <MainDiv>
@@ -63,6 +62,7 @@ export default function App() {
             ?
                   <UserContext.Provider value={
                   { 
+                      setUserEmail,
                       auth,
                       setAuth, 
                       setUsername,

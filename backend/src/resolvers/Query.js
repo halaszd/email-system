@@ -29,7 +29,7 @@ const typeOfBoxes = [
 // }
 
 async function emails(parent, args, context, info) {
-    console.log(args.typeOfBox)
+    console.log(args.typeOfBox, args.userEmail)
     if(!typeOfBoxes.includes(args.typeOfBox)) {
         throw new Error('Invalid box type')
     }

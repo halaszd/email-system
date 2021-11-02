@@ -68,15 +68,15 @@ const NewMail = (
     setSendTo
   }: Props) => {
     
-  const {mails} = useMail();
+  const {userEmail, mails} = useMail();
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
   const history = useHistory();
 
   const [mailToSend, setMailToSend] = useState({
-    from: '',
-    to: '',
+    from: userEmail,
+    to: sendTo,
     subject: '',
     message: ''
   })

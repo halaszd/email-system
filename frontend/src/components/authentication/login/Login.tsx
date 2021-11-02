@@ -1,6 +1,6 @@
 import React from 'react';
 import { UserContext } from '../../utils/useContexts/UserContext';
-import { queryUserMails } from '../../..';
+// import { queryUserMails } from '../../..';
 import { AUTH_TOKEN, USER_NAME } from '../../../constants';
 import { Mutation } from "react-apollo";
 import { gql } from "apollo-boost";
@@ -37,7 +37,6 @@ class LoginForm extends React.Component<IProps, IState> {
 
   constructor(props: IProps) {
     super(props)
-    this.onFinish = this.onFinish.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.handleOk = this.handleOk.bind(this);
   
@@ -54,14 +53,6 @@ class LoginForm extends React.Component<IProps, IState> {
 
   handleCancel() {
     this.setState({ isModalVisible: false })
-  };
-
-  async onFinish(token: string, username: string) {
-    // const {setMails, setAuth, setUsername, auth} = this.context;
-    // setAuth(token);
-    // setUsername(username);
-    // console.log("in onFinish", auth)
-    // await queryUserMails("inbox", 1, 20, setMails);
   };
 
   onFinishFailed(errorInfo: any) {
@@ -124,13 +115,17 @@ class LoginForm extends React.Component<IProps, IState> {
   );
   }
   async _confirm(data: any) {
-    const { token, user: { name } } = data.login;
+    const { setUserEmail, setAuth, setUsername} = this.context;
+
+    const { token, user: { name, email } } = data.login;
     console.log("_confirm:", token, name)
+
     this._saveUserData(token, name)
-    const {setMails, setAuth, setUsername} = this.context;
+
     setAuth(token);
     setUsername(name);
-    await queryUserMails("inbox", 1, 20, setMails);
+    setUserEmail(email)
+    // await queryUserMails("inbox", 1, 20, setMails);
     // this.onFinish(token, name);
   }
   _saveUserData(token: string, username: string) {

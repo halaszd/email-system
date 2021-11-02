@@ -28,6 +28,8 @@ const MailContext = createContext<MailContextType>(
     {
         isSideBarClicked: false,
         setIsSideBarClicked: () => { },
+        userEmail: "",
+        setUserEmail: () => { },
         mails: { allInBoxtypeCount: 0, mailsPerPage: 20, typeOfBox: "inbox", userMails: fetchedMails },
         setMails: () => { },
         openedMail: emptyMail,
@@ -46,6 +48,7 @@ type Props = {
 
 export function MailProvider({ children }: Props) {
     const [isSideBarClicked, setIsSideBarClicked] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
     // To store fetched mails
     const [mails, setMails] = useState<FetchedMails>(
         {
@@ -69,6 +72,8 @@ export function MailProvider({ children }: Props) {
         <MailContext.Provider value={
             {
                 isSideBarClicked,
+                userEmail,
+                setUserEmail,
                 setIsSideBarClicked,
                 mails,
                 setMails,

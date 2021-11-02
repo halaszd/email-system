@@ -24,13 +24,13 @@ export function ShowMails() {
                 <>
                 <Switch>
                     <Route exact path="/">
-                        <Mails setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
+                        <Mails box={"inbox"} setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
                     </Route>
                     <Route exact path="/sent">
-                        <Mails setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
+                        <Mails box={"sent"} setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
                     </Route>
                     <Route exact path="/trash">
-                        <Mails  setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
+                        <Mails box={"trash"} setIsNewMail={setIsNewMail} setSendTo={setSendTo}/>
                     </Route>
                 </Switch>
                 </>

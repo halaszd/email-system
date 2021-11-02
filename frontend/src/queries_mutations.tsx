@@ -2,12 +2,14 @@ import { gql } from '@apollo/client';
 
 export const MAIL_QUERY = gql `
     query MailQuery(
+        $userEmail: String!
         $typeOfBox: String!
         $skip: Int 
         $take: Int
         $orderBy: MailOrderByInut
         ) {
         emails(
+            userEmail: $userEmail,
             typeOfBox: $typeOfBox, 
             skip: $skip, 
             take:$take, 

@@ -3,7 +3,9 @@ import { FetchedMail, FetchedMails } from './FetchedMail';
 export type MailContextType = {
   // isSideBarClicked?: boolean;
   isSideBarClicked: boolean;
-  setIsSideBarClicked: Function
+  setIsSideBarClicked: Function;
+  userEmail: string;
+  setUserEmail: Function;
   mails: FetchedMails;
   setMails: Function;
   // typeOfMail: "inbox" | "sent" | "trash";

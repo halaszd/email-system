@@ -35,7 +35,7 @@ export function Menu({ auth, setAuth, username }: Props) {
                 <li>
                     <Link to="login">
                         <ButtonWithTextUnder 
-                        onClick={() => {setAuth(null); localStorage.removeItem(AUTH_TOKEN)}}
+                        onClick={() => {setAuth(null); localStorage.removeItem(AUTH_TOKEN); console.log(localStorage.getItem(AUTH_TOKEN))}}
                         content="Log out">
                         Log out
                         </ButtonWithTextUnder>
