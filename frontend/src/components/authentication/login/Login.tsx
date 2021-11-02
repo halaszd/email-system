@@ -57,10 +57,11 @@ class LoginForm extends React.Component<IProps, IState> {
   };
 
   async onFinish(token: string, username: string) {
-    const {setMails, setAuth, setUsername} = this.context;
-    setAuth(token);
-    setUsername(username);
-    await queryUserMails("inbox", 1, 20, setMails);
+    // const {setMails, setAuth, setUsername, auth} = this.context;
+    // setAuth(token);
+    // setUsername(username);
+    // console.log("in onFinish", auth)
+    // await queryUserMails("inbox", 1, 20, setMails);
   };
 
   onFinishFailed(errorInfo: any) {
@@ -124,8 +125,13 @@ class LoginForm extends React.Component<IProps, IState> {
   }
   async _confirm(data: any) {
     const { token, user: { name } } = data.login;
+    console.log("_confirm:", token, name)
     this._saveUserData(token, name)
-    this.onFinish(token, name);
+    const {setMails, setAuth, setUsername} = this.context;
+    setAuth(token);
+    setUsername(name);
+    await queryUserMails("inbox", 1, 20, setMails);
+    // this.onFinish(token, name);
   }
   _saveUserData(token: string, username: string) {
     localStorage.setItem(AUTH_TOKEN, token)

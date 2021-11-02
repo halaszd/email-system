@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState } from 'react';
-import { queryUserMails } from '../../..';
-import { useQueryMails } from '../customHooks/useQueryMails';
 import { useSetOpenedMail } from '../customHooks/useSetOpenedMail';
 import { FetchedMail, FetchedMails } from '../types/FetchedMail';
 import { MailContextType } from '../types/MailContextType';

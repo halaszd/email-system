@@ -21,6 +21,11 @@ import { queryUserMails } from '../..';
 // mails header: and single and bulk deletion and pagination
 // registration
 // server: settings: user should have mailsPerPage settings
+// in frontend: save take and skip and use them in query
+// serer give back take and skip when querying mails
+// username when registering
+// when a user log out and another is logged in the former user's emails are present without refresh
+// finish declaration of update in NewMails.tsx
 
 
 // Frontend side
@@ -42,8 +47,8 @@ export default function App() {
   // to get user if the user is logged in
   const [username, setUsername] = useState(localStorage.getItem(USER_NAME));
   const { mails, setMails } = useMail();
-  
-  if(mails.typeOfBox === "nobox") {
+
+  if(mails.typeOfBox === "nobox" && auth) {
     queryUserMails("inbox", 1, 20, setMails)
   }
 

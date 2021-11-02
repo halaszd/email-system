@@ -29,6 +29,7 @@ const typeOfBoxes = [
 // }
 
 async function emails(parent, args, context, info) {
+    console.log(args.typeOfBox)
     if(!typeOfBoxes.includes(args.typeOfBox)) {
         throw new Error('Invalid box type')
     }
@@ -37,6 +38,9 @@ async function emails(parent, args, context, info) {
     const mailsPerPage = args.take;
 
     const { userId } = context;
+    if(!userId) {
+        throw new Error("Non existent user")
+    }
     console.log("userId in query: ", userId)
 
     const where = { possessedById: userId };
