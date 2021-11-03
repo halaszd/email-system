@@ -5,22 +5,22 @@ import { FetchedMail } from '../../utils/types/FetchedMail';
 
 type Props = {
 	filteredMails: FetchedMail[];
-  // setFilteredMails: Function;
+  setShowResultMails: Function;
 }
 
 // -------------------- Component -------------------- 
 const Results = (
   {
     filteredMails, 
-    // setFilteredMails
+    setShowResultMails
   }: Props) => {
 
     const {setIsOpenedMail, setOpenedMailID} = useMail();
 
-  function handleClick(id: number) {
+  function handleClick(id: string) {
     setIsOpenedMail(true); 
     setOpenedMailID(id); 
-    // setFilteredMails([]);
+    setShowResultMails(false)
   }
   
 	return (
@@ -30,7 +30,7 @@ const Results = (
         return(
           <ResultContainer key={`${mail.id}_${index}`}>
             <ContentContainer>
-              <MessageInfos onClick={() => handleClick(Number(id))}>
+              <MessageInfos onClick={() => handleClick(id)}>
                 {/* { props.typeOf === 'inbox' || props.typeOf === 'trash' */}
                   {/* ? <span className="from-subject">From: {props.from}</span>	
                   : <span className="from-subject">To: {props.to}</span>	

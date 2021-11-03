@@ -2,6 +2,8 @@ import { FetchedMail, FetchedMails } from './FetchedMail';
 
 export type MailContextType = {
   // isSideBarClicked?: boolean;
+  isSearchingResult: boolean;
+  setIsSearchingResult: Function;
   isSideBarClicked: boolean;
   setIsSideBarClicked: Function;
   userEmail: string;

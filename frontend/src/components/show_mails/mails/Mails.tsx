@@ -17,7 +17,16 @@ const Mails = ({
   setSendTo
 }: Props) => {
   
-  const { userEmail, mails, isOpenedMail, setMails } = useMail();
+  const {
+    isSearchingResult, 
+    userEmail, 
+    mails: { 
+      userMails 
+    }, 
+    isOpenedMail, 
+    setMails 
+  } = useMail();
+
   const { data, loading } = useQuery(MAIL_QUERY, {
     variables: {
       typeOfBox: box,
@@ -25,31 +34,20 @@ const Mails = ({
       orderBy: { createdAt: 'desc' }
     }
   });
-  if(data) {
+
+  if(!isSearchingResult && data) {
     setMails(data["emails"])
-    console.log("mails: ", mails)
-  } else{
-    console.log("useremail: ", userEmail)
   }
-  // console.log('mails in MAILS:', mails)
-  console.log('data in MAILS: ', data)
 
 	return (
     <>
     {!isOpenedMail
       ?
     <MailsContainer>
-                      
-      {/* {mails && mails["userMails"].map((mail, index) => { */}
-      {data && data["emails"]["userMails"].map((mail: any, index: any) => {
+      { userMails && userMails.map((mail: any, index: any) => {
         return (
             <Mail key={`${index}_${mail.id}`} mail={mail} />
       )})}
-      {data && (
-         <>
-         {console.log(data)} 
-         </> 
-       ) } 
     </MailsContainer>
 
     :

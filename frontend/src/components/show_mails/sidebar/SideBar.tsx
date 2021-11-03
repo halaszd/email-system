@@ -1,5 +1,4 @@
 import { useMail } from '../../utils/useContexts/MailContextProvider';
-import { queryUserMails } from '../../..';
 import { SideBarContainer, SubSideBar, ModButton } from './Styled';
 import { SearchOutlined, FormOutlined, SendOutlined, DeleteOutlined } from '@ant-design/icons';
 import { Link } from "react-router-dom";
@@ -16,9 +15,7 @@ const SideBar = (
 	}: Props) => {
 	
 	const {
-		userEmail,
-		mails: { mailsPerPage, allInBoxtypeCount, typeOfBox },
-		setMails,
+		setIsSearchingResult,
 		isSideBarClicked,
 		setIsSideBarClicked,
 		setIsOpenedMail
@@ -29,13 +26,14 @@ const SideBar = (
 			<li>
 				<ModButton type="primary" icon={<FormOutlined />} onClick={() => setIsNewMail(!isNewMail)}>New Mail</ModButton>
 			</li>
-			<SubSideBar onClick={() => { setIsOpenedMail(false); setIsSideBarClicked(!isSideBarClicked) }}>
+			<SubSideBar onClick={() => { 
+				setIsOpenedMail(false); 
+				setIsSideBarClicked(!isSideBarClicked);
+				setIsSearchingResult(false) 
+				}}>
 				<li>
 					<Link to="/">
 						<ModButton type="primary" icon={<SearchOutlined />}
-							// onClick={() => {
-								// queryUserMails(userEmail, "inbox", 1, 20, setMails)
-							// }}
 						>Inbox
 						</ModButton>
 					</Link>
@@ -44,9 +42,6 @@ const SideBar = (
 				<li>
 					<Link to="/sent">
 						<ModButton type="primary" icon={<SendOutlined />}
-							// onClick={() => {
-								// queryUserMails(userEmail, "sent", 1, 20, setMails)
-							// }}
 						>Sent
 						</ModButton>
 					</Link>
@@ -55,9 +50,6 @@ const SideBar = (
 				<li>
 					<Link to="/trash">
 						<ModButton type="primary" icon={<DeleteOutlined />}
-							// onClick={() => {
-								// queryUserMails(userEmail, "trash", 1, 20, setMails)
-							// }}
 						>Trash
 						</ModButton>
 					</Link>

@@ -13,7 +13,6 @@ import { ShowMails } from '../show_mails/ShowMails';
 import SearchBar from '../searchbar/SearchBar';
 
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
-// import { queryUserMails } from '../..';
 
 // TODO:
 // finish declaration of update in NewMails.tsx
@@ -46,10 +45,6 @@ export default function App() {
   // to get user if the user is logged in
   const [username, setUsername] = useState(localStorage.getItem(USER_NAME));
   const { setUserEmail, setMails } = useMail();
-
-  // if(mails.typeOfBox === "nobox" && auth) {
-  //   queryUserMails("inbox", 1, 20, setMails)
-  // }
 
   return (
     <MainDiv>
