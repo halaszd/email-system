@@ -26,8 +26,8 @@ const fetchedMails: FetchedMail[] = [];
 
 const MailContext = createContext<MailContextType>(
     {
-        isSearchingResult: false,
-        setIsSearchingResult: () => { },
+        toFetch: true,
+        setToFetch: () => { },
         isSideBarClicked: false,
         setIsSideBarClicked: () => { },
         userEmail: "",
@@ -49,7 +49,7 @@ type Props = {
 }
 
 export function MailProvider({ children }: Props) {
-    const [isSearchingResult, setIsSearchingResult] = useState(false);
+    const [toFetch, setToFetch] = useState(true);
     const [isSideBarClicked, setIsSideBarClicked] = useState(false);
     const [userEmail, setUserEmail] = useState("");
     // To store fetched mails
@@ -57,7 +57,7 @@ export function MailProvider({ children }: Props) {
         {
             allInBoxtypeCount: 0,
             mailsPerPage: 20,
-            typeOfBox: "nobox",
+            typeOfBox: "inbox",
             userMails: fetchedMails
         });
     // To show only one mail which was clicked. It's needed here to close the opened mail if one clicks on a sidebar button
@@ -74,8 +74,8 @@ export function MailProvider({ children }: Props) {
     return (
         <MailContext.Provider value={
             {
-                isSearchingResult,
-                setIsSearchingResult,
+                toFetch,
+                setToFetch,
                 isSideBarClicked,
                 userEmail,
                 setUserEmail,

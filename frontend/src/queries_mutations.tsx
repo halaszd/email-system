@@ -67,3 +67,33 @@ export const MAIL_SEARCH_QUERY = gql`
     }
   }
 `;
+
+export const DELETE_MAILS_MUTATION = gql`
+  mutation DeleteMailsMutation(
+    $userMailIds: [ID!]!
+    ) {
+    deleteUserMail(
+      userMailIds: $userMailIds
+      ) {
+      id
+      email {
+        subject
+        message
+      }
+      possessedBy {
+        id
+      }
+      fromUser {
+        id
+        email
+        name
+      }
+      toUser {
+        id
+        email
+        name
+      }
+      typeOfBox
+    }
+  }
+`;

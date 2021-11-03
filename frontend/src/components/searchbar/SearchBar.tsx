@@ -10,7 +10,7 @@ import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 const SearchBar = ()=> {
 
     const {
-      setIsSearchingResult,
+      setToFetch,
       setMails, 
       mails: {
         mailsPerPage, 
@@ -25,7 +25,7 @@ const SearchBar = ()=> {
     const [executeSearch, { data, loading }] = useLazyQuery(MAIL_SEARCH_QUERY)
 
     useEffect(() => {
-      function handleChange() {
+      async function handleChange() {
         if(searchFilter === '') {
           setShowResultMails(false)
         } else {
@@ -35,7 +35,7 @@ const SearchBar = ()=> {
           variables: {
             typeOfBox: typeOfBox,
             filter: searchFilter
-          }
+          } 
         })
       }
       handleChange();
@@ -56,7 +56,7 @@ const SearchBar = ()=> {
     setOpenedMailID(null);
     setIsOpenedMail(false);
     setShowResultMails(false);
-    setIsSearchingResult(true)
+    setToFetch(false)
 	}
 
 	return (

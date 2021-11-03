@@ -4,6 +4,7 @@ import { MAIL_QUERY } from '../../../queries_mutations';
 import Mail from './mail/Mail';  
 import OpenedMail from './opened_mail/OpenedMail';
 import { useQuery } from '@apollo/client';
+import { useEffect } from 'react';
 
 // -------------------- The component -------------------- 
 type Props = {
@@ -18,7 +19,8 @@ const Mails = ({
 }: Props) => {
   
   const {
-    isSearchingResult, 
+    toFetch,
+    setToFetch,
     userEmail, 
     mails: { 
       userMails 
@@ -32,11 +34,14 @@ const Mails = ({
       typeOfBox: box,
       userEmail: userEmail,
       orderBy: { createdAt: 'desc' }
-    }
+    },
+    fetchPolicy: 'network-only'
   });
 
-  if(!isSearchingResult && data) {
+  if(toFetch && data) {
     setMails(data["emails"])
+  } else {
+    setToFetch(true)
   }
 
 	return (
