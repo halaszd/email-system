@@ -34,7 +34,6 @@ async function toUser(parent, args, context) {
     .toUser()
 }
 
-
 module.exports = {
     email,
     fromUser,

@@ -2,15 +2,15 @@ import { gql } from '@apollo/client';
 
 export const MAIL_QUERY = gql `
     query MailQuery(
-        $userEmail: String!
         $typeOfBox: String!
+        $userEmail: String
         $skip: Int 
         $take: Int
         $orderBy: MailOrderByInut
         ) {
         emails(
-            userEmail: $userEmail,
             typeOfBox: $typeOfBox, 
+            userEmail: $userEmail,
             skip: $skip, 
             take:$take, 
             orderBy: $orderBy
@@ -18,8 +18,8 @@ export const MAIL_QUERY = gql `
             userMails {
                 id
                 email {
-                    subject
-                    message
+                  subject
+                  message
                 }
                 possessedBy{
                   id
@@ -34,9 +34,36 @@ export const MAIL_QUERY = gql `
                   email
                   name
                 }
+                typeOfBox
             }
             allInBoxtypeCount,
             typeOfBox
         }
     }
+`;
+
+export const MAIL_SEARCH_QUERY = gql`
+  query MailSearchQuery($typeOfBox: String, $filter: String) {
+    searchEmails(typeOfBox: $typeOfBox, filter: $filter) {
+      id
+      email {
+        subject
+        message
+      }
+      possessedBy {
+        id
+      }
+      fromUser {
+        id
+        email
+        name
+      }
+      toUser {
+        id
+        email
+        name
+      }
+      typeOfBox
+    }
+  }
 `;

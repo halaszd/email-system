@@ -69,6 +69,10 @@ async function emails(parent, args, context, info) {
 }
 
 async function searchEmails(parent, args, context) {
+    console.log(args.typeOfBox, args.filter)
+    if(args.filter === ""){
+        return [];
+    }
     // fromUser, toUser, message, subject
     const { userId } = context;
     const where = {possessedById: userId}

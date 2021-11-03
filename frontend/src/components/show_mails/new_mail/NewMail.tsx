@@ -7,6 +7,7 @@ import { useHistory } from 'react-router';
 import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 import { NewMailContainer, ContentContainer, Header, Form } from './Styled';
+import { FetchedMails } from '../../utils/types/FetchedMail';
 
 const SEND_MAIL_MUTATION = gql`
   mutation sendMutation(
@@ -22,11 +23,23 @@ const SEND_MAIL_MUTATION = gql`
       message: $message
     )
     {
+      id
+      email {
+        subject
+        message
+      }
+      possessedBy {
+        id
+      }
       fromUser {
+        id
         email
+        name
       }
       toUser {
+        id
         email
+        name
       }
     }
   }
@@ -35,14 +48,6 @@ const SEND_MAIL_MUTATION = gql`
 const { TextArea } = Input;
 
 // -------------------- Declaring types and interfaces -------------------- 
-interface DataToSend {
-  // date
-  from: string;
-  to: string;
-  subject: string;
-  message: string;
-  id: number | string;
-}
 
 interface FormElements extends HTMLFormControlsCollection {
   formInput: HTMLInputElement
@@ -89,32 +94,30 @@ const NewMail = (
       subject: mailToSend.subject,
       message: mailToSend.message
     },
-    update(cache, { data: { send }}) {
-      // should add take, skip and order by
-      const typeOfBox = mails.typeOfBox;
+    // update(cache, { data }) {
+    //   const typeOfBox = mails.typeOfBox;
+    //   console.log(typeOfBox)
+    //   const emails = cache.readQuery({
+    //     query: MAIL_QUERY,
+    //     variables: {
+    //       typeOfBox
+    //     }
+    //   });
+    //   console.log("DATA: ", emails, data, cache)
 
-      // check data's structure in ex.json then write
-      const data = cache.readQuery({
-        query: MAIL_QUERY,
-        variables: {
-          typeOfBox
-        }
-      });
-      console.log(data)
-
-      // cache.writeQuery({
-      //   query: MAIL_QUERY,
-      //   data: {
-      //     emails: {
-      //       emails: [send, ...data.emails]
-      //     }
-      //   },
-      //   variables: {
-
-      //   }
-      // })
+    //   // store.writeQuery({
+    //   //   query: MAIL_QUERY,
+    //   //   variables: {
+    //   //     typeOfBox: mails.typeOfBox,
+    //   //   },
+    //   //   data: {
+    //   //     userMails: [...mails["userMails"], data.send]
+    //   //   }
+    //   // })
+    //   console.log(data)
+    // }
     }
-  });
+  );
 
   function minimize() {
     const newMailContainer = document.querySelector(".new-mail-container")!;
@@ -126,26 +129,8 @@ const NewMail = (
   function handleSubmit(e: React.FormEvent<FormElement>) {
     e.preventDefault();
     sendEmail();
-    // const inputs =  e.currentTarget.querySelectorAll(".input");
-    // const mailID = new Date().valueOf() + Math.random();
-    // let values: DataToSend = {
-    //   from: "",
-    //   to: "", // most possibly it's (the name) not needed 
-    //   subject: "", 
-    //   message: "", 
-    //   id: mailID};
-    // console.log(mailID)
-
-    // for(const elem of inputs) {
-    //   const modElem = (elem as HTMLInputElement);
-    //   const key = modElem.name as keyof DataToSend;
-    //   values[key] = modElem.value;
-    // }
-
-    // // setTimout
     setIsloading(true);
     setTimeout(() => {setIsloading(false); setIsNewMail(!isNewMail); setSendTo("")}, 2000);
-    // console.log(values)
     ;
 }
 
@@ -163,9 +148,6 @@ const NewMail = (
         </Header>
         { isLoading && <Spin className="spinner" tip="Sending" /> }
         <Form className="form" onSubmit={handleSubmit}>
-          {/* <Input className="input" name="to" placeholder="To" defaultValue={sendTo} required/>
-          <Input className="input" name="subject" placeholder="Subject" required/>
-          <TextArea className="input message" name="message" placeholder="Message" /> */}
           <Input 
             className="input" 
             placeholder="To" 

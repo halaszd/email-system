@@ -1,6 +1,6 @@
 type Query {
     # userInfo: User!
-    emails(userEmail: String!, typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
+    emails(typeOfBox: String!, userEmail: String, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
     searchEmails(typeOfBox: String, filter: String): [UserMail!]!
 }
 
@@ -29,6 +29,7 @@ type UserMail {
     possessedBy: User
     fromUser: User
     toUser: User
+    typeOfBox: String
 }
 
 type AuthPayload {

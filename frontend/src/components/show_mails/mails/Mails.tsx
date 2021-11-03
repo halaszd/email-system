@@ -18,15 +18,16 @@ const Mails = ({
 }: Props) => {
   
   const { userEmail, mails, isOpenedMail, setMails } = useMail();
-  const { data } = useQuery(MAIL_QUERY, {
+  const { data, loading } = useQuery(MAIL_QUERY, {
     variables: {
-      userEmail: userEmail,
       typeOfBox: box,
-      orderBy: { createdAt: "desc" }
+      userEmail: userEmail,
+      orderBy: { createdAt: 'desc' }
     }
   });
   if(data) {
     setMails(data["emails"])
+    console.log("mails: ", mails)
   } else{
     console.log("useremail: ", userEmail)
   }

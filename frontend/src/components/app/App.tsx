@@ -16,8 +16,8 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 // import { queryUserMails } from '../..';
 
 // TODO:
-// orderBy desc query is not sorting the emails properly
 // finish declaration of update in NewMails.tsx
+// use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // searching
 // mails header: and single and bulk deletion and pagination
 // registration

@@ -5,14 +5,14 @@ import { FetchedMail } from '../../utils/types/FetchedMail';
 
 type Props = {
 	filteredMails: FetchedMail[];
-  setFilteredMails: Function;
+  // setFilteredMails: Function;
 }
 
 // -------------------- Component -------------------- 
 const Results = (
   {
     filteredMails, 
-    setFilteredMails
+    // setFilteredMails
   }: Props) => {
 
     const {setIsOpenedMail, setOpenedMailID} = useMail();
@@ -20,7 +20,7 @@ const Results = (
   function handleClick(id: number) {
     setIsOpenedMail(true); 
     setOpenedMailID(id); 
-    setFilteredMails([]);
+    // setFilteredMails([]);
   }
   
 	return (
