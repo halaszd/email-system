@@ -1,13 +1,12 @@
 import React from 'react'
 import { useState } from 'react';
-import { useMutation, gql } from '@apollo/client';
+import { useMutation, useLazyQuery, gql } from '@apollo/client';
 import { MAIL_QUERY } from '../../../queries_mutations';
 import { useMail } from '../../utils/useContexts/MailContextProvider';
 import { useHistory } from 'react-router';
 import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 import { NewMailContainer, ContentContainer, Header, Form } from './Styled';
-import { FetchedMails } from '../../utils/types/FetchedMail';
 
 const SEND_MAIL_MUTATION = gql`
   mutation sendMutation(
@@ -73,7 +72,7 @@ const NewMail = (
     setSendTo
   }: Props) => {
     
-  const {userEmail, mails} = useMail();
+  const {userEmail, mails: {typeOfBox}, setToFetch, setMails} = useMail();
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
@@ -87,6 +86,18 @@ const NewMail = (
   })
 
   // emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
+  const [executeMailQuery, {data, loading}] = useLazyQuery(
+        MAIL_QUERY,
+        {
+            variables: {
+                typeOfBox,
+                userEmail,
+                orderBy: { createdAt: 'desc'}
+            },
+            onCompleted: mails => {setMails(mails["emails"]); setToFetch(false)},
+            fetchPolicy: 'network-only'
+        }
+    )
   const [sendEmail] = useMutation(SEND_MAIL_MUTATION, {
     variables: {
       from: mailToSend.from,
@@ -94,6 +105,7 @@ const NewMail = (
       subject: mailToSend.subject,
       message: mailToSend.message
     },
+    onCompleted: () => executeMailQuery()
     // update(cache, { data }) {
     //   const typeOfBox = mails.typeOfBox;
     //   console.log(typeOfBox)
@@ -128,9 +140,16 @@ const NewMail = (
 
   function handleSubmit(e: React.FormEvent<FormElement>) {
     e.preventDefault();
+
     sendEmail();
     setIsloading(true);
-    setTimeout(() => {setIsloading(false); setIsNewMail(!isNewMail); setSendTo("")}, 2000);
+
+    setTimeout(() => {
+      setIsloading(false); 
+      setIsNewMail(!isNewMail); 
+      setSendTo("");}, 
+      2000
+      );
     ;
 }
 

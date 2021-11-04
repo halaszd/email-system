@@ -27,6 +27,7 @@ const MailsHeader = () => {
     const [singlePageNumber, setSinglePageNumber] = useState(1);
     const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
     const [multiMailPageSize, setMultiMailPageSize] = useState(mailsPerPage);
+
     const [executeMailQuery, {data, loading}] = useLazyQuery(
         MAIL_QUERY,
         {
@@ -39,6 +40,7 @@ const MailsHeader = () => {
             fetchPolicy: 'network-only'
         }
     )
+
     const [deleteMails] = useMutation(DELETE_MAILS_MUTATION, {
         variables: {
             userMailIds: checkedMailIDs
@@ -93,93 +95,68 @@ const MailsHeader = () => {
             deleteCheckedMails();
             return;
         }
-        // deleteSingleMail();
+        deleteSingleMail();
     }
 
-    //   async function deleteSingleMail() {
-    //     // single mail deletion is working, but due to that 
-    //     // fetched mails are always the same (server dont delete
-    //     // the mails just the frontend) you can delete in a loop forever
-    //     if(!openedMail){
-    //       return;
-    //     }
+      async function deleteSingleMail() {
+        if(!openedMail){
+          return;
+        }
 
-    //     let newMails: FetchedMail[] = [];
-    //     let deletedMailIndex = 0;
+        let newMails: FetchedMail[] = [];
+        let deletedMailIndex = 0;
+        let deletedMailId = null;
 
-    //     for(const [i, mail] of mails.entries()){
-    //       if(mail.id === openedMailID) {
-    //         deletedMailIndex = i;
+        for(const [i, mail] of userMails.entries()){
+          if(mail.id === openedMailID) {
+            deletedMailIndex = i;
+            deletedMailId = mail.id;
 
-    //         if(i < mails.length - 1) {
-    //           newMails = [...newMails, ...mails.slice(i + 1, mails.length)]
-    //         }
-    //         else if(singlePageNumber !== allInBoxtypeCount) result{
-    //           setMultiMailPageNumber(multiMailPageNumber + 1);
-    //           return;
-    //         }
-    //         else if(mails.length > 1) {
-    //           deletedMailIndex = i - 1;
-    //         } else {
-    //           setMultiMailPageNumber(multiMailPageNumber - 1);
-    //           return;
-    //         } 
-    //         break;
-    //       }
-    //         newMails.push(mail);
-    //       }
+            if(i < userMails.length - 1) {
+              newMails = [...newMails, ...userMails.slice(i + 1, userMails.length)]
+            }
+            else if(singlePageNumber !== allInBoxtypeCount) {
+              setMultiMailPageNumber(multiMailPageNumber + 1);
+              return;
+            }
+            else if(userMails.length > 1) {
+              deletedMailIndex = i - 1;
+            } else {
+              setMultiMailPageNumber(multiMailPageNumber - 1);
+              return;
+            } 
+            break;
+          }
+            newMails.push(mail);
+          }
+          
+          if(!deletedMailId) {
+              return;
+          }
 
-    //     setMails(
-    //       {
-    //         allInBoxtypeCount: allInBoxtypeCount - 1, 
-    //         mailsPerPage: mailsPerPage,
-    //         typeOfMail: typeOfMail,
-    //         mails: newMails
-    //       });
-
-    //     if(newMails.length !== 0){
-    //       setOpenedMailID(newMails[deletedMailIndex].id);
-    //     } else {
-    //       setOpenedMailID(null);
-    //     }
-    //   }
+        if(newMails.length !== 0){
+          setOpenedMailID(newMails[deletedMailIndex].id);
+          console.log(newMails[deletedMailIndex])
+        } else {
+          setOpenedMailID(null);
+        }
+        deleteMails({
+            variables: {
+                userMailIds: [deletedMailId] 
+            }
+        })
+      }
 
     function deleteCheckedMails() {
-        // Deleting the checked mails and collecting them in another array
-        // const deletedMails: FetchedMail[] = [];
-        // const newMails: FetchedMail[] = [];
-
         if (userMails.length === 0) {
             return;
         }
 
-        deleteMails()
-
-        // for (const mail of userMails) {
-        //     let isFoundMail = false;
-
-        //     for (const id of checkedMailIDs) {
-        //         if (mail.id === id) {
-        //             // Collecting deleted mails for further purpuses
-        //             deletedMails.push(mail)
-        //             isFoundMail = true;
-        //             break;
-        //         }
-        //     }
-
-        //     if (!isFoundMail) {
-        //         newMails.push(mail)
-        //     }
-        // }
-        // Until the real sever is no on: Gives back only the not deleted emails
-        // setMails(
-        //     {
-        //         allInBoxtypeCount: allInBoxtypeCount,
-        //         mailsPerPage: mailsPerPage,
-        //         typeOfBox: typeOfBox,
-        //         userMails: newMails
-        //     });
-        // To clear the IDs of formerly checked emails
+        deleteMails({
+            variables: {
+                userMailIds: checkedMailIDs
+            }
+        })
         setCheckedMailIDs([]);
     }
 

@@ -15,7 +15,7 @@ import SearchBar from '../searchbar/SearchBar';
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
-// mails header: and single and bulk deletion and pagination
+// mails header: single mail deletion and pagination
 // finish declaration of update in NewMails.tsx
 // use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // registration

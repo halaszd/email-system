@@ -46,7 +46,7 @@ const SearchBar = ()=> {
     if(word === "" || !data) {
       return;
     }
-    console.log("onSearch: ", data)
+    
     setMails({
       totalNumOfMails: data["searchEmails"].length,
       typeOfMail: typeOfBox,
