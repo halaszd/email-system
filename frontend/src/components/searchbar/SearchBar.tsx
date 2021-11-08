@@ -10,7 +10,7 @@ import { SearchDiv, SearchContainer, ModSearch } from './Styled';
 const SearchBar = ()=> {
 
     const {
-      setToFetch,
+      setIsToFetch,
       setMails, 
       mails: {
         mailsPerPage, 
@@ -56,7 +56,7 @@ const SearchBar = ()=> {
     setOpenedMailID(null);
     setIsOpenedMail(false);
     setShowResultMails(false);
-    setToFetch(false)
+    setIsToFetch(false)
 	}
 
 	return (

@@ -20,7 +20,7 @@ const MailsHeader = () => {
         openedMailID,
         setOpenedMailID, 
         userEmail,
-        setToFetch
+        setIsToFetch
     } = useMail();
 
     const [isSinglePagePagination, setIsSinglePagePagination] = useState(false);
@@ -36,7 +36,7 @@ const MailsHeader = () => {
                 userEmail,
                 orderBy: { createdAt: 'desc'}
             },
-            onCompleted: mails => {setMails(mails["emails"]); setToFetch(false)},
+            onCompleted: mails => {setMails(mails["emails"]); setIsToFetch(false)},
             fetchPolicy: 'network-only'
         }
     )

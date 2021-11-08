@@ -72,7 +72,7 @@ const NewMail = (
     setSendTo
   }: Props) => {
     
-  const {userEmail, mails: {typeOfBox}, setToFetch, setMails} = useMail();
+  const {userEmail, mails: {typeOfBox}, setIsToFetch, setMails} = useMail();
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
@@ -94,7 +94,7 @@ const NewMail = (
                 userEmail,
                 orderBy: { createdAt: 'desc'}
             },
-            onCompleted: mails => {setMails(mails["emails"]); setToFetch(false)},
+            onCompleted: mails => {setMails(mails["emails"]); setIsToFetch(false)},
             fetchPolicy: 'network-only'
         }
     )

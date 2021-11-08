@@ -26,8 +26,8 @@ const fetchedMails: FetchedMail[] = [];
 
 const MailContext = createContext<MailContextType>(
     {
-        toFetch: true,
-        setToFetch: () => { },
+        isToFetch: true,
+        setIsToFetch: () => { },
         isSideBarClicked: false,
         setIsSideBarClicked: () => { },
         userEmail: "",
@@ -49,7 +49,7 @@ type Props = {
 }
 
 export function MailProvider({ children }: Props) {
-    const [toFetch, setToFetch] = useState(true);
+    const [isToFetch, setIsToFetch] = useState(true);
     const [isSideBarClicked, setIsSideBarClicked] = useState(false);
     const [userEmail, setUserEmail] = useState("");
     // To store fetched mails
@@ -74,8 +74,8 @@ export function MailProvider({ children }: Props) {
     return (
         <MailContext.Provider value={
             {
-                toFetch,
-                setToFetch,
+                isToFetch,
+                setIsToFetch,
                 isSideBarClicked,
                 userEmail,
                 setUserEmail,

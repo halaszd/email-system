@@ -16,13 +16,14 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
 // mails header: single mail deletion and pagination
-// finish declaration of update in NewMails.tsx
 // use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // registration
 // server: settings: user should have mailsPerPage settings
 // in frontend: save take and skip and use them in query
 // serer give back take and skip when querying mails
 // username when registering
+// debug: finish declaration of update in NewMails.tsx
+// try to use subscription for refreshing boxes
 
 
 // Frontend side

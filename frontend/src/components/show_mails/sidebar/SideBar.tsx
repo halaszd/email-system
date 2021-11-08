@@ -15,7 +15,7 @@ const SideBar = (
 	}: Props) => {
 	
 	const {
-		setToFetch,
+		setIsToFetch,
 		isSideBarClicked,
 		setIsSideBarClicked,
 		setIsOpenedMail
@@ -29,7 +29,7 @@ const SideBar = (
 			<SubSideBar onClick={() => { 
 				setIsOpenedMail(false); 
 				setIsSideBarClicked(!isSideBarClicked);
-				setToFetch(true) 
+				setIsToFetch(true) 
 				}}>
 				<li>
 					<Link to="/">

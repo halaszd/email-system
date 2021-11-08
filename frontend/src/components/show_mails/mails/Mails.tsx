@@ -18,8 +18,8 @@ const Mails = ({
 }: Props) => {
   
   const {
-    toFetch,
-    setToFetch,
+    isToFetch,
+    // setToFetch,
     userEmail, 
     mails: { 
       userMails 
@@ -34,14 +34,18 @@ const Mails = ({
       userEmail: userEmail,
       orderBy: { createdAt: 'desc' }
     },
+    fetchPolicy: 'network-only'
   });
 
-  if(toFetch && data) {
+  if(isToFetch && data) {
     setMails(data["emails"])
-  } else {
-    setToFetch(true)
+    // console.log("isToFetch is: ", isToFetch)
   }
-
+  //  else {
+    // console.log("isToFetch is: ", isToFetch)
+    // setToFetch(true)
+  // }
+  console.log(userMails)
 	return (
     <>
     {!isOpenedMail
