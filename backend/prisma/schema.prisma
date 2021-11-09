@@ -16,6 +16,7 @@ model User {
   name      String?
   email     String     @unique
   password  String
+  mailsPerPage Int? @default(20)
   pseud0 UserMail[] @relation("possessedBy")
   pseud1 UserMail[] @relation("toUser")
   pseud2 UserMail[] @relation("fromUser")

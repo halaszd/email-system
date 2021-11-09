@@ -122,7 +122,7 @@ export class Registration extends Component<IProps, IState> {
             hasFeedback
             rules={[
               { 
-                required: true, message: 'Please input your username!', 
+                message: 'Please input your username!', 
                 whitespace: true 
               },
               ]}

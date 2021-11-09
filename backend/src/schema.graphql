@@ -1,6 +1,6 @@
 type Query {
     # userInfo: User!
-    emails(typeOfBox: String!, userEmail: String, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
+    emails(typeOfBox: String! skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
     searchEmails(typeOfBox: String, filter: String): [UserMail!]!
 }
 
@@ -9,6 +9,7 @@ type Mutation {
     login(email: String!, password: String!): AuthPayload
     send(from: String!, to: String!, subject: String, message: String): UserMail!
     deleteUserMail(userMailIds: [ID!]!): [UserMail!]
+    updateMailsPerPage(mailsPerPage: Int!): User!
 }
 
 type User {

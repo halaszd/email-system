@@ -101,6 +101,27 @@ async function send(parent, args, context, info) {
     return newToUserMail;
 }
 
+async function updateMailsPerPage(parent, args, context) {
+    const { userId } = context;
+
+    await context.prisma.user.update({
+        where: {
+            id: userId
+        },
+        data: {
+            mailsPerPage: args.mailsPerPage
+        }
+    })
+
+    const user = await context.prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    })
+
+    return user;
+}
+
 async function deleteUserMail(parent, args, context) {
     const { userId } = context;
 
@@ -157,4 +178,5 @@ module.exports = {
     login,
     send,
     deleteUserMail,
+    updateMailsPerPage,
 }

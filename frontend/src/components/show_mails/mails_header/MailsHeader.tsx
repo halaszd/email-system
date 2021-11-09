@@ -160,38 +160,40 @@ const MailsHeader = () => {
         setCheckedMailIDs([]);
     }
 
-    //   async function onChange(pageNumberOnChange: number) {
-    //     // console.log('Page: ', pageNumberOnChange);
+// -------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------
+// -------------------------------------------------------------------------------------------------------------------
 
-    //     if(!isSinglePagePagination){
-    //       setMultiMailPageNumber(pageNumberOnChange);
-    //       return;
-    //     }
+      async function onChange(pageNumberOnChange: number) {
+        // console.log('Page: ', pageNumberOnChange);
 
-    //     const mailIndex = (pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))) - 1;
-    //     if (mailIndex === mails.length) {
-    //       setMultiMailPageNumber(multiMailPageNumber + 1);
-    //       return;
-    //     }
-    //     else if(mailIndex < 0) {
-    //       setMultiMailPageNumber(multiMailPageNumber - 1);
-    //       return;
-    //     }
+        if(!isSinglePagePagination){
+          setMultiMailPageNumber(pageNumberOnChange);
+          return;
+        }
 
-    //     setOpenedMailID(mails[mailIndex].id);
-    //     // }
+        const mailIndex = (pageNumberOnChange - (multiMailPageSize * (multiMailPageNumber-1))) - 1;
+        if (mailIndex === userMails.length) {
+          setMultiMailPageNumber(multiMailPageNumber + 1);
+          return;
+        }
+        else if(mailIndex < 0) {
+          setMultiMailPageNumber(multiMailPageNumber - 1);
+          return;
+        }
 
-    //     setSinglePageNumber(pageNumberOnChange)
-    //   }
+        setOpenedMailID(userMails[mailIndex].id);
+        setSinglePageNumber(pageNumberOnChange)
+      }
 
-    //   async function onShowSizeChange(current: number, pageSizeOnChange: number) {
-    //     console.log(current, pageSizeOnChange);
+      async function onShowSizeChange(current: number, pageSizeOnChange: number) {
+        console.log(current, pageSizeOnChange);
 
-    //     if(!isSinglePagePagination) {
-    //       setMultiMailPageSize(pageSizeOnChange);
-    //       return;
-    //     }
-    //   }
+        if(!isSinglePagePagination) {
+          setMultiMailPageSize(pageSizeOnChange);
+          return;
+        }
+      }
 
     return (
         <div>
@@ -200,11 +202,11 @@ const MailsHeader = () => {
                     <DeleteFilled className="delete-all" onClick={handleDeletion} />
                 </TrashIconContainer>
                 <h1>{typeOfBox && `${typeOfBox.charAt(0).toUpperCase()}${typeOfBox.slice(1)}`}</h1>
-                {/* { isOpenedMail
+                { isOpenedMail
           ?
           <Pagination
             size="small"
-            total={allInBoxtypeCountresult}
+            total={allInBoxtypeCount}
             showTotal={(total) => `${singlePageNumber} of ${total}` }
             showQuickJumper={false}
             showSizeChanger={false}
@@ -218,7 +220,7 @@ const MailsHeader = () => {
           :
           <Pagination
             size="small"
-            total={allInBoxtypeCountresult}
+            total={allInBoxtypeCount}
             showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
             showQuickJumper={false}
             showSizeChanger={true}
@@ -228,7 +230,7 @@ const MailsHeader = () => {
             onChange={onChange}
             onShowSizeChange={onShowSizeChange}
           />
-        } */}
+        }
             </Header>
 
         </div>
