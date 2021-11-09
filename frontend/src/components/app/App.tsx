@@ -15,15 +15,16 @@ import SearchBar from '../searchbar/SearchBar';
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
-// mails header: single mail deletion and pagination
-// use loading when making a query or mutation: const [{data, loading}] = useQuery...
-// registration
+// exeption handlings in frontend: errorpolicy: 'all'
+// mails header: single mail deletion(what if out of curr chunk) and pagination
 // server: settings: user should have mailsPerPage settings
 // in frontend: save take and skip and use them in query
 // serer give back take and skip when querying mails
-// username when registering
 // debug: finish declaration of update in NewMails.tsx
-// try to use subscription for refreshing boxes
+// use loading when making a query or mutation: const [{data, loading}] = useQuery...
+// when registering: check real time if email exist
+// when registering: check at least 6 chars whith special chars
+// try to use subscription for refreshing mailboxes
 
 
 // Frontend side

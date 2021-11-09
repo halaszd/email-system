@@ -1,4 +1,6 @@
 import React, { Component } from 'react'
+import { Mutation } from "react-apollo";
+import { REGISTER_MUTATION } from '../../../queries_mutations';
 import withStatus, { InjectedIsSuccessfulProps } from '../../utils/hocs/withStatus';
 import { FormInstance } from 'antd/es/form';
 import {
@@ -42,42 +44,29 @@ interface IProps extends InjectedIsSuccessfulProps {};
 
 type IState = {
   isSuccessfulRegistration: boolean;
+  email: string;
+  password: string;
+  name: string;
 };
 
 export class Registration extends Component<IProps, IState> {
-  mailName = '@tmail.com';
-  regURL = 'http://localhost:3001/api/registration';
-  ifExistingUserURL = 'http://localhost:3001/api/is-existing-user';
-
+  mailName = '@tmail.com'
   formRef = React.createRef<FormInstance>();
 
   constructor(props: IProps) {
     super(props)
   
     this.state = {
-     isSuccessfulRegistration: false
+     isSuccessfulRegistration: false,
+     email: '',
+     password: '',
+     name: '',
        
     }
   }
 
-  onFinish = async (values: any) => {
-    console.log('Received values of form: ', values);
-
-    const valuesToServer = {
-      username: `${values['username']}${this.mailName}`, 
-      password: values['password']
-    }
-    
-    await this.props.onFinish(valuesToServer, this.regURL);
-
-    console.log("reg státusa: ", this.props.status);
-
-    if(this.props.status === 200) {
-      this.setState({ isSuccessfulRegistration: true });
-    }
-  };
-    
   render() {
+    const { isSuccessfulRegistration, email, password, name } = this.state;
     return (
       <LoginRegistratonDiv>
       <h1>Create your Account</h1>
@@ -87,11 +76,46 @@ export class Registration extends Component<IProps, IState> {
           {...formItemLayout}
           ref={this.formRef}
           name="register"
-          onFinish={this.onFinish}
+          // onFinish={this.onFinish}
           scrollToFirstError
           className="registration"
         >
 
+          <ModFormItem
+            name="email"
+            label="Email"
+            hasFeedback
+            rules={[
+              { 
+                required: true, message: 'Please input your email!', 
+                whitespace: true 
+              },
+              // {
+              //   validator: (_, value) =>
+              //     fetch(this.ifExistingUserURL, {
+              //       method: 'POST',
+              //       headers: {
+              //         'Content-Type': 'application/json'
+              //       },
+              //       body: JSON.stringify({"username": value + this.mailName})
+              //     })
+              //     .then(response => response.text())
+              //     .then((data) => {
+              //       if(data === "OK") {
+              //         console.log("data was OK")
+              //         return Promise.resolve();
+              //       }
+              //       console.log("data was: ", data)
+              //       return Promise.reject(new Error('Existing Username'));
+              //     })
+              // },
+              ]}
+          >
+            <Input 
+              addonAfter={<span className="mail">{this.mailName}</span>}
+              onChange={e => this.setState({email: `${e.target.value}${this.mailName}`})}  
+            />
+          </ModFormItem> 
           <ModFormItem
             name="username"
             label="Username"
@@ -101,28 +125,9 @@ export class Registration extends Component<IProps, IState> {
                 required: true, message: 'Please input your username!', 
                 whitespace: true 
               },
-              {
-                validator: (_, value) =>
-                  fetch(this.ifExistingUserURL, {
-                    method: 'POST',
-                    headers: {
-                      'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({"username": value + this.mailName})
-                  })
-                  .then(response => response.text())
-                  .then((data) => {
-                    if(data === "OK") {
-                      console.log("data was OK")
-                      return Promise.resolve();
-                    }
-                    console.log("data was: ", data)
-                    return Promise.reject(new Error('Existing Username'));
-                  })
-              },
               ]}
           >
-            <Input addonAfter={<span className="mail">{this.mailName}</span>}/>
+            <Input onChange={e => this.setState({name: e.target.value})} />
           </ModFormItem>
 
           <Form.Item
@@ -136,7 +141,8 @@ export class Registration extends Component<IProps, IState> {
             ]}
             hasFeedback
           >
-            <Input.Password />
+            <Input.Password onChange={e => this.setState({password: e.target.value})} />
+
           </Form.Item>
 
           <Form.Item
@@ -178,9 +184,17 @@ export class Registration extends Component<IProps, IState> {
             </Checkbox>
           </ModFormItem>
           <Form.Item {...tailFormItemLayout}>
-            <RegButton type="primary" htmlType="submit">
-              Register
-            </RegButton>
+            <Mutation
+            mutation={REGISTER_MUTATION}
+            variables={{ email, password, name }}
+            onCompleted={(data: any) => this._confirm(data)}
+            >
+              {(mutation: any) => (
+                <RegButton type="primary" htmlType="submit" onClick={mutation}>
+                  Register
+                </RegButton>
+              )}
+            </Mutation>
           </Form.Item>
         </ModForm>
       :
@@ -189,6 +203,13 @@ export class Registration extends Component<IProps, IState> {
       </LoginRegistratonDiv>
     );
   };
+
+  async _confirm(data: any) {
+    const { token } = data.signup;
+    if(token) {
+      this.setState({isSuccessfulRegistration: true})
+    }
+  }
 };
 
 export default withStatus(Registration);

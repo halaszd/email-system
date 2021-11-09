@@ -98,13 +98,14 @@ const NewMail = (
             fetchPolicy: 'network-only'
         }
     )
-  const [sendEmail] = useMutation(SEND_MAIL_MUTATION, {
+  const [sendEmail, {error}] = useMutation(SEND_MAIL_MUTATION, {
     variables: {
       from: mailToSend.from,
       to: mailToSend.to,
       subject: mailToSend.subject,
       message: mailToSend.message
     },
+    errorPolicy: 'all',
     onCompleted: () => executeMailQuery()
     // update(cache, { data }) {
     //   const typeOfBox = mails.typeOfBox;
@@ -138,19 +139,21 @@ const NewMail = (
     form.classList.toggle("minimized");
   }
 
-  function handleSubmit(e: React.FormEvent<FormElement>) {
+  async function handleSubmit(e: React.FormEvent<FormElement>) {
     e.preventDefault();
 
-    sendEmail();
+    const result = await sendEmail();
+
     setIsloading(true);
 
+    if(!result.errors) {
     setTimeout(() => {
       setIsloading(false); 
       setIsNewMail(!isNewMail); 
       setSendTo("");}, 
       2000
       );
-    ;
+    }
 }
 
 	return (
@@ -165,7 +168,7 @@ const NewMail = (
             <CloseOutlined  onClick={() => {setIsNewMail(!isNewMail); setSendTo("")}}/>
           </div>
         </Header>
-        { isLoading && <Spin className="spinner" tip="Sending" /> }
+        { isLoading && !error && <Spin className="spinner" tip="Sending" /> }
         <Form className="form" onSubmit={handleSubmit}>
           <Input 
             className="input" 
@@ -186,7 +189,8 @@ const NewMail = (
             required/>
           <TextArea 
             className="input message" 
-            placeholder="Message" 
+            placeholder={error? error.message : "Message"} 
+            // value={(e: React.ChangeEvent<HTMLInputElement>) => {return e.target.value;}}
             onChange={(e) => setMailToSend({
               ...mailToSend,
               message: e.target.value

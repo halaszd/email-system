@@ -1,26 +1,14 @@
 import React from 'react';
 import { UserContext } from '../../utils/useContexts/UserContext';
-// import { queryUserMails } from '../../..';
 import { AUTH_TOKEN, USER_NAME } from '../../../constants';
 import { Mutation } from "react-apollo";
-import { gql } from "apollo-boost";
+import { LOGIN_MUTATION } from '../../../queries_mutations';
 
 import { ModForm, LogButton } from './Styled';
 import { LoginRegistratonDiv } from '../../app/Styled';
 import { Form, Input, Checkbox, Modal } from 'antd';
 
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation($email: String!, $password: String!) {
-    login(email: $email, password: $password) {
-      token
-      user {
-        id
-        email
-        name
-      }
-    }
-  }
-`
+
 type IProps = {
   status: number;
   setStatus(values: any, URL: string): void;
@@ -73,9 +61,9 @@ class LoginForm extends React.Component<IProps, IState> {
         autoComplete="off"
       >
         <Form.Item
-          label="Username"
-          name="username"
-          rules={[ { required: true, message: 'Please input your username!' } ]}
+          label="Email"
+          name="email"
+          rules={[ { required: true, message: 'Please input your email!' } ]}
         >
           <Input onChange={e => this.setState({email: e.target.value})}/>
         </Form.Item>
@@ -116,17 +104,13 @@ class LoginForm extends React.Component<IProps, IState> {
   }
   async _confirm(data: any) {
     const { setUserEmail, setAuth, setUsername} = this.context;
-
     const { token, user: { name, email } } = data.login;
-    console.log("_confirm:", token, name)
 
     this._saveUserData(token, name)
 
     setAuth(token);
     setUsername(name);
     setUserEmail(email)
-    // await queryUserMails("inbox", 1, 20, setMails);
-    // this.onFinish(token, name);
   }
   _saveUserData(token: string, username: string) {
     localStorage.setItem(AUTH_TOKEN, token)
