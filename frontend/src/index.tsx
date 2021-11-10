@@ -53,18 +53,19 @@ ReactDOM.render(
 
 // Exportable function which calls apollo client query
 export async function queryUserMails(
-    userEmail: string,
     typeOfBox: "inbox" | "sent" | "trash" | "all",
-    pageNum: number,
-    mailsPerPage: number,
+    skip: number,
+    orderBy: object,
     setMails?: Function
 ) {
     const result = await client.query({
         query: MAIL_QUERY,
         variables: {
-            userEmail: userEmail,
-            typeOfBox: typeOfBox
-        }
+            typeOfBox: typeOfBox,
+            orderBy: orderBy,
+            skip: skip
+        },
+        fetchPolicy: 'network-only'
     })
     console.log("result in index: ", result["data"]["emails"])
     setMails && setMails(result["data"]["emails"])

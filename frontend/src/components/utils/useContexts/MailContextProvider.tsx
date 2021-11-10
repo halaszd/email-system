@@ -56,7 +56,7 @@ export function MailProvider({ children }: Props) {
     const [mails, setMails] = useState<FetchedMails>(
         {
             allInBoxtypeCount: 0,
-            mailsPerPage: 20,
+            mailsPerPage: -1,
             typeOfBox: "inbox",
             userMails: fetchedMails
         });

@@ -22,7 +22,8 @@ const Mails = ({
     // setToFetch,
     userEmail, 
     mails: { 
-      userMails 
+      userMails,
+      mailsPerPage
     }, 
     isOpenedMail, 
     setMails 
@@ -31,7 +32,6 @@ const Mails = ({
   const { data, loading } = useQuery(MAIL_QUERY, {
     variables: {
       typeOfBox: box,
-      userEmail: userEmail,
       orderBy: { createdAt: 'desc' }
     },
     fetchPolicy: 'network-only'
@@ -39,13 +39,10 @@ const Mails = ({
 
   if(isToFetch && data) {
     setMails(data["emails"])
-    // console.log("isToFetch is: ", isToFetch)
+    console.log("isToFetch is: ", isToFetch, "data: ", data, "mailsperpage: ", mailsPerPage)
+
   }
-  //  else {
-    // console.log("isToFetch is: ", isToFetch)
-    // setToFetch(true)
-  // }
-  console.log(userMails)
+  
 	return (
     <>
     {!isOpenedMail

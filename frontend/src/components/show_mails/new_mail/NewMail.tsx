@@ -91,7 +91,6 @@ const NewMail = (
         {
             variables: {
                 typeOfBox,
-                userEmail,
                 orderBy: { createdAt: 'desc'}
             },
             onCompleted: mails => {setMails(mails["emails"]); setIsToFetch(false)},

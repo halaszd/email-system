@@ -29,16 +29,12 @@ export const LOGIN_MUTATION = gql`
 export const MAIL_QUERY = gql `
     query MailQuery(
         $typeOfBox: String!
-        $userEmail: String
         $skip: Int 
-        $take: Int
         $orderBy: MailOrderByInut
         ) {
         emails(
             typeOfBox: $typeOfBox, 
-            userEmail: $userEmail,
             skip: $skip, 
-            take:$take, 
             orderBy: $orderBy
             ) {
             userMails {
@@ -63,7 +59,8 @@ export const MAIL_QUERY = gql `
                 typeOfBox
             }
             allInBoxtypeCount,
-            typeOfBox
+            typeOfBox,
+            mailsPerPage
         }
     }
 `;
@@ -120,6 +117,18 @@ export const DELETE_MAILS_MUTATION = gql`
         name
       }
       typeOfBox
+    }
+  }
+`;
+
+export const UPDATE_MAILS_PER_PAGE_MUTATION = gql`
+  mutation UpdateMailsPerPageMutation(
+    $mailsPerPage: Int!
+  ) {
+    updateMailsPerPage(
+      mailsPerPage: $mailsPerPage
+    ) {
+      mailsPerPage
     }
   }
 `;

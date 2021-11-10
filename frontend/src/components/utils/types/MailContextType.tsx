@@ -1,7 +1,6 @@
 import { FetchedMail, FetchedMails } from './FetchedMail';
 
 export type MailContextType = {
-  // isSideBarClicked?: boolean;
   isToFetch: boolean;
   setIsToFetch: Function;
   isSideBarClicked: boolean;
@@ -10,13 +9,9 @@ export type MailContextType = {
   setUserEmail: Function;
   mails: FetchedMails;
   setMails: Function;
-  // typeOfMail: "inbox" | "sent" | "trash";
-  // openedMail?: FetchedMail;
   openedMail: FetchedMail;
-  // isOpenedMail?: boolean;
   isOpenedMail: boolean;
   setIsOpenedMail: Function;
-  // openedMailID?: number | null;
   openedMailID: string | null;
   setOpenedMailID: Function;
   checkedMailIDs: string[];

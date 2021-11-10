@@ -10,38 +10,28 @@ const typeOfBoxes = [
 //     to: "toUser"
 // }
 
-// async function userInfo(parent, args, context, info) {
-//     console.log("in the emails")
-//     const { userId } = context;
-//     console.log(userId)
-
-//     const user = await context.prisma.user.findUnique({
-//         where: {
-//             id: userId
-//         }
-//     })
-
-//     if(!user) {
-//         throw new Error('User cannot be null')
-//     }
-
-//     return user;
-// }
-
 async function emails(parent, args, context, info) {
     console.log(args.typeOfBox, args.userEmail)
     if(!typeOfBoxes.includes(args.typeOfBox)) {
         throw new Error('Invalid box type')
     }
 
-    const typeOfBox = args.typeOfBox;
-    const mailsPerPage = args.take;
-
     const { userId } = context;
     if(!userId) {
         throw new Error("Non existent user")
     }
+    
+    const user = await context.prisma.user.findUnique({
+        where: {
+            id: userId
+        }
+    })
+
+    const typeOfBox = args.typeOfBox;
+    const mailsPerPage = user.mailsPerPage;
+
     console.log("userId in query: ", userId)
+    console.log("mailsPerPage", mailsPerPage)
 
     const where = { possessedById: userId };
 
@@ -52,7 +42,7 @@ async function emails(parent, args, context, info) {
     const userMails = await context.prisma.userMail.findMany({
         where,
         skip: args.skip,
-        take:args.take,
+        take: mailsPerPage,
         orderBy: args.orderBy
     })
 

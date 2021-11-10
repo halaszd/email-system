@@ -2,7 +2,12 @@ import React from 'react'
 import { useState, useEffect } from 'react';
 import { useMail } from '../../utils/useContexts/MailContextProvider'
 import { useMutation, useLazyQuery } from '@apollo/client';
-import { DELETE_MAILS_MUTATION, MAIL_QUERY } from '../../../queries_mutations';
+import { 
+  DELETE_MAILS_MUTATION, 
+  MAIL_QUERY,
+  UPDATE_MAILS_PER_PAGE_MUTATION
+} from '../../../queries_mutations';
+import { queryUserMails } from '../../..';
 import { FetchedMail } from '../../utils/types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
@@ -11,7 +16,12 @@ import { Pagination } from 'antd';
 const MailsHeader = () => {
     const {
         isSideBarClicked,
-        mails: { allInBoxtypeCount, mailsPerPage, typeOfBox, userMails },
+        mails: { 
+          allInBoxtypeCount, 
+          mailsPerPage, 
+          typeOfBox, 
+          userMails 
+        },
         setCheckedMailIDs,
         checkedMailIDs,
         setMails,
@@ -19,7 +29,6 @@ const MailsHeader = () => {
         isOpenedMail,
         openedMailID,
         setOpenedMailID, 
-        userEmail,
         setIsToFetch
     } = useMail();
 
@@ -28,12 +37,12 @@ const MailsHeader = () => {
     const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
     const [multiMailPageSize, setMultiMailPageSize] = useState(mailsPerPage);
 
-    const [executeMailQuery, {data, loading}] = useLazyQuery(
+    const [executeMailQuery] = useLazyQuery(
         MAIL_QUERY,
         {
             variables: {
                 typeOfBox,
-                userEmail,
+                skip: mailsPerPage * (multiMailPageNumber - 1),
                 orderBy: { createdAt: 'desc'}
             },
             onCompleted: mails => {setMails(mails["emails"]); setIsToFetch(false)},
@@ -48,47 +57,68 @@ const MailsHeader = () => {
         onCompleted: () => executeMailQuery()
     })
 
+    const [updateMailsPerPage] = useMutation(UPDATE_MAILS_PER_PAGE_MUTATION, {
+      variables: {
+        mailsPerPage: multiMailPageSize
+      },
+      onCompleted: () => executeMailQuery()
+    })
 
-    //   useEffect(() => {
-    //     async function fetchCurrentMails() {
-    //         const currentMails = await fetchMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails);
-    //         // const currentMails = useQueryMails(typeOfMail, multiMailPageNumber, multiMailPageSize, setMails)
 
-    //       if(isOpenedMail) {
-    //         // if we hit either end of the current list of mails while paginating:
-    //         // 1. Was moving forward: set the opened mail to the first element of the fetched list
-    //         if(singlePageNumber % 10 === 0) {
-    //           setOpenedMailID(currentMails.mails[0].id);
-    //         } 
-    //         // 2. Was moving backwards: set the opened mail to the last element of the fethed list
-    //         else {
-    //           setOpenedMailID(currentMails.mails[currentMails.mails.length - 1].id);
-    //         }
-    //       }
-    //     }
-    //     fetchCurrentMails();
+      useEffect(() => {
+        async function updatePageSize() {
+          if(mailsPerPage === -1 && multiMailPageSize === -1) {
+            return;
+          }
+          if(multiMailPageSize === -1) {
+            setMultiMailPageSize(mailsPerPage)
+          }
+          
+          if(isOpenedMail) {
+            const skip = mailsPerPage * (multiMailPageNumber - 1)
+            const mails = await queryUserMails(
+              typeOfBox, 
+              skip,
+              { createdAt: 'desc'},
+              setMails)
+              
+            // if we hit either end of the current list of mails while paginating:
+            // 1. Was moving forward: set the opened mail to the first element of the fetched list
+              if(singlePageNumber % multiMailPageSize === 0) {
+              setOpenedMailID(mails["userMails"][0].id);
+            } 
+            // 2. Was moving backwards: set the opened mail to the last element of the fethed list
+            else {
+              setOpenedMailID(mails["userMails"][mails["userMails"].length - 1].id);
+            }
+          } else {
+            await updateMailsPerPage();
+          }
+        }
 
-    //   }, [multiMailPageNumber, multiMailPageSize])
+        updatePageSize()
 
-    //   useEffect(() => {
-    //     // console.log("51 use isopenedmail: ", isOpenedMail)
-    //     if(!isOpenedMail || !openedMail) {
-    //       return;
-    //     }
+      }, [multiMailPageNumber, multiMailPageSize, mailsPerPage])
 
-    //     const singlePageNumber = (mails.indexOf(openedMail)) + 1;
-    //     const toAddSinglePageNumber = multiMailPageSize * (multiMailPageNumber - 1);
-    //     setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
+      useEffect(() => {
+        if(!isOpenedMail || !openedMail) {
+          return;
+        }
+        const singlePageNumber = (userMails.indexOf(openedMail)) + 1;
+        const toAddSinglePageNumber = multiMailPageSize * (multiMailPageNumber - 1);
+        setSinglePageNumber(singlePageNumber + toAddSinglePageNumber);
 
-    //     if(!isSinglePagePagination) {
-    //       setIsSinglePagePagination(true);
-    //     }
-    //   }, [openedMail])
+        if(!isSinglePagePagination) {
+          setIsSinglePagePagination(true);
+        }
+      }, [openedMail])
 
-    //   useEffect(() => {
-    //     setIsSinglePagePagination(false);
+      useEffect(() => {
+        setIsSinglePagePagination(false);
+        setMultiMailPageNumber(1)
+        setSinglePageNumber(1)
 
-    //   }, [isSideBarClicked])
+      }, [isSideBarClicked])
 
     function handleDeletion() {
         if (!isOpenedMail) {
@@ -160,13 +190,7 @@ const MailsHeader = () => {
         setCheckedMailIDs([]);
     }
 
-// -------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------------------------
-
       async function onChange(pageNumberOnChange: number) {
-        // console.log('Page: ', pageNumberOnChange);
-
         if(!isSinglePagePagination){
           setMultiMailPageNumber(pageNumberOnChange);
           return;
@@ -232,7 +256,6 @@ const MailsHeader = () => {
           />
         }
             </Header>
-
         </div>
     )
 }
