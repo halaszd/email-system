@@ -15,7 +15,6 @@ import SearchBar from '../searchbar/SearchBar';
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
-// mails header: single mail deletion(what if out of curr chunk)
 // deletion when its moved to trash should overwrite usermails date in database
 
 // exeption handlings in frontend: errorpolicy: 'all'
