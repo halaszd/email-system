@@ -8,7 +8,6 @@ type Props = {
     setIsNewMail: Function;
     setSendTo: Function;
 }
-// -------------------- The component itself -------------------- 
 const OpenedMail = (
     {
         setIsNewMail,

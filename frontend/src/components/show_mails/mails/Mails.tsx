@@ -5,12 +5,12 @@ import Mail from './mail/Mail';
 import OpenedMail from './opened_mail/OpenedMail';
 import { useQuery } from '@apollo/client';
 
-// -------------------- The component -------------------- 
 type Props = {
   box : "inbox" | "sent" | "trash" | "all"
   setIsNewMail: Function;
   setSendTo: Function;
 }
+
 const Mails = ({
   box,
   setIsNewMail, 
@@ -19,11 +19,8 @@ const Mails = ({
   
   const {
     isToFetch,
-    // setToFetch,
-    userEmail, 
     mails: { 
       userMails,
-      mailsPerPage
     }, 
     isOpenedMail, 
     setMails 
@@ -39,8 +36,6 @@ const Mails = ({
 
   if(isToFetch && data) {
     setMails(data["emails"])
-    console.log("isToFetch is: ", isToFetch, "data: ", data, "mailsperpage: ", mailsPerPage)
-
   }
   
 	return (

@@ -48,8 +48,8 @@ const SearchBar = ()=> {
     }
     
     setMails({
-      totalNumOfMails: data["searchEmails"].length,
-      typeOfMail: typeOfBox,
+      allInBoxtypeCount: data["searchEmails"].length,
+      typeOfBox: typeOfBox,
       mailsPerPage: mailsPerPage, 
       userMails: data["searchEmails"]});
 

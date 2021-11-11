@@ -10,10 +10,10 @@ type Props = {
 
 const SideBar = (
 	{
-		setIsNewMail, 
+		setIsNewMail,
 		isNewMail,
 	}: Props) => {
-	
+
 	const {
 		setIsToFetch,
 		isSideBarClicked,
@@ -26,11 +26,11 @@ const SideBar = (
 			<li>
 				<ModButton type="primary" icon={<FormOutlined />} onClick={() => setIsNewMail(!isNewMail)}>New Mail</ModButton>
 			</li>
-			<SubSideBar onClick={() => { 
-				setIsOpenedMail(false); 
+			<SubSideBar onClick={() => {
+				setIsOpenedMail(false);
 				setIsSideBarClicked(!isSideBarClicked);
-				setIsToFetch(true) 
-				}}>
+				setIsToFetch(true)
+			}}>
 				<li>
 					<Link to="/">
 						<ModButton type="primary" icon={<SearchOutlined />}

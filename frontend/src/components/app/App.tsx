@@ -15,15 +15,15 @@ import SearchBar from '../searchbar/SearchBar';
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
+// searching results pagination count is 0
+// Create a box for all mails
 // deletion when its moved to trash should overwrite usermails date in database
-
 // exeption handlings in frontend: errorpolicy: 'all'
 // debug: finish declaration of update in NewMails.tsx
 // use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // when registering: check real time if email exist
 // when registering: check at least 6 chars whith special chars
 // try to use subscription for refreshing mailboxes
-
 
 // Frontend side
 // 1: refactoring the usage of useContext
@@ -47,27 +47,27 @@ export default function App() {
 
   return (
     <MainDiv>
-        <MainHeader>
-          <Menu auth={auth} setAuth={setAuth} username={username}/> 
-          { auth && <SearchBar/> }
-          </MainHeader>
-          <ContentDiv>
-          { auth === null
-            ?
-                  <UserContext.Provider value={
-                  { 
-                      setUserEmail,
-                      auth,
-                      setAuth, 
-                      setUsername,
-                      setMails 
-                  }} > 
-              <Authentication />
-              </UserContext.Provider>
-            :
-              <ShowMails />
-          }
-        </ContentDiv>
+      <MainHeader>
+        <Menu auth={auth} setAuth={setAuth} username={username} />
+        {auth && <SearchBar />}
+      </MainHeader>
+      <ContentDiv>
+        {auth === null
+          ?
+          <UserContext.Provider value={
+            {
+              setUserEmail,
+              auth,
+              setAuth,
+              setUsername,
+              setMails
+            }} >
+            <Authentication />
+          </UserContext.Provider>
+          :
+          <ShowMails />
+        }
+      </ContentDiv>
     </MainDiv>
   );
 }

@@ -8,7 +8,6 @@ type Props = {
   setShowResultMails: Function;
 }
 
-// -------------------- Component -------------------- 
 const Results = (
   {
     filteredMails, 

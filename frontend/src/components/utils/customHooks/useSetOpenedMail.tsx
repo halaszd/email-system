@@ -26,7 +26,6 @@ export function useSetOpenedMail(
 	openedMailID: string | null) {
 
 	const [openedMail, setOpenedMail] = useState<FetchedMail> (emptyMail);
-	// console.log("inside useOpenMail", isOpenedMail)
 
 	useEffect(() => {
 		if(!mails.userMails || !openedMailID) {
@@ -38,7 +37,6 @@ export function useSetOpenedMail(
 		for(const mail of mails["userMails"]) {
 			console.log(typeof openedMailID, typeof mail.id)
 			if(openedMailID === mail.id) {
-				// console.log(mail)
 				setOpenedMail(mail)
 				break;
 			}
@@ -47,4 +45,3 @@ export function useSetOpenedMail(
 
 	return [ openedMail ];
 }
-

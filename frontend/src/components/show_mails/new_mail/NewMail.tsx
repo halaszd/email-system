@@ -1,48 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
-import { useMutation, useLazyQuery, gql } from '@apollo/client';
-import { MAIL_QUERY } from '../../../queries_mutations';
+import { useMutation, useLazyQuery } from '@apollo/client';
+import { MAIL_QUERY, SEND_MAIL_MUTATION } from '../../../queries_mutations';
 import { useMail } from '../../utils/useContexts/MailContextProvider';
-import { useHistory } from 'react-router';
 import { Input, Button, Spin } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 import { NewMailContainer, ContentContainer, Header, Form } from './Styled';
-
-const SEND_MAIL_MUTATION = gql`
-  mutation sendMutation(
-    $from: String!
-    $to: String!
-    $subject: String
-    $message: String
-  ) {
-    send(
-      from: $from,
-      to: $to,
-      subject: $subject,
-      message: $message
-    )
-    {
-      id
-      email {
-        subject
-        message
-      }
-      possessedBy {
-        id
-      }
-      fromUser {
-        id
-        email
-        name
-      }
-      toUser {
-        id
-        email
-        name
-      }
-    }
-  }
-`;
 
 const { TextArea } = Input;
 
@@ -53,7 +16,7 @@ interface FormElements extends HTMLFormControlsCollection {
 };
 
 interface FormElement extends HTMLFormElement {
- readonly elements: FormElements
+  readonly elements: FormElements
 };
 
 type Props = {
@@ -63,20 +26,17 @@ type Props = {
   setSendTo: Function;
 };
 
-// -------------------- Component -------------------- 
 const NewMail = (
   {
-    isNewMail, 
-    setIsNewMail, 
-    sendTo, 
+    isNewMail,
+    setIsNewMail,
+    sendTo,
     setSendTo
   }: Props) => {
-    
-  const {userEmail, mails: {typeOfBox}, setIsToFetch, setMails} = useMail();
+
+  const { userEmail, mails: { typeOfBox }, setIsToFetch, setMails } = useMail();
   const [isMinimized, setIsMinimized] = useState(false);
   const [isLoading, setIsloading] = useState(false);
-
-  const history = useHistory();
 
   const [mailToSend, setMailToSend] = useState({
     from: userEmail,
@@ -85,19 +45,18 @@ const NewMail = (
     message: ''
   })
 
-  // emails(typeOfBox: String!, skip: Int, take: Int, orderBy: MailOrderByInut): ResultMails!
-  const [executeMailQuery, {data, loading}] = useLazyQuery(
-        MAIL_QUERY,
-        {
-            variables: {
-                typeOfBox,
-                orderBy: { createdAt: 'desc'}
-            },
-            onCompleted: mails => {setMails(mails["emails"]); setIsToFetch(false)},
-            fetchPolicy: 'network-only'
-        }
-    )
-  const [sendEmail, {error}] = useMutation(SEND_MAIL_MUTATION, {
+  const [executeMailQuery, { data, loading }] = useLazyQuery(
+    MAIL_QUERY,
+    {
+      variables: {
+        typeOfBox,
+        orderBy: { createdAt: 'desc' }
+      },
+      onCompleted: mails => { setMails(mails["emails"]); setIsToFetch(false) },
+      fetchPolicy: 'network-only'
+    }
+  )
+  const [sendEmail, { error }] = useMutation(SEND_MAIL_MUTATION, {
     variables: {
       from: mailToSend.from,
       to: mailToSend.to,
@@ -128,7 +87,7 @@ const NewMail = (
     //   // })
     //   console.log(data)
     // }
-    }
+  }
   );
 
   function minimize() {
@@ -145,61 +104,62 @@ const NewMail = (
 
     setIsloading(true);
 
-    if(!result.errors) {
-    setTimeout(() => {
-      setIsloading(false); 
-      setIsNewMail(!isNewMail); 
-      setSendTo("");}, 
-      2000
+    if (!result.errors) {
+      setTimeout(() => {
+        setIsloading(false);
+        setIsNewMail(!isNewMail);
+        setSendTo("");
+      },
+        2000
       );
     }
-}
+  }
 
-	return (
-		<NewMailContainer className="new-mail-container">
+  return (
+    <NewMailContainer className="new-mail-container">
       <ContentContainer>
         <Header>
           <span>New Message</span>
           <div className="header-icons">
-            { !isMinimized 
-              ? <MinusOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/> 
-              : <BorderOuterOutlined onClick={() => {minimize(); setIsMinimized(!isMinimized)}}/>}
-            <CloseOutlined  onClick={() => {setIsNewMail(!isNewMail); setSendTo("")}}/>
+            {!isMinimized
+              ? <MinusOutlined onClick={() => { minimize(); setIsMinimized(!isMinimized) }} />
+              : <BorderOuterOutlined onClick={() => { minimize(); setIsMinimized(!isMinimized) }} />}
+            <CloseOutlined onClick={() => { setIsNewMail(!isNewMail); setSendTo("") }} />
           </div>
         </Header>
-        { isLoading && !error && <Spin className="spinner" tip="Sending" /> }
+        {isLoading && !error && <Spin className="spinner" tip="Sending" />}
         <Form className="form" onSubmit={handleSubmit}>
-          <Input 
-            className="input" 
-            placeholder="To" 
-            defaultValue={sendTo} 
+          <Input
+            className="input"
+            placeholder="To"
+            defaultValue={sendTo}
             onChange={(e) => setMailToSend({
               ...mailToSend,
               to: e.target.value
             })}
-            required/>
-          <Input 
-            className="input" 
-            placeholder="Subject" 
+            required />
+          <Input
+            className="input"
+            placeholder="Subject"
             onChange={(e) => setMailToSend({
               ...mailToSend,
               subject: e.target.value
             })}
-            required/>
-          <TextArea 
-            className="input message" 
-            placeholder={error? error.message : "Message"} 
+            required />
+          <TextArea
+            className="input message"
+            placeholder={error ? error.message : "Message"}
             // value={(e: React.ChangeEvent<HTMLInputElement>) => {return e.target.value;}}
             onChange={(e) => setMailToSend({
               ...mailToSend,
               message: e.target.value
             })}
-            />
+          />
           <Button className="button" type="primary" htmlType="submit">Send</Button>
         </Form>
       </ContentContainer>
-		</NewMailContainer>
-	)
+    </NewMailContainer>
+  )
 }
 
 export default NewMail
