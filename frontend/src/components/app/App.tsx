@@ -15,7 +15,6 @@ import SearchBar from '../searchbar/SearchBar';
 import { MainDiv, MainHeader, ContentDiv } from './Styled';
 
 // TODO:
-// searching results pagination count is 0
 // Create a box for all mails
 // deletion when its moved to trash should overwrite usermails date in database
 // exeption handlings in frontend: errorpolicy: 'all'

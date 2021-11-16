@@ -84,12 +84,17 @@ class LoginForm extends React.Component<IProps, IState> {
           <Mutation
            mutation={LOGIN_MUTATION}
            variables={{ email, password }}
+           onError={() => this.setState({isModalVisible: true})}
            onCompleted={(data: any) => this._confirm(data)}
            > 
             {(mutation: any) => (
-              <LogButton type="primary" htmlType="submit" onClick={mutation}>
+              <>
+              {}
+                <LogButton type="primary" htmlType="submit" onClick={mutation}>
                 Sign in
               </LogButton>
+              </>
+
              )}
            </Mutation> 
 
