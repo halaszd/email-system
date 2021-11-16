@@ -45,6 +45,9 @@ interface IProps extends InjectedIsSuccessfulProps {};
 
 type IState = {
   isModalVisible: boolean;
+  isNotEmpty: boolean;
+  isPassOk: boolean;
+  isAgree: boolean;
   isSuccessfulRegistration: boolean;
   email: string;
   password: string;
@@ -59,9 +62,14 @@ export class Registration extends Component<IProps, IState> {
     super(props)
     this.handleCancel = this.handleCancel.bind(this);
     this.handleOk = this.handleOk.bind(this);
+    this.validatePassword = this.validatePassword.bind(this);
+    this.handleError = this.handleError.bind(this);
   
     this.state = {
      isModalVisible: false,
+     isNotEmpty: false,
+     isPassOk: false,
+     isAgree: false,
      isSuccessfulRegistration: false,
      email: '',
      password: '',
@@ -69,7 +77,11 @@ export class Registration extends Component<IProps, IState> {
        
     }
   }
-
+  validatePassword(pass: string) {
+    console.log(pass)
+    var re = /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
+    return re.test(pass);
+}
   handleOk() {
     this.setState({ isModalVisible: false })
   };
@@ -78,8 +90,24 @@ export class Registration extends Component<IProps, IState> {
     this.setState({ isModalVisible: false })
   };
 
+  handleError() {
+    const { email } = this.state;
+    if(email !== '') {
+      this.setState({isModalVisible: true})
+    }
+  };
+
   render() {
-    const { isSuccessfulRegistration, email, password, name } = this.state;
+    const { 
+      isSuccessfulRegistration, 
+      isNotEmpty,
+      isPassOk,
+      isAgree,
+      email, 
+      password, 
+      name 
+    } = this.state;
+
     return (
       <LoginRegistratonDiv>
       <h1>Create your Account</h1>
@@ -97,9 +125,20 @@ export class Registration extends Component<IProps, IState> {
           hasFeedback
           rules={[
             { 
-              required: true, message: 'Please input your email!', 
-              whitespace: true 
+              required: true, 
+              message: 'Please input your email!', 
             },
+            {
+              validator: (_, value) => {
+                if(typeof value !== 'undefined' && value !== '') {
+                  console.log(`"${value}`)
+                  this.setState({isNotEmpty: true})
+                  return Promise.resolve();
+                }
+                this.setState({isNotEmpty: false})
+                return Promise.reject()
+              }
+            }
             // {
             //   validator: (_, value) =>
             //     fetch(this.ifExistingUserURL, {
@@ -143,13 +182,24 @@ export class Registration extends Component<IProps, IState> {
         <Form.Item
           name="password"
           label="Password"
+          hasFeedback
           rules={[
             {
               required: true,
               message: 'Please input your password!',
             },
+            {
+              validator: (_, value) => {
+                if(this.validatePassword(value)) {
+                  this.setState({isPassOk: true})
+                  return Promise.resolve();
+                }
+                this.setState({isPassOk: false})
+                return Promise.reject(
+                  new Error(('Password should consist upper and lower case and at least 6 characters with a special character and a number!')))
+              }
+            },
           ]}
-          hasFeedback
         >
           <Input.Password onChange={e => this.setState({password: e.target.value})} />
 
@@ -183,8 +233,17 @@ export class Registration extends Component<IProps, IState> {
           valuePropName="checked"
           rules={[
             {
-              validator: (_, value) =>
-                value ? Promise.resolve() : Promise.reject(new Error('Should accept agreement')),
+              required: true,
+            },
+            {
+              validator: (_, value) => {
+                if(value) {
+                  this.setState({isAgree: true});
+                  return Promise.resolve();
+                }
+                this.setState({isAgree: false});
+                return Promise.reject(new Error('Should accept agreement'))
+              }
             },
           ]}
           {...tailFormItemLayout}
@@ -196,8 +255,8 @@ export class Registration extends Component<IProps, IState> {
         <Form.Item {...tailFormItemLayout}>
           <Mutation
             mutation={REGISTER_MUTATION}
-            variables={{ email, password, name }}
-            onError={() => this.setState({isModalVisible: true})}
+            variables={isNotEmpty && isPassOk && isAgree? { email, password, name }: {}}
+            onError={() => this.handleError}
             onCompleted={(data: any) => this._confirm(data)}
           >
             {(mutation: any) => (
@@ -211,7 +270,7 @@ export class Registration extends Component<IProps, IState> {
       <Modal title="Existing email" visible={this.state.isModalVisible} onOk={this.handleOk} onCancel={this.handleCancel}>
         <p>Existing email!</p>
       </Modal>
-        { isSuccessfulRegistration && <Redirect to="/login" />}
+        { isNotEmpty && isPassOk && isAgree && isSuccessfulRegistration && <Redirect to="/login" />}
       </LoginRegistratonDiv>
     );
   };
