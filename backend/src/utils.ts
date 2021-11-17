@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
 const APP_SECRET = 'Secret-is-secret';
 
-function getTokenPayload(token) {
+function getTokenPayload(token: string) {
   return jwt.verify(token, APP_SECRET);
 }
 
-function getUserId(req, authToken) {
+function getUserId(req: { headers: { authorization: string; }; }, authToken: string) {
   if (req) {
     const authHeader = req.headers.authorization;
     if (authHeader) {

@@ -21,7 +21,6 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 // debug: finish declaration of update in NewMails.tsx
 // use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // when registering: check real time if email exist
-// when registering: check at least 6 chars whith special chars
 // try to use subscription for refreshing mailboxes
 
 // Frontend side

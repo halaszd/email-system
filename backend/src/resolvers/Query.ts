@@ -10,7 +10,7 @@ const typeOfBoxes = [
 //     to: "toUser"
 // }
 
-async function emails(parent, args, context, info) {
+async function emails(parent: any, args: { typeOfBox: string; userEmail: any; skip: any; orderBy: any; }, context: { prisma?: any; userId?: any; }, info: any) {
     console.log(args.typeOfBox, args.userEmail)
     if(!typeOfBoxes.includes(args.typeOfBox)) {
         throw new Error('Invalid box type')
@@ -33,7 +33,13 @@ async function emails(parent, args, context, info) {
     console.log("userId in query: ", userId)
     console.log("mailsPerPage", mailsPerPage)
 
-    const where = { possessedById: userId };
+    type WhereType = {
+        possessedById: string;
+        typeOfBox?: string;
+    }
+    const where: WhereType = { 
+        possessedById: userId
+     };
 
     if(typeOfBox !== 'all') {
         where["typeOfBox"] = typeOfBox;
@@ -58,14 +64,21 @@ async function emails(parent, args, context, info) {
     }
 }
 
-async function searchEmails(parent, args, context) {
+async function searchEmails(parent: any, args: { typeOfBox: any; filter: string; }, context: { prisma?: any; userId?: any; }) {
     console.log(args.typeOfBox, args.filter)
     if(args.filter === ""){
         return [];
     }
     // fromUser, toUser, message, subject
     const { userId } = context;
-    const where = {possessedById: userId}
+    type WhereType = {
+        possessedById: string;
+        OR?: object;
+        typeOfBox?: string;
+    }
+    const where: WhereType = {
+        possessedById: userId
+    }
     console.log(where)
     if(args.filter) {
         console.log(args.filter)
