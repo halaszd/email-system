@@ -19,6 +19,12 @@ export const Header = styled.div`
     display: none;
   }
 
+  .spinner {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+  }
+
   h1 {
     font-weight: 500;
     margin-bottom: 0px;

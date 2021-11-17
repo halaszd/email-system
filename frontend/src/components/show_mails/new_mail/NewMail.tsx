@@ -110,7 +110,6 @@ const NewMail = (
     e.preventDefault();
 
     const result = await sendEmail();
-    console.log(result.errors)
 
     setIsloading(true);
 
@@ -125,7 +124,6 @@ const NewMail = (
     },
       2000
     );
-
   }
 
   return (

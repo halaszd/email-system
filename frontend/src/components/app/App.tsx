@@ -1,7 +1,10 @@
 import 'antd/dist/antd.css';
 import '../../index.css';
 
-import { AUTH_TOKEN, USER_NAME } from '../../constants';
+import { 
+  AUTH_TOKEN, 
+  USER_NAME 
+} from '../../constants';
 
 import { UserContext } from '../utils/useContexts/UserContext';
 import { useMail } from '../utils/useContexts/MailContextProvider';
@@ -12,12 +15,16 @@ import { Authentication } from '../authentication/Authentication';
 import { ShowMails } from '../show_mails/ShowMails';
 import SearchBar from '../searchbar/SearchBar';
 
-import { MainDiv, MainHeader, ContentDiv } from './Styled';
+import { 
+  MainDiv, 
+  MainHeader, 
+  ContentDiv 
+} from './Styled';
 
 // TODO:
 // Create a box for all mails
-// deletion when its moved to trash should overwrite usermails date in database
-// exeption handlings in frontend: errorpolicy: 'all'
+// spinning when deleting single  mail
+// userMails should have another date of putting it to the trash
 // debug: finish declaration of update in NewMails.tsx
 // use loading when making a query or mutation: const [{data, loading}] = useQuery...
 // when registering: check real time if email exist
@@ -29,9 +36,7 @@ import { MainDiv, MainHeader, ContentDiv } from './Styled';
 // 2: date in mails
 // 6: loading animation for registration and login
 
-// Later on server side
 // x: if isNewMail is false and the form inside is not empty --> save into the drafts
-// x: spinner should spin for as long as it takes to post and receive sth from server
 // x: read, unread
 
 

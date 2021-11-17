@@ -11,7 +11,7 @@ import { queryUserMails } from '../../..';
 import { FetchedMail } from '../../utils/types/FetchedMail';
 import { Header, TrashIconContainer } from "./Styled";
 import { DeleteFilled } from '@ant-design/icons'
-import { Pagination } from 'antd';
+import { Pagination, Spin } from 'antd';
 
 const MailsHeader = () => {
   const {
@@ -36,6 +36,7 @@ const MailsHeader = () => {
   const [singlePageNumber, setSinglePageNumber] = useState(1);
   const [multiMailPageNumber, setMultiMailPageNumber] = useState(1);
   const [multiMailPageSize, setMultiMailPageSize] = useState(mailsPerPage);
+  const [isSingleMailDeleted, setIsSingleMailDeleted] = useState(false);
 
   const [executeMailQuery] = useLazyQuery(
     MAIL_QUERY,
@@ -172,12 +173,21 @@ const MailsHeader = () => {
       return;
     }
 
+
+    setIsSingleMailDeleted(true);
+
+    setTimeout(() => {
     if (newMails.length !== 0) {
       setOpenedMailID(newMails[deletedMailIndex].id);
-      console.log(newMails[deletedMailIndex])
     } else {
       setOpenedMailID(null);
     }
+
+      setIsSingleMailDeleted(false);
+    },
+      1000
+    );
+
     deleteMails({
       variables: {
         userMailIds: [deletedMailId]
@@ -239,6 +249,8 @@ const MailsHeader = () => {
         <h1>{typeOfBox && `${typeOfBox.charAt(0).toUpperCase()}${typeOfBox.slice(1)}`}</h1>
         {isOpenedMail
           ?
+          <>
+          {isSingleMailDeleted && <Spin className="spinner" tip="Deletion" />}
           <Pagination
             size="small"
             total={allInBoxtypeCount}
@@ -251,6 +263,7 @@ const MailsHeader = () => {
             onChange={onChange}
             onShowSizeChange={onShowSizeChange}
           />
+          </>
           :
           <Pagination
             size="small"
