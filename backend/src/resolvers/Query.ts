@@ -10,7 +10,7 @@ const typeOfBoxes = [
 //     to: "toUser"
 // }
 
-async function emails(parent: any, args: { typeOfBox: string; userEmail: any; skip: any; orderBy: any; }, context: { prisma?: any; userId?: any; }, info: any) {
+async function emails(parent: any, args: { typeOfBox: string; userEmail: string; skip: number; orderBy: object; }, context: any, info: any) {
     console.log(args.typeOfBox, args.userEmail)
     if(!typeOfBoxes.includes(args.typeOfBox)) {
         throw new Error('Invalid box type')
@@ -64,7 +64,7 @@ async function emails(parent: any, args: { typeOfBox: string; userEmail: any; sk
     }
 }
 
-async function searchEmails(parent: any, args: { typeOfBox: any; filter: string; }, context: { prisma?: any; userId?: any; }) {
+async function searchEmails(parent: any, args: { typeOfBox: string; filter: string; }, context: any) {
     console.log(args.typeOfBox, args.filter)
     if(args.filter === ""){
         return [];

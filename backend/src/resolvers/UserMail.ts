@@ -1,4 +1,4 @@
-async function email(parent: { id: any }, args: any, context: { prisma: { userMail: { findUnique: (arg0: { where: { id: any } }) => { (): any; new(): any; email: { (): any; new(): any } } } } }) {
+async function email(parent: { id: string }, args: any, context: any) {
     return await context.prisma.userMail.findUnique({
         where: {
             id: parent.id
@@ -7,7 +7,7 @@ async function email(parent: { id: any }, args: any, context: { prisma: { userMa
     .email()
 }
 
-async function possessedBy(parent: { id: any }, args: any, context: { prisma: { userMail: { findUnique: (arg0: { where: { id: any } }) => { (): any; new(): any; possessedBy: { (): any; new(): any } } } } }) {
+async function possessedBy(parent: { id: string }, args: any, context: any) {
     return await context.prisma.userMail.findUnique({
         where: {
             id: parent.id
@@ -16,7 +16,7 @@ async function possessedBy(parent: { id: any }, args: any, context: { prisma: { 
     .possessedBy()
 }
 
-async function fromUser(parent: { id: any }, args: any, context: { prisma: { userMail: { findUnique: (arg0: { where: { id: any } }) => { (): any; new(): any; fromUser: { (): any; new(): any } } } } }) {
+async function fromUser(parent: { id: string }, args: any, context: any) {
     return await context.prisma.userMail.findUnique({
         where: {
             id: parent.id
@@ -25,7 +25,7 @@ async function fromUser(parent: { id: any }, args: any, context: { prisma: { use
     .fromUser()
 }
 
-async function toUser(parent: { id: any }, args: any, context: { prisma: { userMail: { findUnique: (arg0: { where: { id: any } }) => { (): any; new(): any; toUser: { (): any; new(): any } } } } }) {
+async function toUser(parent: { id: string }, args: any, context: any) {
     return await context.prisma.userMail.findUnique({
         where: {
             id: parent.id

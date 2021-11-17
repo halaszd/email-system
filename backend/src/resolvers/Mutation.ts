@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { APP_SECRET, getUserId } = require('../utils');
 
-async function signup(parent: any, args: { password: any; }, context: { prisma: { user: { create: (arg0: { data: any; }) => any; }; }; }, info: any) {
+async function signup(parent: any, args: { password: string; }, context: any, info: any) {
     const password = await bcrypt.hash(args.password, 10);
 
     const user = await context.prisma.user.create({
@@ -25,7 +25,7 @@ async function signup(parent: any, args: { password: any; }, context: { prisma: 
     };
 }
 
-async function login(parent: any, args: { email: any; password: any; }, context: { prisma: { user: { findUnique: (arg0: { where: { email: any; }; }) => any; }; }; }, info: any) {
+async function login(parent: any, args: { email: string; password: string; }, context: any, info: any) {
     const user = await context.prisma.user.findUnique({
         where: {
             email: args.email
@@ -54,7 +54,7 @@ async function login(parent: any, args: { email: any; password: any; }, context:
     };
 }
 
-async function send(parent: any, args: { to: any; subject: any; message: any; }, context: { prisma?: any; userId?: any; }, info: any) {
+async function send(parent: any, args: { to: string; subject: string; message: string; }, context: any, info: any) {
     const { userId } = context;
     
     if(!userId) {
@@ -102,7 +102,7 @@ async function send(parent: any, args: { to: any; subject: any; message: any; },
     return newToUserMail;
 }
 
-async function updateMailsPerPage(parent: any, args: { mailsPerPage: any; }, context: { prisma?: any; userId?: any; }) {
+async function updateMailsPerPage(parent: any, args: { mailsPerPage: number; }, context: any) {
     const { userId } = context;
 
     await context.prisma.user.update({
@@ -123,7 +123,7 @@ async function updateMailsPerPage(parent: any, args: { mailsPerPage: any; }, con
     return user;
 }
 
-async function deleteUserMail(parent: any, args: { userMailIds: any; }, context: { prisma?: any; userId?: any; }) {
+async function deleteUserMail(parent: any, args: { userMailIds: object[]; }, context: any) {
     const { userId } = context;
 
     const deletedUserMails = [];
