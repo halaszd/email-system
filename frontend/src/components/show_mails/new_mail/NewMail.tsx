@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useMutation, useLazyQuery } from '@apollo/client';
 import { MAIL_QUERY, SEND_MAIL_MUTATION } from '../../../queries_mutations';
 import { useMail } from '../../utils/useContexts/MailContextProvider';
-import { Input, Button, Spin } from 'antd';
+import { Input, Button, Spin, Modal } from 'antd';
 import { CloseOutlined, MinusOutlined, BorderOuterOutlined } from '@ant-design/icons';
 import { NewMailContainer, ContentContainer, Header, Form } from './Styled';
 
@@ -36,6 +36,7 @@ const NewMail = (
 
   const { userEmail, mails: { typeOfBox }, setIsToFetch, setMails } = useMail();
   const [isMinimized, setIsMinimized] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [isLoading, setIsloading] = useState(false);
 
   const [mailToSend, setMailToSend] = useState({
@@ -90,6 +91,14 @@ const NewMail = (
   }
   );
 
+   function handleOk() {
+    setIsModalVisible(false)
+    };
+
+   function handleCancel() {
+    setIsModalVisible(false)
+    };
+
   function minimize() {
     const newMailContainer = document.querySelector(".new-mail-container")!;
     newMailContainer.classList.toggle("minimized");
@@ -101,21 +110,26 @@ const NewMail = (
     e.preventDefault();
 
     const result = await sendEmail();
+    console.log(result.errors)
 
     setIsloading(true);
 
-    if (!result.errors) {
-      setTimeout(() => {
-        setIsloading(false);
+    setTimeout(() => {
+      if(result.errors) {
+        setIsModalVisible(true)
+      } else {
         setIsNewMail(!isNewMail);
         setSendTo("");
-      },
-        2000
-      );
-    }
+      }
+      setIsloading(false);
+    },
+      2000
+    );
+
   }
 
   return (
+    <>
     <NewMailContainer className="new-mail-container">
       <ContentContainer>
         <Header>
@@ -127,7 +141,7 @@ const NewMail = (
             <CloseOutlined onClick={() => { setIsNewMail(!isNewMail); setSendTo("") }} />
           </div>
         </Header>
-        {isLoading && !error && <Spin className="spinner" tip="Sending" />}
+        {isLoading && <Spin className="spinner" tip="Sending" />}
         <Form className="form" onSubmit={handleSubmit}>
           <Input
             className="input"
@@ -159,6 +173,10 @@ const NewMail = (
         </Form>
       </ContentContainer>
     </NewMailContainer>
+      <Modal title="Non existent user" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+        <p>There is no user with the email address</p>
+      </Modal>
+    </>
   )
 }
 
